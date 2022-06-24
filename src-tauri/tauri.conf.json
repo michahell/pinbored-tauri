@@ -12,9 +12,8 @@
   },
   "tauri": {
     "allowlist": {
-
       "http": {
-        "scope": ["https://62acdc229fa81d00a7ba907e.mockapi.io/*", "https://www.nu.nl/*"],
+        "scope": ["https://run.mocky.io/*"],
         "request": true
       }
     },

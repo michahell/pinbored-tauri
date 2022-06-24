@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { fetch } from '@tauri-apps/api/http';
+  import { fetch, ResponseType } from '@tauri-apps/api/http';
 
   type Link = {
     createdAt: string,
@@ -9,22 +9,20 @@
   };
 
   export let links: Link[] = [];
-  let mockApiUrl: string = 'https://62acdc229fa81d00a7ba907e.mockapi.io';
-
-  const fetchMy = (url, opts) => fetch(`${mockApiUrl}/${url}`, opts)
+  let mockApiUrl: string = 'https://run.mocky.io/v3/e91c7675-60b4-4260-aa73-122a4c336a29';
 
   onMount(async () => {
-    // const response = await fetchMy('links', {
-    //   method: 'GET',
-    //   timeout: 50,
-    // });
-    // console.log(response);
-    const response2 = await fetch('https://www.nu.nl', {
-      method: 'GET',
-      timeout: 50,
-    });
-    console.log(response2);
-  })
+    try {
+      const response = await fetch(mockApiUrl, {
+        method: 'GET',
+        timeout: 50,
+        responseType: ResponseType.JSON
+      });
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+    }
+  });
 </script>
 
 <main>

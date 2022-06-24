@@ -15,5 +15,8 @@ Cargo.lock
 .DS_Store
 
 # IDEs
-.vscode
+!.vscode/
+.vscode/*
+!.vscode/launch.json
+
 .idea
