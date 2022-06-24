@@ -4,7 +4,7 @@
   <p>made by The Green Shepherd [copyright]</p>
 </section>
 
-<style lang="css">
+<style lang="scss">
  .footer {
    position: absolute;
    bottom: 0;
