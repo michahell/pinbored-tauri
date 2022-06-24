@@ -1,59 +1,74 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { fetch, ResponseType } from '@tauri-apps/api/http';
-
-  type Link = {
-    createdAt: string,
-    url: string,
-    id: string
-  };
-
-  export let links: Link[] = [];
-  let mockApiUrl: string = 'https://run.mocky.io/v3/e91c7675-60b4-4260-aa73-122a4c336a29';
-
-  onMount(async () => {
-    try {
-      const response = await fetch(mockApiUrl, {
-        method: 'GET',
-        timeout: 50,
-        responseType: ResponseType.JSON
-      });
-      console.log(response);
-    } catch (e) {
-      console.error(e);
-    }
-  });
+  import 'agnostic-svelte/css/common.min.css';
+  import SearchBar from './components/Searchbar.svelte';
+  import TopNav from './components/Topnav.svelte';
+  import Footer from './components/Footer.svelte';
+  import FirstRunPage from './pages/FirstRunPage.svelte';
+  import {Route} from 'tinro';
 </script>
-
 <main>
-	<h1>Pinbored-tauri v0.1</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-	<p>links:</p>
-  <ul>
-    {#each links as link}
-      <li>{link.url}</li>
-    {/each}
-  </ul>
-</main>
+  <section class="nav">
+    <TopNav>
+      <Route path="/collection/*">
+        <SearchBar/>
+      </Route>
+    </TopNav>
+  </section>
 
+  <section class="pages">
+    <!-- first run -->
+    <Route path="/">
+      <FirstRunPage/>
+    </Route>
+    <!-- Popular -->
+    <Route path="/popular/*">
+      <Route path="/">
+        <h1>Popular links on pinboard currently</h1>
+      </Route>
+      <Route path="/tags"><h1>popular tags</h1></Route>
+      <Route path="/links"><h1>popular links</h1></Route>
+    </Route>
+
+    <!-- collection -->
+    <Route path="/collection/*">
+      Collection
+    </Route>
+  </section>
+
+  <section class="footer">
+    <Footer />
+  </section>
+</main>
 <style>
+  :root {
+    --agnostic-header-mobile-height: 175px;
+    --agnostic-header-color: var(--agnostic-primary);
+  }
 	main {
 		text-align: center;
-		padding: 1em;
-		max-width: 240px;
+    padding: 0;
 		margin: 0 auto;
+    background: black;
+    display: flex;
+    flex: 1 1 100%;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  .nav {
+    display: flex;
+    flex: 0 0 40px;
+    background: hotpink;
+  }
+  .pages {
+    display: flex;
+    flex-grow: 1;
+    background: palegreen;
+    overflow: scroll;
+  }
+  .footer {
+    display: flex;
+    flex: 0 0 28px;
+    background: lightgoldenrodyellow;
+  }
 </style>
