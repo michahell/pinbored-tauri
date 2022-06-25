@@ -4,8 +4,10 @@
   import TopNav from './components/Topnav.svelte';
   import Footer from './components/Footer.svelte';
   import FirstRunPage from './pages/FirstRunPage.svelte';
+  import PopularPage from './pages/PopularPage.svelte';
   import {Route} from 'tinro';
 </script>
+
 <main>
   <section class="nav">
     <TopNav>
@@ -23,7 +25,7 @@
     <!-- Popular -->
     <Route path="/popular/*">
       <Route path="/">
-        <h1>Popular links on pinboard currently</h1>
+        <PopularPage/>
       </Route>
       <Route path="/tags"><h1>popular tags</h1></Route>
       <Route path="/links"><h1>popular links</h1></Route>
@@ -39,7 +41,8 @@
     <Footer />
   </section>
 </main>
-<style>
+
+<style lang="scss">
   :root {
     --agnostic-header-mobile-height: 175px;
     --agnostic-header-color: var(--agnostic-primary);

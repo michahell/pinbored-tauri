@@ -1,6 +1,6 @@
 <script lang="ts">
   import {onMount} from 'svelte';
-  import {PinboardApiService} from '../core/pinboard-api-service';
+  import pinboardService from '../core/pinboard.service';
   import {Button} from 'agnostic-svelte';
 
   type Link = {
@@ -11,11 +11,9 @@
 
   export let links: Link[] = [];
 
-  const api: PinboardApiService = new PinboardApiService('API token');
-
   onMount(async () => {
     try {
-      const response = api.getLinks();
+      const response = pinboardService.getLinks();
       console.log(response);
     } catch (e) {
       console.error(e);
@@ -74,7 +72,7 @@
   da<br/>
 </section>
 
-<style lang="css">
+<style lang="scss">
   h1 {
     color: #ff3e00;
     text-transform: uppercase;

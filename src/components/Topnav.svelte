@@ -5,9 +5,14 @@
     HeaderNav,
     HeaderNavItem,
   } from 'agnostic-svelte';
+  import progressService from '../core/progress.service'
+  progressService.set(0.4);
 </script>
 
 <section class="app-controls">
+
+  <!-- app progress bar -->
+
 
   <!-- main app navigation -->
   <Header isHeaderContentStart="{true}">
@@ -24,15 +29,8 @@
   <slot/>
 </section>
 
-<style lang="css">
-  @media (min-width: 970px) {
-    .header-flex-fill {
-      flex-grow: 1;
-      margin-inline-start: var(--fluid-16);
-    }
-  }
-  .header-flex-fill {
-    margin-inline-start: 0;
-    flex-grow: 0;
+<style lang="scss">
+  .app-controls {
+    width: 100%;
   }
 </style>
