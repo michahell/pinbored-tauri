@@ -1,11 +1,15 @@
 <script lang="ts">
   import 'agnostic-svelte/css/common.min.css';
+  import {Route} from 'tinro';
   import SearchBar from './components/Searchbar.svelte';
   import TopNav from './components/Topnav.svelte';
   import Footer from './components/Footer.svelte';
   import FirstRunPage from './pages/FirstRunPage.svelte';
   import PopularPage from './pages/PopularPage.svelte';
-  import {Route} from 'tinro';
+  import PageTransition from './components/PageTransition.svelte';
+  import pinboardService from './core/pinboard.service';
+
+  pinboardService.updateAuthToken('Blabla Auth Token');
 </script>
 
 <main>
@@ -18,23 +22,25 @@
   </section>
 
   <section class="pages">
-    <!-- first run -->
-    <Route path="/">
-      <FirstRunPage/>
-    </Route>
-    <!-- Popular -->
-    <Route path="/popular/*">
+    <PageTransition>
+      <!-- first run -->
       <Route path="/">
-        <PopularPage/>
+        <FirstRunPage/>
       </Route>
-      <Route path="/tags"><h1>popular tags</h1></Route>
-      <Route path="/links"><h1>popular links</h1></Route>
-    </Route>
+      <!-- Popular -->
+      <Route path="/popular/*">
+        <Route path="/">
+          <PopularPage/>
+        </Route>
+        <Route path="/tags"><h1>popular tags</h1></Route>
+        <Route path="/links"><h1>popular links</h1></Route>
+      </Route>
 
-    <!-- collection -->
-    <Route path="/collection/*">
-      Collection
-    </Route>
+      <!-- collection -->
+      <Route path="/collection/*">
+        Collection
+      </Route>
+    </PageTransition>
   </section>
 
   <section class="footer">

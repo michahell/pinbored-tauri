@@ -2,6 +2,12 @@ import { fetch, ResponseType } from '@tauri-apps/api/http'
 import { HEADER_PINBOARD_APP_ID, HEADER_PINBOARD_TOKEN, PINBOARD_APP_ID } from './constants'
 import persistenceService from './persistence.service'
 
+export interface PinboardLink {
+	createdAt: string
+	url: string
+	id: string
+}
+
 export class PinboardService {
 	private defaultHeaders: Record<string, string> = {}
 
@@ -9,7 +15,7 @@ export class PinboardService {
 
 	constructor(appId: string, authToken: string) {
 		this.defaultHeaders[HEADER_PINBOARD_APP_ID] = appId
-		this.updateAuthToken(authToken)
+		this.defaultHeaders[HEADER_PINBOARD_TOKEN] = authToken
 	}
 
 	async updateAuthToken(authToken: string) {
@@ -21,7 +27,7 @@ export class PinboardService {
 		return this.defaultHeaders[HEADER_PINBOARD_TOKEN] !== ''
 	}
 
-	async request(url, extraOptions?) {
+	async request<T>(url, extraOptions?) {
 		if (!this.hasTokenPresent()) {
 			throw new Error('no token set. use updateToken(token) to set auth token!')
 		}
@@ -32,11 +38,12 @@ export class PinboardService {
 			headers: this.defaultHeaders,
 		}
 		const options = { ...defaultOptions, ...extraOptions }
-		return await fetch(url, options)
+		return await fetch<T>(url, options)
 	}
 
-	async getLinks() {
-		return await this.request(this.mockApiUrl)
+	async getLinks(): Promise<PinboardLink[]> {
+		const { data } = await this.request<PinboardLink[]>(this.mockApiUrl)
+		return data
 	}
 }
 
