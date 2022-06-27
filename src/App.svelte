@@ -1,83 +1,48 @@
 <script lang="ts">
-  import 'agnostic-svelte/css/common.min.css';
   import {Route} from 'tinro';
   import SearchBar from './components/Searchbar.svelte';
-  import TopNav from './components/Topnav.svelte';
-  import Footer from './components/Footer.svelte';
-  import FirstRunPage from './pages/FirstRunPage.svelte';
-  import PopularPage from './pages/PopularPage.svelte';
-  import PageTransition from './components/PageTransition.svelte';
-  import pinboardService from './core/pinboard.service';
-
-  pinboardService.updateAuthToken('Blabla Auth Token');
+  import Layout from './components/layout/Layout.svelte';
+  import FirstRunPage from './pages/FirstRun.svelte';
+  import PopularPage from './pages/Popular.svelte';
+  import SettingsPage from './pages/Settings.svelte';
+  // All carbon themes
+  import "carbon-components-svelte/css/all.css";
 </script>
 
-<main>
-  <section class="nav">
-    <TopNav>
-      <Route path="/collection/*">
-        <SearchBar/>
-      </Route>
-    </TopNav>
+<Layout>
+  <section slot="subheader">
+    <Route path="/collection/*">
+      <SearchBar/>
+    </Route>
   </section>
 
-  <section class="pages">
-    <PageTransition>
-      <!-- first run -->
+  <section slot="pages">
+    <!-- first run -->
+    <Route path="/">
+      <FirstRunPage/>
+    </Route>
+
+    <!-- Popular -->
+    <Route path="/popular/*">
       <Route path="/">
-        <FirstRunPage/>
+        <PopularPage/>
       </Route>
-      <!-- Popular -->
-      <Route path="/popular/*">
-        <Route path="/">
-          <PopularPage/>
-        </Route>
-        <Route path="/tags"><h1>popular tags</h1></Route>
-        <Route path="/links"><h1>popular links</h1></Route>
-      </Route>
+      <Route path="/tags"><h1>popular tags</h1></Route>
+      <Route path="/links"><h1>popular links</h1></Route>
+    </Route>
 
-      <!-- collection -->
-      <Route path="/collection/*">
-        Collection
-      </Route>
-    </PageTransition>
-  </section>
+    <!-- collection -->
+    <Route path="/collection/*">
+      Collection
+    </Route>
 
-  <section class="footer">
-    <Footer />
+    <!-- settings -->
+    <Route path="/settings">
+      <SettingsPage/>
+    </Route>
   </section>
-</main>
+</Layout>
 
 <style lang="scss">
-  :root {
-    --agnostic-header-mobile-height: 175px;
-    --agnostic-header-color: var(--agnostic-primary);
-  }
-	main {
-		text-align: center;
-    padding: 0;
-		margin: 0 auto;
-    background: black;
-    display: flex;
-    flex: 1 1 100%;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-	}
-  .nav {
-    display: flex;
-    flex: 0 0 40px;
-    background: hotpink;
-  }
-  .pages {
-    display: flex;
-    flex-grow: 1;
-    background: palegreen;
-    overflow: scroll;
-  }
-  .footer {
-    display: flex;
-    flex: 0 0 28px;
-    background: lightgoldenrodyellow;
-  }
+
 </style>

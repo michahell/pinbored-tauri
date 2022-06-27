@@ -1,26 +1,20 @@
 import { fetch, ResponseType } from '@tauri-apps/api/http'
-import { HEADER_PINBOARD_APP_ID, HEADER_PINBOARD_TOKEN, PINBOARD_APP_ID } from './constants'
-import persistenceService from './persistence.service'
-
-export interface PinboardLink {
-	createdAt: string
-	url: string
-	id: string
-}
+import type { PinboardLink } from './typing'
+import { HEADER_PINBOARD_APP_ID, HEADER_PINBOARD_TOKEN } from './contants'
 
 export class PinboardService {
 	private defaultHeaders: Record<string, string> = {}
 
 	private mockApiUrl: string = 'https://run.mocky.io/v3/e91c7675-60b4-4260-aa73-122a4c336a29'
 
-	constructor(appId: string, authToken: string) {
-		this.defaultHeaders[HEADER_PINBOARD_APP_ID] = appId
+	constructor() {}
+
+	setAuthToken(authToken: string) {
 		this.defaultHeaders[HEADER_PINBOARD_TOKEN] = authToken
 	}
 
-	async updateAuthToken(authToken: string) {
-		await persistenceService.set(HEADER_PINBOARD_TOKEN, authToken)
-		this.defaultHeaders[HEADER_PINBOARD_TOKEN] = authToken
+	setAppId(appId: string) {
+		this.defaultHeaders[HEADER_PINBOARD_APP_ID] = appId
 	}
 
 	hasTokenPresent(): boolean {
@@ -47,5 +41,5 @@ export class PinboardService {
 	}
 }
 
-const service: PinboardService = new PinboardService(PINBOARD_APP_ID, '')
-export default service
+const pinboardService = new PinboardService()
+export default pinboardService

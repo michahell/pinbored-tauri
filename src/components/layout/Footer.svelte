@@ -1,8 +1,8 @@
 <script lang="ts">
-  import IconTauri from './svg/IconTauri.svelte';
-  import IconTGS from './svg/IconTGS.svelte';
-  import IconSvelte from './svg/IconSvelte.svelte';
-  import IconAgnostic from './svg/IconAgnostic.svelte';
+  import IconTauri from '../svg/IconTauri.svelte';
+  import IconTGS from '../svg/IconTGS.svelte';
+  import IconSvelte from '../svg/IconSvelte.svelte';
+  import IconAgnostic from '../svg/IconAgnostic.svelte';
 </script>
 
 <section class="footer">

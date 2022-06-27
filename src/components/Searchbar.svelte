@@ -1,11 +1,11 @@
 <script lang="ts">
   import Tags from "svelte-tags-input";
-  import { Button } from 'agnostic-svelte';
+  import { Button } from "carbon-components-svelte";
 </script>
 
 <section aria-label="search bar">
   <Tags />
-  <Button mode="primary">fetch links</Button>
+  <Button>fetch links</Button>
 </section>
 
 <style lang="scss">

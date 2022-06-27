@@ -1,12 +1,24 @@
 <script lang="ts">
   import {onMount} from 'svelte';
-  import {Button} from 'agnostic-svelte';
+  import {
+    Grid,
+    Row,
+    Column,
+  } from "carbon-components-svelte";
 
   onMount(() => {
     //
   });
 
 </script>
+
+<Grid>
+  <Row>
+    <Column>
+      <h1>Welcome</h1>
+    </Column>
+  </Row>
+</Grid>
 
 <section>
   <h1>Pinbored-tauri v0.1</h1>
