@@ -7,7 +7,8 @@
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "ci": "npm run check"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.1",
