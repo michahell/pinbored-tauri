@@ -1,5 +1,14 @@
-<script>
+<script lang="ts">
   import { Breadcrumb, BreadcrumbItem } from "carbon-components-svelte";
+  import {router, TinroRoute} from 'tinro';
+
+  // update breadcrumbs based in tinro svelte store router:
+  export let currentPathSegments: string[] = [];
+
+  router.subscribe((currentRoute: TinroRoute) => {
+    console.log('tinro current route: ', currentRoute);
+    currentPathSegments = currentRoute.path.split('');
+  })
 </script>
 
 <section class="breadcrumbs">

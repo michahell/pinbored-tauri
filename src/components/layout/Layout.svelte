@@ -1,7 +1,6 @@
 <script>
   import { Content } from "carbon-components-svelte";
   import PageTransition from './PageTransition.svelte';
-  import TopNav from './Topnav.svelte';
   import Footer from './Footer.svelte';
   import Header from './Header.svelte';
   import BreadCrumbs from './BreadCrumbs.svelte';
@@ -16,14 +15,10 @@
 
 <section class="subheader">
   <BreadCrumbs></BreadCrumbs>
-  <TopNav>
-    <div>
-      <!-- context-aware search, tags, etc. etc. -->
-      <slot name="subheader">
-        <em>no content was provided</em>
-      </slot>
-    </div>
-  </TopNav>
+  <!-- context-aware search, tags, etc. etc. -->
+  <slot name="subheader">
+    <em>no content was provided</em>
+  </slot>
 </section>
 
 <Content>

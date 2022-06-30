@@ -3,7 +3,7 @@
   import { Button } from "carbon-components-svelte";
 </script>
 
-<section aria-label="search bar">
+<section class="" aria-label="search bar">
   <Tags />
   <Button>fetch links</Button>
 </section>

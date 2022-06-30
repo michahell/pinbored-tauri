@@ -11,6 +11,7 @@
 
 <Layout>
   <section slot="subheader">
+
     <Route path="/collection/*">
       <SearchBar/>
     </Route>
