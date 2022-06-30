@@ -1,18 +1,18 @@
 <script lang="ts">
-  import {onMount} from 'svelte';
-  import { PinboardLink } from '../../src-api';
-  import { pinboardService } from '../core/service-center';
-  import { Button } from "carbon-components-svelte";
-  export let links: PinboardLink[] = [];
+  import type { PinboardLink } from '../../src-api'
+  import { onMount } from 'svelte'
+  import { pinboardService } from '../core'
+  import { Button } from 'carbon-components-svelte'
+  export let links: PinboardLink[] = []
 
   onMount(async () => {
     try {
-      links = await pinboardService.getLinks();
+      links = await pinboardService.getLinks()
       // console.log(links);
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
-  });
+  })
 </script>
 
 <section>
@@ -24,9 +24,7 @@
       <li>{link.url}</li>
     {/each}
   </ul>
-
 </section>
 
 <style lang="scss">
-
 </style>

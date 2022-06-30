@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import {
     StructuredList,
     StructuredListHead,
@@ -6,8 +6,8 @@
     StructuredListCell,
     StructuredListBody,
     StructuredListInput,
-  } from "carbon-components-svelte";
-  import CheckmarkFilled from "carbon-icons-svelte/lib/CheckmarkFilled.svelte";
+  } from 'carbon-components-svelte'
+  import CheckmarkFilled from 'carbon-icons-svelte/lib/CheckmarkFilled.svelte'
 </script>
 
 <StructuredList selection selected="row-1-value">
@@ -16,7 +16,7 @@
       <StructuredListCell head>ColumnA</StructuredListCell>
       <StructuredListCell head>ColumnB</StructuredListCell>
       <StructuredListCell head>ColumnC</StructuredListCell>
-      <StructuredListCell head>{""}</StructuredListCell>
+      <StructuredListCell head>{''}</StructuredListCell>
     </StructuredListRow>
   </StructuredListHead>
   <StructuredListBody>
@@ -25,10 +25,9 @@
         <StructuredListCell>Row {item}</StructuredListCell>
         <StructuredListCell>Row {item}</StructuredListCell>
         <StructuredListCell>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dui
-          magna, finibus id tortor sed, aliquet bibendum augue. Aenean posuere
-          sem vel euismod dignissim. Nulla ut cursus dolor. Pellentesque
-          vulputate nisl a porttitor interdum.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dui magna, finibus id tortor
+          sed, aliquet bibendum augue. Aenean posuere sem vel euismod dignissim. Nulla ut cursus
+          dolor. Pellentesque vulputate nisl a porttitor interdum.
         </StructuredListCell>
         <StructuredListInput
           id="row-{item}"

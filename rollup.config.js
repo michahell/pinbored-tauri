@@ -46,7 +46,7 @@ export default {
 				sveltePreprocess({ sourceMap: !production }),
 				optimizeImports(), // https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports
 				!production && optimizeCss(), // https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizecss
-				elements(), // https://github.com/carbon-design-system/carbon-preprocess-svelte#elements
+				// elements(), // https://github.com/carbon-design-system/carbon-preprocess-svelte#elements
 				// icons(), // https://github.com/carbon-design-system/carbon-preprocess-svelte#icons
 				// pictograms(), // https://github.com/carbon-design-system/carbon-preprocess-svelte#pictograms
 			],
@@ -56,7 +56,7 @@ export default {
 			},
 		}),
 		scss({
-			includePaths: ['node_modules'],
+			includePaths: ['node_modules', 'public', 'src'],
 		}), // will output compiled styles to output.css
 		// we'll extract any component CSS out into
 		// a separate file - better for performance

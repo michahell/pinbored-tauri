@@ -42,4 +42,4 @@ export class PinboardService {
 }
 
 const pinboardService = new PinboardService()
-export default pinboardService
+export { pinboardService }

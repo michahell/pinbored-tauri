@@ -27,5 +27,5 @@ export class ProgressService {
 	}
 }
 
-const service: ProgressService = new ProgressService()
-export default service
+const progressService: ProgressService = new ProgressService()
+export { progressService }

@@ -1,15 +1,12 @@
 <script lang="ts">
-  import {onMount} from 'svelte';
-  import {
-    Grid,
-    Row,
-    Column,
-  } from "carbon-components-svelte";
+  import { onMount } from 'svelte'
+  import { Grid, Row, Column } from 'carbon-components-svelte'
+  import { persistenceService } from '../core'
+  import { PERSISTED_KEY_FIRST_RUN } from '../core/constants'
 
   onMount(() => {
-    //
-  });
-
+    persistenceService.set(PERSISTED_KEY_FIRST_RUN, false)
+  })
 </script>
 
 <Grid>
@@ -22,44 +19,47 @@
 
 <section>
   <h1>Pinbored-tauri v0.1</h1>
-  <p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+  <p>
+    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte
+    apps.
+  </p>
 
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>da<br/>
-  da<br/>
-  da<br/>
-  da<br/>da<br/>
-  da<br/>
-  da<br/>
-  da<br/>da<br/>
-  da<br/>
-  da<br/>
-  da<br/>da<br/>
-  da<br/>
-  da<br/>
-  da<br/>da<br/>
-  da<br/>
-  da<br/>
-  da<br/>da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  da<br/>
-  DRRRRRRRT<br/>
-  da<br/>
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />da<br />
+  da<br />
+  da<br />
+  da<br />da<br />
+  da<br />
+  da<br />
+  da<br />da<br />
+  da<br />
+  da<br />
+  da<br />da<br />
+  da<br />
+  da<br />
+  da<br />da<br />
+  da<br />
+  da<br />
+  da<br />da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  da<br />
+  DRRRRRRRT<br />
+  da<br />
 </section>
 
 <style lang="scss">
@@ -70,6 +70,3 @@
     font-weight: 100;
   }
 </style>
-
-
-

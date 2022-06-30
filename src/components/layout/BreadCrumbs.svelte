@@ -1,26 +1,29 @@
 <script lang="ts">
-  import { Breadcrumb, BreadcrumbItem } from "carbon-components-svelte";
-  import {router, TinroRoute} from 'tinro';
+  import { Breadcrumb, BreadcrumbItem } from 'carbon-components-svelte'
+  import { meta } from 'tinro'
 
-  // update breadcrumbs based in tinro svelte store router:
-  export let currentPathSegments: string[] = [];
+  export let breadcrumbs: { name: string; path: string }[] = []
 
-  router.subscribe((currentRoute: TinroRoute) => {
-    console.log('tinro current route: ', currentRoute);
-    currentPathSegments = currentRoute.path.split('');
-  })
+  // meta().subscribe((currentRoute: any) => {
+  //   console.log('tinro current route: ', currentRoute)
+  //   breadcrumbs = currentRoute.breadcrumbs
+  //   console.log('breadcrumbs: ', breadcrumbs)
+  // })
 </script>
 
 <section class="breadcrumbs">
   <Breadcrumb>
-    <BreadcrumbItem href="/">Dashboard</BreadcrumbItem>
-    <BreadcrumbItem href="/reports">Annual reports</BreadcrumbItem>
-    <BreadcrumbItem href="/reports/2019" isCurrentPage>2019</BreadcrumbItem>
+    {#each breadcrumbs as breadcrumb}
+      <BreadcrumbItem href="/{breadcrumb.path}">{breadcrumb.name}</BreadcrumbItem>
+    {/each}
   </Breadcrumb>
 </section>
 
 <style lang="scss">
   .breadcrumbs {
+    background: lightgray;
     height: 2rem;
+    width: 100%;
+    padding: 8px;
   }
 </style>

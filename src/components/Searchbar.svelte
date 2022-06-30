@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Tags from "svelte-tags-input";
-  import { Button } from "carbon-components-svelte";
+  import Tags from 'svelte-tags-input'
+  import { Button } from 'carbon-components-svelte'
 </script>
 
 <section class="" aria-label="search bar">
@@ -9,5 +9,4 @@
 </section>
 
 <style lang="scss">
-
 </style>

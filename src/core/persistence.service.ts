@@ -1,4 +1,5 @@
 import { Store } from 'tauri-plugin-store-api'
+import { PERSISTENCE_STORE_NAME } from './constants'
 
 export class PersistenceService {
 	private store: Store
@@ -7,16 +8,17 @@ export class PersistenceService {
 		this.store = new Store(filename)
 	}
 
-	async set(key: string, value: any) {
+	async set(key: string, value: any): Promise<void> {
 		console.log(`setting key ${key} to value '${value}'`)
-		await this.store.set(key, value)
+		return await this.store.set(key, value)
 	}
 
-	async get(key: string) {
-		const val = await this.store.get(key)
+	async get<T>(key: string): Promise<T> {
+		const val = await this.store.get<T>(key)
 		console.log(`got value ${val} for key ${key}`)
+		return val
 	}
 }
 
-const service: PersistenceService = new PersistenceService('settings.dat')
-export default service
+const persistenceService: PersistenceService = new PersistenceService(PERSISTENCE_STORE_NAME)
+export { persistenceService }
