@@ -1,11 +1,10 @@
 <script lang="ts">
-  import type { PinboardLink } from '../../src-api'
-  import { onMount } from 'svelte'
-  import { pinboardService } from '../core'
   import { Button, Column, Content, Grid, Row } from 'carbon-components-svelte'
-  import LinkList from '../components/LinkList.svelte'
-  import SearchBar from '../components/Searchbar.svelte'
+  import { onMount } from 'svelte'
   import { Route } from 'tinro'
+  import LinkList from '../components/LinkList.svelte'
+  import { pinboardService } from '../core'
+  import type { PinboardLink } from '../../src-api'
 
   export let links: PinboardLink[] = []
   let fetched: boolean = false
@@ -27,8 +26,20 @@
 </script>
 
 <Route path="/collection/*" breadcrumb="collection">
-  <SearchBar>
-  <Route path="/links" breadcrumb="links">
+  <!-- tags -->
+  <Route path="/links/*" breadcrumb="links">
+    <Route path="/turbo" breadcrumb="turbo">
+      <Content>
+        <Grid>
+          <Row>
+            <Column>
+              <h2>turbo links</h2>
+            </Column>
+          </Row>
+        </Grid>
+      </Content>
+    </Route>
+
     <Content>
       <Grid>
         <Row>
@@ -50,7 +61,7 @@
       </Grid>
     </Content>
   </Route>
-
+  <!-- tags -->
   <Route path="/tags" breadcrumb="tags">
     <Content>
       <Grid>
