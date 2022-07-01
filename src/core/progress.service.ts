@@ -1,4 +1,4 @@
-import 'nprogress/nprogress.css'
+import 'nprogress/nprogress.css' // NProgress
 import NProgress from 'nprogress'
 
 NProgress.configure({
@@ -28,4 +28,4 @@ export class ProgressService {
 }
 
 const progressService: ProgressService = new ProgressService()
-export { progressService }
+export default progressService

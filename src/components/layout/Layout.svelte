@@ -3,18 +3,13 @@
   import PageTransition from './PageTransition.svelte'
   import Footer from './Footer.svelte'
   import Header from './Header.svelte'
-  import Spacer from './Spacer.svelte'
   import Navigation from './Navigation.svelte'
   import BreadCrumbs from './BreadCrumbs.svelte'
-
-  // Nprogress bar @ top of page
-  import { progressService } from '../../core'
-  progressService.set(0.4)
 </script>
 
+<!-- header -->
 <Header />
-<Spacer space={'3rem'} />
-
+<!-- subheader -->
 <section class="subheader">
   <Route path="/*">
     <Navigation />
@@ -25,35 +20,39 @@
     <em>no content was provided</em>
   </slot>
 </section>
-
+<!-- pages -->
 <section class="pages">
   <PageTransition>
     <slot name="pages" />
   </PageTransition>
 </section>
-
+<!-- footer -->
 <section class="footer">
   <Footer />
 </section>
 
 <style lang="scss">
   .subheader {
-    background: lightpink;
+    position: relative;
+    top: 3rem;
     display: flex;
     flex-direction: column;
-    flex: 1 1 initial;
+    flex: 0 1 auto;
+    background: lightpink;
   }
   .pages {
+    position: relative;
+    top: 3rem;
     display: flex;
     flex-direction: column;
     flex: 1 1 200px;
-    background: palegreen;
     overflow: scroll;
+    background: palegreen;
   }
   .footer {
-    display: flex;
-    flex: 0 0 0;
     position: absolute;
     bottom: 0;
+    display: block;
+    width: 100%;
   }
 </style>

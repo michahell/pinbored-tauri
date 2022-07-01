@@ -13,7 +13,7 @@
 <style lang="scss">
   .navigation {
     display: flex;
-    flex: 1 1 2rem;
+    flex: 0 1 2rem;
     background: lightyellow;
     padding: 8px;
 

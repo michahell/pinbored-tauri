@@ -1,6 +1,15 @@
 <script lang="ts">
   // app wide stuff
   import 'carbon-components-svelte/css/all.css' // All carbon themes
+
+  import { progressService } from './core'
+  // progressService.start()
+  // const teardownTimer = setInterval(progressService.inc, 250)
+  // setTimeout(() => {
+  //   progressService.done()
+  //   clearInterval(teardownTimer)
+  // }, 2000)
+
   // other
   import { Route } from 'tinro' // routing
   import { router } from 'tinro'

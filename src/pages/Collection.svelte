@@ -5,11 +5,22 @@
   import LinkList from '../components/LinkList.svelte'
   import { pinboardService } from '../core'
   import type { PinboardLink } from '../../src-api'
+  import { progressService } from '../core'
+
+  onMount(() => {
+    progressService.start()
+    const teardownTimer = setInterval(progressService.inc, 250)
+    setTimeout(() => {
+      progressService.done()
+      clearInterval(teardownTimer)
+    }, 2000)
+  })
 
   export let links: PinboardLink[] = []
   let fetched: boolean = false
 
   async function fetchLinks() {
+    progressService.start()
     if (fetched === true) {
       return
     }
@@ -17,8 +28,10 @@
       links = await pinboardService.getLinks()
       console.log(links)
       fetched = true
+      // progressService.done()
     } catch (e) {
       console.error(e)
+      progressService.done()
     }
   }
 
