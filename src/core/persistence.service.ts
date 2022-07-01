@@ -9,14 +9,16 @@ export class PersistenceService {
 	}
 
 	async set(key: string, value: any): Promise<void> {
-		console.log(`setting key ${key} to value '${value}'`)
-		return await this.store.set(key, value)
+		const stringified = JSON.stringify(value)
+		console.log(`setting key ${key} to value '${stringified}'`)
+		return await this.store.set(key, stringified)
 	}
 
 	async get<T>(key: string): Promise<T> {
-		const val = await this.store.get<T>(key)
-		console.log(`got value ${val} for key ${key}`)
-		return val
+		const val = await this.store.get<string>(key)
+		const parsed: T = JSON.parse(val) as T
+		console.log(`got value ${parsed} for key ${key}`)
+		return parsed
 	}
 }
 

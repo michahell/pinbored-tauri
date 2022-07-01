@@ -56,11 +56,15 @@ export default {
 			},
 		}),
 		scss({
-			includePaths: ['node_modules', 'public', 'src'],
+			verbose: true,
+			failOnError: true,
+			includePaths: ['node_modules', 'src'],
+			watch: ['src'],
+			output: 'public/build/bundle.css',
 		}), // will output compiled styles to output.css
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+		// css({ output: 'bundle.css' }),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In

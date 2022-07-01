@@ -8,6 +8,9 @@
     StructuredListInput,
   } from 'carbon-components-svelte'
   import CheckmarkFilled from 'carbon-icons-svelte/lib/CheckmarkFilled.svelte'
+  import type { PinboardLink } from '../../src-api'
+
+  export let items: PinboardLink[] = []
 </script>
 
 <StructuredList selection selected="row-1-value">
@@ -20,7 +23,7 @@
     </StructuredListRow>
   </StructuredListHead>
   <StructuredListBody>
-    {#each [1, 2, 3] as item}
+    {#each items as item}
       <StructuredListRow label for="row-{item}">
         <StructuredListCell>Row {item}</StructuredListCell>
         <StructuredListCell>Row {item}</StructuredListCell>

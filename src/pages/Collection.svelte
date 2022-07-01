@@ -4,6 +4,7 @@
   import { pinboardService } from '../core'
   import { Button, Column, Content, Grid, Row } from 'carbon-components-svelte'
   import LinkList from '../components/LinkList.svelte'
+  import SearchBar from '../components/Searchbar.svelte'
   import { Route } from 'tinro'
 
   export let links: PinboardLink[] = []
@@ -25,13 +26,14 @@
   onMount(() => {})
 </script>
 
-<Route path="/popular/*" breadcrumb="popular">
+<Route path="/collection/*" breadcrumb="collection">
+  <SearchBar>
   <Route path="/links" breadcrumb="links">
     <Content>
       <Grid>
         <Row>
           <Column>
-            <h2>popular links</h2>
+            <h2>collection links</h2>
           </Column>
         </Row>
         <Row>
@@ -54,7 +56,7 @@
       <Grid>
         <Row>
           <Column>
-            <h2>popular tags</h2>
+            <h2>collection tags</h2>
           </Column>
         </Row>
       </Grid>

@@ -17,13 +17,5 @@ $css--plex: true;
 @import 'carbon-components/scss/globals/grid/_grid.scss';
 
 // Optionally include components that you need
-@import 'carbon-components/scss/components/button/button';
-@import 'carbon-components/scss/components/file-uploader/file-uploader';
-
-
-html, body {
-	position: relative;
-	width: 100%;
-	height: 100%;
-  overflow: hidden;
-}
+//@import 'carbon-components/scss/components/button/button';
+//@import 'carbon-components/scss/components/file-uploader/file-uploader';

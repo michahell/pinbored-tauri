@@ -1,0 +1,16 @@
+html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* NProgress z-index fix for Carbon Components */
+div[role="bar"] {
+  z-index: 9999 !important;
+}

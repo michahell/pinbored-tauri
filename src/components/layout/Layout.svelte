@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { Content } from 'carbon-components-svelte'
+  import { Route } from 'tinro'
   import PageTransition from './PageTransition.svelte'
   import Footer from './Footer.svelte'
   import Header from './Header.svelte'
+  import Spacer from './Spacer.svelte'
+  import Navigation from './Navigation.svelte'
+  import BreadCrumbs from './BreadCrumbs.svelte'
 
   // Nprogress bar @ top of page
   import { progressService } from '../../core'
@@ -10,17 +13,18 @@
 </script>
 
 <Header />
-<div class="spacer" />
+<Spacer space={'3rem'} />
 
 <section class="subheader">
+  <Route path="/*">
+    <Navigation />
+    <BreadCrumbs />
+  </Route>
   <!-- context-aware search, tags, etc. etc. -->
   <slot name="subheader">
     <em>no content was provided</em>
   </slot>
 </section>
-
-<!--<Content>-->
-<!--</Content>-->
 
 <section class="pages">
   <PageTransition>
@@ -33,20 +37,23 @@
 </section>
 
 <style lang="scss">
-  .spacer {
-    height: 3rem;
-  }
   .subheader {
     background: lightpink;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 initial;
   }
   .pages {
-    height: calc(100% - 7rem);
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 200px;
     background: palegreen;
     overflow: scroll;
   }
   .footer {
     display: flex;
-    flex: 0 0 28px;
-    background: blueviolet;
+    flex: 0 0 0;
+    position: absolute;
+    bottom: 0;
   }
 </style>

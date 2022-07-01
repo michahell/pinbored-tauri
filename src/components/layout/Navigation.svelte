@@ -12,9 +12,13 @@
 
 <style lang="scss">
   .navigation {
+    display: flex;
+    flex: 1 1 2rem;
     background: lightyellow;
-    height: 2rem;
-    width: 100%;
     padding: 8px;
+
+    a {
+      margin: 0 4px;
+    }
   }
 </style>
