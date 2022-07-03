@@ -10,62 +10,60 @@
   })
 </script>
 
-<Route path="/" breadcrumb="home">
-  <Grid>
-    <Row>
-      <Column>
-        <h1>Welcome</h1>
-      </Column>
-    </Row>
-    <Row>
-      <Column>
-        <section>
-          <h1>Pinbored-tauri v0.1</h1>
-          <p>
-            Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build
-            Svelte apps.
-          </p>
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />da<br />
-          da<br />
-          da<br />
-          da<br />da<br />
-          da<br />
-          da<br />
-          da<br />da<br />
-          da<br />
-          da<br />
-          da<br />da<br />
-          da<br />
-          da<br />
-          da<br />da<br />
-          da<br />
-          da<br />
-          da<br />da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          da<br />
-          DRRRRRRRT<br />
-          da<br />
-        </section>
-      </Column>
-    </Row>
-  </Grid>
-</Route>
+<Grid>
+  <Row>
+    <Column>
+      <h1>Welcome</h1>
+    </Column>
+  </Row>
+  <Row>
+    <Column>
+      <section>
+        <h1>Pinbored-tauri v0.1</h1>
+        <p>
+          Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte
+          apps.
+        </p>
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />da<br />
+        da<br />
+        da<br />
+        da<br />da<br />
+        da<br />
+        da<br />
+        da<br />da<br />
+        da<br />
+        da<br />
+        da<br />da<br />
+        da<br />
+        da<br />
+        da<br />da<br />
+        da<br />
+        da<br />
+        da<br />da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        da<br />
+        DRRRRRRRT<br />
+        da<br />
+      </section>
+    </Column>
+  </Row>
+</Grid>
 
 <style lang="scss">
   h1 {

@@ -28,4 +28,4 @@ export class ProgressService {
 }
 
 const progressService: ProgressService = new ProgressService()
-export default progressService
+export { progressService }

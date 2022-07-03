@@ -8,9 +8,14 @@
     StructuredListInput,
   } from 'carbon-components-svelte'
   import CheckmarkFilled from 'carbon-icons-svelte/lib/CheckmarkFilled.svelte'
-  import type { PinboardLink } from '../../src-api'
 
-  export let items: PinboardLink[] = []
+  export let items: {
+    id: string
+    name: string
+    url: string
+    lastUpdatedAt: string
+    createdAt: string
+  }[] = []
 </script>
 
 <StructuredList selection selected="row-1-value">
@@ -24,19 +29,15 @@
   </StructuredListHead>
   <StructuredListBody>
     {#each items as item}
-      <StructuredListRow label for="row-{item}">
-        <StructuredListCell>Row {item}</StructuredListCell>
-        <StructuredListCell>Row {item}</StructuredListCell>
-        <StructuredListCell>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dui magna, finibus id tortor
-          sed, aliquet bibendum augue. Aenean posuere sem vel euismod dignissim. Nulla ut cursus
-          dolor. Pellentesque vulputate nisl a porttitor interdum.
-        </StructuredListCell>
+      <StructuredListRow label for="row-{item.id}">
+        <StructuredListCell>name {item.name}</StructuredListCell>
+        <StructuredListCell>url {item.url}</StructuredListCell>
+        <StructuredListCell>lastModified {item.lastModified}</StructuredListCell>
         <StructuredListInput
-          id="row-{item}"
-          value="row-{item}-value"
-          title="row-{item}-title"
-          name="row-{item}-name"
+          id="row-{item.id}"
+          value="row-{item.id}-value"
+          title="row-{item.id}-title"
+          name="row-{item.id}-name"
         />
         <StructuredListCell>
           <CheckmarkFilled

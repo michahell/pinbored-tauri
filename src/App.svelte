@@ -21,8 +21,10 @@
   import SearchBar from './components/Searchbar.svelte'
   import FirstRunPage from './pages/FirstRun.svelte'
   import PopularPage from './pages/Popular.svelte'
-  import SettingsPage from './pages/Settings.svelte'
+  import SettingsPage from './pages/settings/Settings.svelte'
   import CollectionPage from './pages/Collection.svelte'
+  import TagsPage from './pages/tags/Tags.svelte'
+  import TestingPage from './pages/Testing.svelte'
 
   // setup in-app routing to use in-memory method for history
   router.mode.hash()
@@ -45,13 +47,31 @@
 
   <Route path="/*" slot="pages">
     <!-- First run page based off of tauri-plugin-store-api -->
-    {#if isFirstRun} <FirstRunPage /> {/if}
+    {#if isFirstRun}
+      <Route path="/" breadcrumb="home">
+        <FirstRunPage />
+      </Route>
+    {/if}
+    <!-- Testing -->
+    <Route path="/testing/*" breadcrumb="testing">
+      <TestingPage />
+    </Route>
     <!-- Popular links / tags -->
-    <PopularPage />
-    <!-- Collection links / tags -->
-    <CollectionPage />
+    <Route path="/popular/*" breadcrumb="popular">
+      <PopularPage />
+    </Route>
+    <!-- Collection -->
+    <Route path="/collection/*" breadcrumb="collection">
+      <CollectionPage />
+    </Route>
+    <!-- Tags -->
+    <Route path="/tags/*" breadcrumb="tags">
+      <TagsPage />
+    </Route>
     <!-- Settings -->
-    <SettingsPage />
+    <Route path="/settings" breadcrumb="settings">
+      <SettingsPage />
+    </Route>
   </Route>
 </Layout>
 

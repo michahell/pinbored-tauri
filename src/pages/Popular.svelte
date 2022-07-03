@@ -25,41 +25,39 @@
   onMount(() => {})
 </script>
 
-<Route path="/popular/*" breadcrumb="popular">
-  <Route path="/links" breadcrumb="links">
-    <Content>
-      <Grid>
-        <Row>
-          <Column>
-            <h2>popular links</h2>
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Button on:click={fetchLinks} bind:disabled={fetched}>fetch links</Button>
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <h3>links:</h3>
-            <LinkList items={links} />
-          </Column>
-        </Row>
-      </Grid>
-    </Content>
-  </Route>
+<Route path="/links" breadcrumb="links">
+  <Content>
+    <Grid>
+      <Row>
+        <Column>
+          <h2>popular links</h2>
+        </Column>
+      </Row>
+      <Row>
+        <Column>
+          <Button on:click={fetchLinks} bind:disabled={fetched}>fetch links</Button>
+        </Column>
+      </Row>
+      <Row>
+        <Column>
+          <h3>links:</h3>
+          <LinkList items={links} />
+        </Column>
+      </Row>
+    </Grid>
+  </Content>
+</Route>
 
-  <Route path="/tags" breadcrumb="tags">
-    <Content>
-      <Grid>
-        <Row>
-          <Column>
-            <h2>popular tags</h2>
-          </Column>
-        </Row>
-      </Grid>
-    </Content>
-  </Route>
+<Route path="/tags" breadcrumb="tags">
+  <Content>
+    <Grid>
+      <Row>
+        <Column>
+          <h2>popular tags</h2>
+        </Column>
+      </Row>
+    </Grid>
+  </Content>
 </Route>
 
 <style lang="scss">

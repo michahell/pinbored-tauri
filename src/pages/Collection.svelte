@@ -38,54 +38,52 @@
   onMount(() => {})
 </script>
 
-<Route path="/collection/*" breadcrumb="collection">
-  <!-- tags -->
-  <Route path="/links/*" breadcrumb="links">
-    <Route path="/turbo" breadcrumb="turbo">
-      <Content>
-        <Grid>
-          <Row>
-            <Column>
-              <h2>turbo links</h2>
-            </Column>
-          </Row>
-        </Grid>
-      </Content>
-    </Route>
+<!-- tags -->
+<Route path="/links/*" breadcrumb="links">
+  <Route path="/turbo" breadcrumb="turbo">
+    <Content>
+      <Grid>
+        <Row>
+          <Column>
+            <h2>turbo links</h2>
+          </Column>
+        </Row>
+      </Grid>
+    </Content>
+  </Route>
 
-    <Content>
-      <Grid>
-        <Row>
-          <Column>
-            <h2>collection links</h2>
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Button on:click={fetchLinks} bind:disabled={fetched}>fetch links</Button>
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <h3>links:</h3>
-            <LinkList items={links} />
-          </Column>
-        </Row>
-      </Grid>
-    </Content>
-  </Route>
-  <!-- tags -->
-  <Route path="/tags" breadcrumb="tags">
-    <Content>
-      <Grid>
-        <Row>
-          <Column>
-            <h2>collection tags</h2>
-          </Column>
-        </Row>
-      </Grid>
-    </Content>
-  </Route>
+  <Content>
+    <Grid>
+      <Row>
+        <Column>
+          <h2>collection links</h2>
+        </Column>
+      </Row>
+      <Row>
+        <Column>
+          <Button on:click={fetchLinks} bind:disabled={fetched}>fetch links</Button>
+        </Column>
+      </Row>
+      <Row>
+        <Column>
+          <h3>links:</h3>
+          <LinkList items={links} />
+        </Column>
+      </Row>
+    </Grid>
+  </Content>
+</Route>
+<!-- tags -->
+<Route path="/tags" breadcrumb="tags">
+  <Content>
+    <Grid>
+      <Row>
+        <Column>
+          <h2>collection tags</h2>
+        </Column>
+      </Row>
+    </Grid>
+  </Content>
 </Route>
 
 <style lang="scss">

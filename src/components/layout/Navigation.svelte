@@ -3,10 +3,12 @@
 </script>
 
 <section class="navigation">
-  <a href="/popular/tags">popular tags</a>
-  | <a href="/popular/links">popular links</a>
-  | <a href="/popular/links/turbo">turbo </a>
+  <a href="/testing">testing</a>
+  | <a href="/tags">tags</a>
   | <a href="/collection">collection</a>
+  <!--  | <a href="/popular/tags">popular tags</a>-->
+  <!--  | <a href="/popular/links">popular links</a>-->
+  <!--  | <a href="/popular/links/turbo">turbo </a>-->
   | <a href="/settings">settings</a>
 </section>
 
