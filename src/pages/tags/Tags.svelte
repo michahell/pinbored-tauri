@@ -2,8 +2,11 @@
   import { Button, Column, Content, Grid, Row, Tag } from 'carbon-components-svelte'
   import { apiLayerService } from '../../core'
   import { Route, router } from 'tinro'
+  import { tagsStore, selectedTagStore } from './tag.store'
   import TagPage from './Tag.svelte'
-  // import { tagStore } from './tag.store'
+  import { getContext, setContext } from 'svelte'
+  import { notificationsStore, type NotificationsStore } from '../../core/notifications.store'
+  import { SVELTE_STORE_KEY_NOTIFICATIONS } from '../../core/constants'
 
   type PinboardTag = {
     id: string
@@ -30,20 +33,25 @@
     return array[Math.floor(Math.random() * array.length)]
   }
 
-  let tags: PinboardTag[] = []
-  // let selectedTag: string = $tagStore
+  let tags = []
+  // tagsStore.subscribe((storeTags) => (tags = storeTags))
+  //
+  // setContext('tags', 'blabla')
 
   const api = apiLayerService
+
+  console.log('notificationsStore tags.svelte: ', notificationsStore)
   let fetched: boolean = false
 
   async function getTags() {
-    tags = await api.getTags()
+    tags = (await api.getTags()) ?? []
+    // tagsStore.set(tags)
     fetched = true
   }
 
   function onTagClick(tag): void {
     router.goto(`/tags/${tag.name}`)
-    // tagStore.set(tag)
+    // selectedTagStore.set(tag)
     console.log('tag clicked: ', tag.name)
   }
 </script>

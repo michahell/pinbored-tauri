@@ -2,23 +2,16 @@
   // app wide stuff
   import 'carbon-components-svelte/css/all.css' // All carbon themes
 
-  import { progressService } from './core'
-  // progressService.start()
-  // const teardownTimer = setInterval(progressService.inc, 250)
-  // setTimeout(() => {
-  //   progressService.done()
-  //   clearInterval(teardownTimer)
-  // }, 2000)
-
   // other
   import { Route } from 'tinro' // routing
-  import { router } from 'tinro'
   import { persistenceService } from './core'
   import { PERSISTED_KEY_FIRST_RUN } from './core/constants'
-  // components
+  import bootstrap from './core/bootstrap'
 
+  // components
   import Layout from './components/layout/Layout.svelte'
   import SearchBar from './components/Searchbar.svelte'
+  import Notifications from './components/notifications/Notifications.svelte'
   import FirstRunPage from './pages/FirstRun.svelte'
   import PopularPage from './pages/Popular.svelte'
   import SettingsPage from './pages/settings/Settings.svelte'
@@ -26,16 +19,20 @@
   import TagsPage from './pages/tags/Tags.svelte'
   import TestingPage from './pages/Testing.svelte'
 
-  // setup in-app routing to use in-memory method for history
-  router.mode.hash()
-
   let isFirstRun: boolean
   async function getIsFirstRun() {
     isFirstRun = (await persistenceService.get<boolean>(PERSISTED_KEY_FIRST_RUN)) ?? true
     console.log('isFirstRun? ', isFirstRun)
   }
   getIsFirstRun()
+
+  bootstrap()
 </script>
+
+<!-- Notifications              z-index: 9999; -->
+<!-- Nprogress                  z-index: 9000; -->
+<!-- carbon components Header   z-index: 8000; -->
+<Notifications />
 
 <Layout>
   <Route path="/*" slot="subheader">

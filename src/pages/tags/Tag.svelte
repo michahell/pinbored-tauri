@@ -1,6 +1,16 @@
 <script lang="ts">
   import { Button, Column, Content, Grid, Row, TextInput } from 'carbon-components-svelte'
   import { apiLayerService } from '../../core'
+  import { selectedTagStore, tagsStore } from './tag.store'
+  import { getContext } from 'svelte'
+
+  let selectedTag = ''
+  selectedTagStore.subscribe((selectedTagStore) => (selectedTag = selectedTagStore))
+  let tags = []
+  tagsStore.subscribe((storeTags) => (tags = storeTags))
+
+  const ctx = getContext('tags')
+  console.log('context: ', ctx)
 
   export let updatedTag: {
     id: string

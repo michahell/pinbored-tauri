@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button, Column, Content, Grid, Row } from 'carbon-components-svelte'
+  import { Button, Column, Content, Grid, Row, ToastNotification } from 'carbon-components-svelte'
   import { onMount } from 'svelte'
   import { Route } from 'tinro'
   import LinkList from '../components/LinkList.svelte'

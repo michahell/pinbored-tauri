@@ -14,7 +14,7 @@
       return
     }
     try {
-      links = await pinboardService.getLinks()
+      links = await pinboardService.getTags()
       console.log(links)
       fetched = true
     } catch (e) {

@@ -12,5 +12,5 @@ body {
 
 /* NProgress z-index fix for Carbon Components */
 div[role="bar"] {
-  z-index: 9999 !important;
+  z-index: 9000 !important;
 }
