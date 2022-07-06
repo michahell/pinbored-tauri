@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { PinboardLink } from '../../src-api'
   import { onMount } from 'svelte'
-  import { pinboardService } from '../core'
   import { Button, Column, Content, Grid, Row } from 'carbon-components-svelte'
   import LinkList from '../components/LinkList.svelte'
   import { Route } from 'tinro'
+  import { pinboardService } from '../../src-api'
 
   export let links: PinboardLink[] = []
   let fetched: boolean = false

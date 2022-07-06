@@ -1,12 +1,10 @@
 <script lang="ts">
-  import { Button, Column, Content, Grid, Row, Tag } from 'carbon-components-svelte'
+  import { Column, Grid, Row, Tag } from 'carbon-components-svelte'
   import { apiLayerService } from '../../core'
   import { Route, router } from 'tinro'
-  import { tagsStore, selectedTagStore } from './tag.store'
   import TagPage from './Tag.svelte'
-  import { getContext, setContext } from 'svelte'
-  import { notificationsStore, type NotificationsStore } from '../../core/notifications.store'
-  import { SVELTE_STORE_KEY_NOTIFICATIONS } from '../../core/constants'
+  import { randomFrom } from '../../core/utils'
+  import { onMount, setContext } from 'svelte'
 
   type PinboardTag = {
     id: string
@@ -29,63 +27,50 @@
     'warm-gray',
   ]
 
-  const randomFrom = function <T = string>(array: T[]): T {
-    return array[Math.floor(Math.random() * array.length)]
-  }
-
-  let tags = []
-  // tagsStore.subscribe((storeTags) => (tags = storeTags))
-  //
-  // setContext('tags', 'blabla')
-
   const api = apiLayerService
+  let tags: PinboardTag[] = []
+  let selectedTag: PinboardTag
 
-  console.log('notificationsStore tags.svelte: ', notificationsStore)
-  let fetched: boolean = false
+  setContext('tags::getSelectedTag', { getSelectedTag: () => selectedTag })
 
-  async function getTags() {
-    tags = (await api.getTags()) ?? []
-    // tagsStore.set(tags)
-    fetched = true
+  async function getTags(): Promise<PinboardTag[]> {
+    return (await api.getTags()) ?? []
   }
 
-  function onTagClick(tag): void {
+  const onTagClick = (tag: PinboardTag) => {
+    console.log('tag clicked: ', tag)
+    selectedTag = tag
     router.goto(`/tags/${tag.name}`)
-    // selectedTagStore.set(tag)
-    console.log('tag clicked: ', tag.name)
   }
+
+  onMount(async () => {
+    console.log('onMount, getting tags...')
+    tags = await getTags()
+  })
 </script>
 
-<Route path="/" let:meta>
-  <Content>
-    <Grid>
-      <Row>
-        <Column>
-          <h2>Tags</h2>
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          <Button on:click={getTags} bind:disabled={fetched}>fetch tags</Button>
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          {#each tags as tag}
-            <Tag type={randomFrom(carbonTagColors)} interactive on:click={onTagClick(tag)}
-              >{tag.name}</Tag
-            >
-          {/each}
-        </Column>
-      </Row>
-    </Grid>
-  </Content>
+<Route path="/">
+  <Grid>
+    <Row>
+      <Column>
+        <h2>Tags</h2>
+        {#each tags as tag}
+          <Tag
+            type={randomFrom(carbonTagColors)}
+            interactive
+            on:click={() => {
+              onTagClick(tag)
+            }}>{tag.name}</Tag
+          >
+        {/each}
+      </Column>
+    </Row>
+  </Grid>
 </Route>
 
 <Route path="/:tag" let:meta>
   tag name: {meta.params.tag}
   <TagPage />
-  <!--  updatedTag={selectedTag}-->
 </Route>
 
 <style lang="scss">

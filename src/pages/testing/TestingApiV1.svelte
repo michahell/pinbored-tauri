@@ -1,9 +1,7 @@
 <script lang="ts">
   import { Button, Column, Row } from 'carbon-components-svelte'
   import { apiLayerService } from '../../core'
-
   const api = apiLayerService
-  api.initialise()
 </script>
 
 <Row>

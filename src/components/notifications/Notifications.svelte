@@ -1,24 +1,17 @@
 <script lang="ts">
-  import { ToastNotification } from 'carbon-components-svelte'
-  import { notificationsStore } from '../../core/notifications.store'
   import { onMount, setContext } from 'svelte'
+  import { fade, fly } from 'svelte/transition'
+  import { notificationsStore } from '../../core/notifications.store'
   import { SVELTE_STORE_KEY_NOTIFICATIONS } from '../../core/constants'
-  import { nanoid } from 'nanoid'
   import type { PinboardNotification } from '../../core/types/notification.interface'
+  import Notification from './Notification.svelte'
 
   setContext(SVELTE_STORE_KEY_NOTIFICATIONS, notificationsStore)
 
+  const flyOutDelay = 2500
   let notifications: PinboardNotification[] = []
 
   onMount(() => {
-    notificationsStore.add({
-      id: nanoid(),
-      kind: 'error',
-      title: 'error fetching tags',
-      subtitle: 'subtitle',
-      caption: 'caption suckaa',
-    })
-
     notificationsStore.subscribe((storeNotifications: PinboardNotification[]) => {
       notifications = storeNotifications
     })
@@ -26,14 +19,10 @@
 </script>
 
 <section class="notifications">
-  {#each notifications as notification (notification.id)}
-    <ToastNotification
-      lowContrast
-      kind={notification.kind || 'error'}
-      title={notification.title || 'error'}
-      subtitle={notification.title || 'An internal server error occurred.'}
-      caption={notification.caption || new Date().toLocaleString()}
-    />
+  {#each notifications as { kind, title, subtitle, caption, id } (id)}
+    <div in:fade out:fly={{ delay: flyOutDelay, x: 175 }}>
+      <Notification {kind} {title} {subtitle} {caption} {flyOutDelay} />
+    </div>
   {/each}
 </section>
 

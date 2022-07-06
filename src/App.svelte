@@ -10,7 +10,8 @@
 
   // components
   import Layout from './components/layout/Layout.svelte'
-  import SearchBar from './components/Searchbar.svelte'
+  import TagSearchBar from './components/TagSearchBar.svelte'
+  import TextSearchBar from './components/TextSearchBar.svelte'
   import Notifications from './components/notifications/Notifications.svelte'
   import FirstRunPage from './pages/FirstRun.svelte'
   import PopularPage from './pages/Popular.svelte'
@@ -36,9 +37,11 @@
 
 <Layout>
   <Route path="/*" slot="subheader">
-    <Route path="/collection/*">
-      <!-- search bar -->
-      <SearchBar />
+    <Route path="/collection">
+      <TagSearchBar />
+    </Route>
+    <Route path="/tags">
+      <TextSearchBar />
     </Route>
   </Route>
 

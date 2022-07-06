@@ -1,7 +1,9 @@
-import { persistenceService, pinboardService, progressService } from '../core'
 import { PERSISTED_KEY_PINBOARD_TOKEN, PERSISTED_KEY_PINBOARD_USERNAME } from './constants'
 import { nanoid } from 'nanoid'
 import { notificationsStore, type NotificationsStore } from './notifications.store'
+import { progressService } from './progress.service'
+import { persistenceService } from './persistence.service'
+import { pinboardService } from '../../src-api'
 
 export class ApiLayerService {
 	private static async wrap<T, F = any>(
@@ -10,12 +12,12 @@ export class ApiLayerService {
 	): Promise<T> {
 		progressService.start()
 		try {
-			console.log('wrap trying..')
+			// console.log('wrap trying..')
 			const result: T = await execute()
 			progressService.done()
 			return result
 		} catch (e) {
-			console.log('wrap failing..')
+			// console.log('wrap failing..')
 			errorHandler ? errorHandler(e) : console.error(e)
 			progressService.done()
 		}
@@ -62,20 +64,13 @@ export class ApiLayerService {
 	}
 
 	public async getTags() {
-		// const result = await pinboardService.getTags()
-		// console.log('result: ', result)
-
 		const errorHandler = (error) => {
-			console.log('error')
-			console.log(error)
-			console.log('wrap error handling...')
-			console.log('calling notifications.add...')
 			notificationsStore.add({
 				id: nanoid(),
 				kind: 'error',
 				title: 'error fetching tags',
-				subtitle: error.toString(),
-				caption: 'caption suckaa',
+				subtitle: error,
+				caption: '',
 			})
 		}
 		return ApiLayerService.wrap<any>(pinboardService.getTags.bind(pinboardService), errorHandler)

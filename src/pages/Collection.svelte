@@ -3,9 +3,9 @@
   import { onMount } from 'svelte'
   import { Route } from 'tinro'
   import LinkList from '../components/LinkList.svelte'
-  import { pinboardService } from '../core'
   import type { PinboardLink } from '../../src-api'
   import { progressService } from '../core'
+  import { pinboardService } from '../../src-api'
 
   onMount(() => {
     progressService.start()
