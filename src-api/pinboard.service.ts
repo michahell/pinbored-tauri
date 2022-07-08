@@ -1,108 +1,57 @@
-import {
-	Body,
-	fetch,
-	type FetchOptions,
-	getClient,
-	type RequestOptions,
-	ResponseType,
-	type Response,
-} from '@tauri-apps/api/http'
-import {
-	HEADER_KEY_CONTENT_TYPE,
-	HEADER_KEY_PINBOARD_APP_ID,
-	HEADER_KEY_PINBOARD_TOKEN,
-	HEADER_VALUE_CONTENT_TYPE_JSON,
-} from './contants'
+import { HEADER_KEY_CONTENT_TYPE, HEADER_VALUE_CONTENT_TYPE_JSON } from './contants'
+import { PinboardServiceV1, pinboardServiceV1 } from './pinboardv1.service'
+import { PinboardServiceV2, pinboardServiceV2 } from './pinboardv2.service'
+import { PINBOARD_APP_ID } from '../src/core/constants'
+import type { Response } from '@tauri-apps/api/http'
+
+export enum PinboardApiVersion {
+	V1 = 'v1',
+	V2 = 'v2',
+}
 
 export class PinboardService {
 	private defaultHeaders: Record<string, string> = {}
+	// private apiMap: Record<string, string> = {
+	// 	mocky: 'https://run.mocky.io/v3/e91c7675-60b4-4260-aa73-122a4c336a29',
+	// 	mockApiIO: 'https://62acdc229fa81d00a7ba907e.mockapi.io',
+	// 	pinboardv2test: 'https://api.test.pinboard.in/v2',
+	// 	pinboardv2: 'https://api.pinboard.in/v2',
+	// 	pinboardv1: 'https://api.pinboard.in/v1',
+	// 	mockoon: 'http://127.0.0.1:3000',
+	// }
+	private version: PinboardApiVersion
+	private v1: PinboardServiceV1 = pinboardServiceV1
+	private v2: PinboardServiceV2 = pinboardServiceV2
+	private api: Record<PinboardApiVersion, PinboardServiceV1 | PinboardServiceV2> = {
+		[PinboardApiVersion.V1]: this.v1,
+		[PinboardApiVersion.V2]: this.v2,
+	}
 
-	// mock
-	private mockyApiUrl: string = 'https://run.mocky.io/v3/e91c7675-60b4-4260-aa73-122a4c336a29'
-	private mockApiIOUrl: string = 'https://62acdc229fa81d00a7ba907e.mockapi.io'
-	// pinboard
-	private testServerApi: string = 'https://api.test.pinboard.in/v2'
-	private serverApi: string = 'https://api.pinboard.in/v2'
-	// localhost mockoon
-	private serverLocalhost: string = 'http://127.0.0.1:3000'
-
-	private server: string = this.serverLocalhost
-	private username: string
-
-	constructor() {
+	constructor(apiVersion: PinboardApiVersion = PinboardApiVersion.V1) {
 		// set default content-type to app/json
+		this.version = apiVersion
 		this.defaultHeaders[HEADER_KEY_CONTENT_TYPE] = HEADER_VALUE_CONTENT_TYPE_JSON
 	}
 
-	private checkRequirements(): boolean {
-		if (!this.hasTokenPresent()) {
-			throw new Error('no token set. use updateToken(token) to set auth token!')
+	public init(username: string, token: string, version: PinboardApiVersion): void {
+		this.useVersion(version)
+		if (this.version === PinboardApiVersion.V1) {
+			this.v1.init(username, token)
+		} else if (this.version === PinboardApiVersion.V2) {
+			this.v2.init(username, token, PINBOARD_APP_ID)
 		}
-		if (!this.hasAppIdentifierPresent()) {
-			throw new Error('no app identifier set. use setAppId(appId) to set app identifier!')
-		}
-		if (!this.username || !this.username.length) {
-			throw new Error('no username set. use setUsername(username) to set username!')
-		}
-		return true
 	}
 
-	private getAuthTokenQueryParam(): string {
-		return `${this.username}:${this.defaultHeaders[HEADER_KEY_PINBOARD_TOKEN]}`
+	public useVersion(apiVersion: PinboardApiVersion): void {
+		this.version = apiVersion
+		console.info('pinboardService version set: ', apiVersion)
 	}
 
-	private async get<T>(url, extraOptions?: Partial<FetchOptions>) {
-		this.checkRequirements()
-		const defaultOptions: FetchOptions = {
-			method: 'GET',
-			timeout: 50,
-			responseType: ResponseType.JSON,
-			headers: this.defaultHeaders,
-			query: {
-				auth_token: this.getAuthTokenQueryParam(),
-				format: 'json',
-			},
-		}
-		const options = { ...defaultOptions, ...extraOptions }
-		return await fetch<T>(`${this.server}/${url}`, options)
-	}
+	/**=====================================
+	 *============= COMMON API =============
+	 ======================================*/
 
-	private async post(url: string, body: Record<any, any>, options: RequestOptions): Promise<any> {
-		this.checkRequirements()
-		const client = await getClient()
-		const response = await client.post(url, Body.json(body), options)
-		console.log('response: ', response)
-		return response
-	}
-
-	public hasAppIdentifierPresent(): boolean {
-		return this.defaultHeaders[HEADER_KEY_PINBOARD_APP_ID] !== ''
-	}
-
-	public hasTokenPresent(): boolean {
-		return this.defaultHeaders[HEADER_KEY_PINBOARD_TOKEN] !== ''
-	}
-
-	public setUsername(username: string): void {
-		this.username = username
-	}
-
-	public setAuthToken(authToken: string): void {
-		this.defaultHeaders[HEADER_KEY_PINBOARD_TOKEN] = authToken
-	}
-
-	public setAppId(appId: string): void {
-		this.defaultHeaders[HEADER_KEY_PINBOARD_APP_ID] = appId
-	}
-
-	public async test(): Promise<Response<any>> {
-		const result: Response<any> = await this.get<Response<any>>(`/test`, {
-			responseType: ResponseType.Text,
-		})
-		return result
-	}
-
-	public async getAllPosts(req?: {
+	public async getAllPosts(req: {
 		tag?: string //	tag	filter by up to three tags
 		start?: number //	int	offset value (default is 0)
 		results?: number //	int	number of results to return. Default is all
@@ -110,32 +59,36 @@ export class PinboardService {
 		todt?: Date //	datetime	return only bookmarks created before this time
 		meta?: number //	int	include a change detection signature for each bookmark
 	}): Promise<any[]> {
-		const { data } = await this.get<any[]>(`/posts`)
-		return data
+		return await this.api[this.version].getAllPosts(req)
 	}
 
 	public async getTags(): Promise<any[]> {
-		const { data } = await this.get<any[]>(`/tags`)
-		return data
+		return await this.api[this.version].getTags()
 	}
 
-	/**
-	 * username	string	test username
-	 * has_archiving	boolean	creates an archival account
-	 * privacy_lock	boolean	turns the PRIVACY LOCK user setting on
-	 * is_deadbeat	boolean	emulates a delinquent account locked for non-payment
-	 */
+	public async renameTag(oldName: string, newName: string): Promise<any[]> {
+		return await this.api[this.version].renameTag(oldName, newName)
+	}
+
+	public async deleteTag(tagName: string): Promise<any[]> {
+		return await this.api[this.version].deleteTag(tagName)
+	}
+
+	/**=====================================
+	 *============ V2 API ==================
+	 ======================================*/
+
+	public async test(): Promise<Response<any>> {
+		return await this.v2.test()
+	}
+
 	public async createTestUser(req: {
 		username: string
 		has_archiving: boolean
 		privacy_lock: boolean
 		is_deadbeat: boolean
-	}): Promise<any> {
-		return await this.post(`${this.testServerApi}/test/create/`, req, {
-			responseType: ResponseType.Text,
-		}).catch((error) => {
-			console.error(error)
-		})
+	}): Promise<Response<any>> {
+		return await this.v2.createTestUser(req)
 	}
 }
 

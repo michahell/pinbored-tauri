@@ -46,10 +46,13 @@
 </section>
 
 <style lang="scss">
+  @import 'src/styles';
+
   .breadcrumbs {
     display: flex;
     flex: 1 1 2rem;
-    background: lightgray;
+    background: var(--cds-ui-background);
+    //color: var(--cds-text-01);
     padding: 8px;
   }
 </style>

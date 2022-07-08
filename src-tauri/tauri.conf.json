@@ -16,6 +16,7 @@
         "scope": [
           "https://api.test.pinboard.in/v2/*",
           "https://api.pinboard.in/v2/*",
+          "https://api.pinboard.in/v1/*",
           "https://run.mocky.io/*",
           "https://62acdc229fa81d00a7ba907e.mockapi.io/*",
           "http://127.0.0.1:3000/*"

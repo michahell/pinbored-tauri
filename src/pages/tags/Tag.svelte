@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button, Column, Content, Grid, Row, TextInput } from 'carbon-components-svelte'
+  import { Button, Column, Content, Grid, Row, Tag, TextInput } from 'carbon-components-svelte'
   import { apiLayerService } from '../../core'
   import { getContext } from 'svelte'
 
@@ -8,6 +8,19 @@
   console.log('getSelectedTag: ', context)
   console.log('selectedTag: ', context.getSelectedTag())
   let tags = []
+
+  const carbonTagColors: string[] = [
+    'red',
+    'magenta',
+    'purple',
+    'blue',
+    'cyan',
+    'teal',
+    'green',
+    'gray',
+    'cool-gray',
+    'warm-gray',
+  ]
 
   export let updatedTag: {
     id: string
@@ -32,6 +45,7 @@
     <Row>
       <Column>
         <h2>{updatedTag.name}</h2>
+        <Tag type={'green'} />
       </Column>
     </Row>
     <Row>

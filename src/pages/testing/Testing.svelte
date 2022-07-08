@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Content, Grid } from 'carbon-components-svelte'
-  import { apiLayerService } from '../core'
-  import TestingApiV2 from './testing/TestingApiV2.svelte'
-  import TestingApiV1 from './testing/TestingApiV1.svelte'
+  import { apiLayerService } from '../../core'
+  import TestingApiV2 from './TestingApiV2.svelte'
+  import TestingApiV1 from './TestingApiV1.svelte'
 
   const api = apiLayerService
 </script>

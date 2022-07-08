@@ -1,3 +1,10 @@
+$feature-flags: (
+  // Custom CSS properties must be enabled to dynamically switch themes
+  enable-css-custom-properties: true,
+  ui-shell: true,
+  grid-columns-16: true
+);
+
 // Your entrypoint for including sass files from Carbon
 $css--font-face: true;
 $css--helpers: true;

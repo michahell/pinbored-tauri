@@ -5,9 +5,8 @@ import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
 import sveltePreprocess from 'svelte-preprocess'
 import typescript from '@rollup/plugin-typescript'
-import css from 'rollup-plugin-css-only'
 import scss from 'rollup-plugin-scss'
-import { elements, icons, optimizeCss, optimizeImports, pictograms } from 'carbon-preprocess-svelte'
+import { optimizeCss, optimizeImports } from 'carbon-preprocess-svelte'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -54,11 +53,17 @@ export default {
 				// enable run-time checks when not in production
 				dev: !production,
 			},
+			onwarn: (warning, handler) => {
+				const { code, frame } = warning
+				if (code === 'css-unused-selector') return
+
+				handler(warning)
+			},
 		}),
 		scss({
 			verbose: true,
 			failOnError: true,
-			includePaths: ['node_modules', 'src'],
+			includePaths: ['node_modules/**/*.scss', 'src/**/*.scss'],
 			watch: ['src'],
 			output: 'public/build/bundle.css',
 		}), // will output compiled styles to output.css

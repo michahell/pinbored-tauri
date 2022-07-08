@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { Column, Grid, Row, Tag } from 'carbon-components-svelte'
+  import { Column, Grid, Pagination, Row, Tag } from 'carbon-components-svelte'
   import { apiLayerService } from '../../core'
   import { Route, router } from 'tinro'
   import TagPage from './Tag.svelte'
   import { randomFrom } from '../../core/utils'
   import { onMount, setContext } from 'svelte'
+  import TagList from './TagList.svelte'
 
   type PinboardTag = {
     id: string
@@ -14,33 +15,15 @@
     createdAt: string
   }
 
-  const carbonTagColors: string[] = [
-    'red',
-    'magenta',
-    'purple',
-    'blue',
-    'cyan',
-    'teal',
-    'green',
-    'gray',
-    'cool-gray',
-    'warm-gray',
-  ]
-
   const api = apiLayerService
   let tags: PinboardTag[] = []
   let selectedTag: PinboardTag
+  let currentPage: number = 0
 
   setContext('tags::getSelectedTag', { getSelectedTag: () => selectedTag })
 
   async function getTags(): Promise<PinboardTag[]> {
     return (await api.getTags()) ?? []
-  }
-
-  const onTagClick = (tag: PinboardTag) => {
-    console.log('tag clicked: ', tag)
-    selectedTag = tag
-    router.goto(`/tags/${tag.name}`)
   }
 
   onMount(async () => {
@@ -50,22 +33,26 @@
 </script>
 
 <Route path="/">
-  <Grid>
-    <Row>
-      <Column>
-        <h2>Tags</h2>
-        {#each tags as tag}
-          <Tag
-            type={randomFrom(carbonTagColors)}
-            interactive
-            on:click={() => {
-              onTagClick(tag)
-            }}>{tag.name}</Tag
-          >
-        {/each}
-      </Column>
-    </Row>
-  </Grid>
+  <Pagination totalItems={tags.length} page={currentPage} />
+  <section class="scrollable">
+    <TagList {tags} />
+    <!--    <Grid>-->
+    <!--      <Row>-->
+    <!--        <Column>-->
+    <!--          <h2>Tags</h2>-->
+    <!--          {#each tags as tag}-->
+    <!--            <Tag-->
+    <!--              type={randomFrom(carbonTagColors)}-->
+    <!--              interactive-->
+    <!--              on:click={() => {-->
+    <!--                onTagClick(tag)-->
+    <!--              }}>{tag.name}</Tag-->
+    <!--            >-->
+    <!--          {/each}-->
+    <!--        </Column>-->
+    <!--      </Row>-->
+    <!--    </Grid>-->
+  </section>
 </Route>
 
 <Route path="/:tag" let:meta>
@@ -74,4 +61,8 @@
 </Route>
 
 <style lang="scss">
+  .scrollable {
+    height: 100%;
+    overflow: scroll;
+  }
 </style>

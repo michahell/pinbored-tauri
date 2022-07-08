@@ -3,7 +3,6 @@
   import PageTransition from './PageTransition.svelte'
   import Footer from './Footer.svelte'
   import Header from './Header.svelte'
-  import Navigation from './Navigation.svelte'
   import BreadCrumbs from './BreadCrumbs.svelte'
 </script>
 
@@ -12,7 +11,6 @@
 <!-- subheader -->
 <section class="subheader">
   <Route path="/*">
-    <Navigation />
     <BreadCrumbs />
   </Route>
   <!-- context-aware search, tags, etc. etc. -->
@@ -38,7 +36,7 @@
     display: flex;
     flex-direction: column;
     flex: 0 1 auto;
-    background: lightpink;
+    background: var(--cds-ui-background);
   }
   .pages {
     position: relative;
@@ -46,8 +44,8 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 200px;
-    overflow: scroll;
-    background: palegreen;
+    overflow: hidden;
+    background: var(--cds-ui-background);
   }
   .footer {
     position: absolute;

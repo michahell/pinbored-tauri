@@ -8,7 +8,9 @@
     HeaderPanelDivider,
     HeaderPanelLink,
     HeaderSearch,
-    SkipToContent,
+    HeaderNav,
+    HeaderNavItem,
+    HeaderNavMenu,
   } from 'carbon-components-svelte'
   import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte'
   import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte'
@@ -71,9 +73,17 @@
 </script>
 
 <Header company="pinbored-tauri" platformName="v0.1" uiShellAriaLabel="header">
-  <svelte:fragment slot="skip-to-content">
-    <SkipToContent />
-  </svelte:fragment>
+  <HeaderNav>
+    <HeaderNavItem href="/tags" text="tags" />
+    <HeaderNavItem href="/collection" text="collection" />
+    <HeaderNavItem href="/testing" text="testing" />
+    <HeaderNavMenu text="popular">
+      <HeaderNavItem href="/popular/links" text="links" />
+      <HeaderNavItem href="/popular/tags" text="tags" />
+      <HeaderNavItem href="/popular/notes" text="notes" />
+    </HeaderNavMenu>
+    <HeaderNavItem href="/settings" text="settings" />
+  </HeaderNav>
   <HeaderUtilities>
     <HeaderSearch
       bind:ref

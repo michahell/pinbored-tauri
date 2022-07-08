@@ -2,7 +2,7 @@
   import type { PinboardLink } from '../../src-api'
   import { onMount } from 'svelte'
   import { Button, Column, Content, Grid, Row } from 'carbon-components-svelte'
-  import LinkList from '../components/LinkList.svelte'
+  import LinkList from './collection/LinkList.svelte'
   import { Route } from 'tinro'
   import { pinboardService } from '../../src-api'
 

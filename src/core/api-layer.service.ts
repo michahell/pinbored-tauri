@@ -1,9 +1,10 @@
 import { PERSISTED_KEY_PINBOARD_TOKEN, PERSISTED_KEY_PINBOARD_USERNAME } from './constants'
 import { nanoid } from 'nanoid'
-import { notificationsStore, type NotificationsStore } from './notifications.store'
+import { notificationsStore } from './notifications.store'
 import { progressService } from './progress.service'
 import { persistenceService } from './persistence.service'
 import { pinboardService } from '../../src-api'
+import { PinboardApiVersion } from '../../src-api/pinboard.service'
 
 export class ApiLayerService {
 	private static async wrap<T, F = any>(
@@ -32,9 +33,7 @@ export class ApiLayerService {
 			if (!token && !username) {
 				return false
 			}
-			pinboardService.setUsername(username)
-			pinboardService.setAuthToken(token)
-			console.info('API initialised with username and token: ', username, token)
+			pinboardService.init(username, token, PinboardApiVersion.V1)
 			return true
 		}
 
@@ -43,6 +42,39 @@ export class ApiLayerService {
 		}
 		return ApiLayerService.wrap<boolean>(execute, errorHandler)
 	}
+
+	/**==============================================
+	 *============ Pinboard V1 API ==================
+	 ===============================================*/
+
+	public async getTags() {
+		const errorHandler = (error) => {
+			notificationsStore.add({
+				id: nanoid(),
+				kind: 'error',
+				title: 'error fetching tags',
+				subtitle: error,
+				caption: '',
+			})
+		}
+		return ApiLayerService.wrap<any>(pinboardService.getTags.bind(pinboardService), errorHandler)
+	}
+
+	public async getAllPosts() {
+		return ApiLayerService.wrap<any>(async () => {
+			const result = await pinboardService.getAllPosts({})
+			console.log('result: ', result)
+			return result
+		})
+	}
+
+	public async renameTag(tag) {
+		return { createdAt: '', id: '', lastUpdatedAt: '', name: '', url: '' }
+	}
+
+	/**==============================================
+	 *============ Pinboard V2 API ==================
+	 ===============================================*/
 
 	public async test() {
 		return ApiLayerService.wrap<any>(async () => {
@@ -61,41 +93,6 @@ export class ApiLayerService {
 				is_deadbeat: false,
 			})
 		})
-	}
-
-	public async getTags() {
-		const errorHandler = (error) => {
-			notificationsStore.add({
-				id: nanoid(),
-				kind: 'error',
-				title: 'error fetching tags',
-				subtitle: error,
-				caption: '',
-			})
-		}
-		return ApiLayerService.wrap<any>(pinboardService.getTags.bind(pinboardService), errorHandler)
-	}
-
-	public async getAllPosts() {
-		return ApiLayerService.wrap<any>(async () => {
-			const result = await pinboardService
-				.getAllPosts
-				// {
-				//   tag: undefined,
-				//   start: undefined,
-				//   results: undefined,
-				//   fromdt: undefined,
-				//   todt: undefined,
-				//   meta: undefined,
-				// }
-				()
-			console.log('result: ', result)
-			return result
-		})
-	}
-
-	public async updateTag(tag) {
-		return { createdAt: '', id: '', lastUpdatedAt: '', name: '', url: '' }
 	}
 }
 

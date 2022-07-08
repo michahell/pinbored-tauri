@@ -10,15 +10,15 @@
 
   // components
   import Layout from './components/layout/Layout.svelte'
-  import TagSearchBar from './components/TagSearchBar.svelte'
-  import TextSearchBar from './components/TextSearchBar.svelte'
+  import TagSearchBar from './pages/collection/TagSearchBar.svelte'
+  import TextSearchBar from './pages/tags/TextSearchBar.svelte'
   import Notifications from './components/notifications/Notifications.svelte'
   import FirstRunPage from './pages/FirstRun.svelte'
   import PopularPage from './pages/Popular.svelte'
   import SettingsPage from './pages/settings/Settings.svelte'
-  import CollectionPage from './pages/Collection.svelte'
+  import CollectionPage from './pages/collection/Collection.svelte'
   import TagsPage from './pages/tags/Tags.svelte'
-  import TestingPage from './pages/Testing.svelte'
+  import TestingPage from './pages/testing/Testing.svelte'
 
   let isFirstRun: boolean
   async function getIsFirstRun() {
