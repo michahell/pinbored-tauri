@@ -1,4 +1,3 @@
-import type { PinboardLink } from './pinboard-link.interface'
-import type { PinboardTag } from './pinboard-tag.interface'
+import type { Tags } from './pinboard-types'
 
-export type { PinboardLink, PinboardTag }
+export type { Tags }

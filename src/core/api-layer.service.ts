@@ -1,97 +1,47 @@
 import { PERSISTED_KEY_PINBOARD_TOKEN, PERSISTED_KEY_PINBOARD_USERNAME } from './constants'
-import { nanoid } from 'nanoid'
-import { notificationsStore } from './notifications.store'
-import { progressService } from './progress.service'
-import { persistenceService } from './persistence.service'
-import { pinboardService } from '../../src-api'
-import { PinboardApiVersion } from '../../src-api/pinboard.service'
+import { persistenceService as persistor } from './persistence.service'
+import { pinboardService as pinboard } from '../../src-api'
+import { progressiveFetch } from './try-catch-progressor'
+import type { Tags } from '../../src-api/typing'
 
 export class ApiLayerService {
-	private static async wrap<T, F = any>(
-		execute: () => Promise<T>,
-		errorHandler?: (e: any) => F
-	): Promise<T> {
-		progressService.start()
-		try {
-			// console.log('wrap trying..')
-			const result: T = await execute()
-			progressService.done()
-			return result
-		} catch (e) {
-			// console.log('wrap failing..')
-			errorHandler ? errorHandler(e) : console.error(e)
-			progressService.done()
-		}
-	}
-
 	constructor() {}
 
 	public async initialise(): Promise<boolean> {
 		const execute = async function execute() {
-			const token = await persistenceService.get<string>(PERSISTED_KEY_PINBOARD_TOKEN)
-			const username = await persistenceService.get<string>(PERSISTED_KEY_PINBOARD_USERNAME)
+			const token = await persistor.get<string>(PERSISTED_KEY_PINBOARD_TOKEN)
+			const username = await persistor.get<string>(PERSISTED_KEY_PINBOARD_USERNAME)
 			if (!token && !username) {
 				return false
 			}
-			pinboardService.init(username, token, PinboardApiVersion.V1)
+			pinboard.init(username, token)
 			return true
 		}
 
-		const errorHandler = async function () {
-			console.info('API not initialised, enter username and token on settings page.')
-		}
-		return ApiLayerService.wrap<boolean>(execute, errorHandler)
+		return progressiveFetch<boolean>(
+			execute,
+			'API not initialised',
+			'enter username and token on settings page'
+		)
 	}
 
 	/**==============================================
 	 *============ Pinboard V1 API ==================
 	 ===============================================*/
 
-	public async getTags() {
-		const errorHandler = (error) => {
-			notificationsStore.add({
-				id: nanoid(),
-				kind: 'error',
-				title: 'error fetching tags',
-				subtitle: error,
-				caption: '',
-			})
-		}
-		return ApiLayerService.wrap<any>(pinboardService.getTags.bind(pinboardService), errorHandler)
+	public async getTags(): Promise<Tags> {
+		return progressiveFetch<any>(pinboard.getTags.bind(pinboard))
+	}
+
+	public async renameTag(oldName: string, newName: string): Promise<any> {
+		return progressiveFetch<any>(pinboard.renameTag.apply(pinboard, arguments)) // .bind(pinboard)
 	}
 
 	public async getAllPosts() {
-		return ApiLayerService.wrap<any>(async () => {
-			const result = await pinboardService.getAllPosts({})
+		return progressiveFetch<any>(async () => {
+			const result = await pinboard.getAllPosts({})
 			console.log('result: ', result)
 			return result
-		})
-	}
-
-	public async renameTag(tag) {
-		return { createdAt: '', id: '', lastUpdatedAt: '', name: '', url: '' }
-	}
-
-	/**==============================================
-	 *============ Pinboard V2 API ==================
-	 ===============================================*/
-
-	public async test() {
-		return ApiLayerService.wrap<any>(async () => {
-			return await pinboardService.test()
-		})
-	}
-
-	public async authenticateTestUser() {}
-
-	public async createTestUser(username: string) {
-		return ApiLayerService.wrap<any>(async () => {
-			return await pinboardService.createTestUser({
-				username: username,
-				has_archiving: false,
-				privacy_lock: false,
-				is_deadbeat: false,
-			})
 		})
 	}
 }

@@ -7,19 +7,23 @@
     StructuredListBody,
     Button,
   } from 'carbon-components-svelte'
-  import type { PinboardTag } from '../../../src-api'
   import { Edit, TrashCan } from 'carbon-icons-svelte'
   import { router } from 'tinro'
 
-  export let tags: PinboardTag[] = []
+  export let tags: [tag: string, count: number][] = []
 
-  function renameTag(tag: PinboardTag) {
-    console.log('rename tag ', tag.name)
-    router.goto(`/tags/${tag.name}`)
+  function gotoTag(tag: string) {
+    console.log('go to tag ', tag)
+    router.goto(`/tags/${tag}`)
   }
 
-  function deleteTag(tag: PinboardTag) {
-    console.log('delete tag ', tag.name)
+  function renameTag(tag: string) {
+    console.log('rename tag ', tag)
+    router.goto(`/tags/${tag}`)
+  }
+
+  function deleteTag(tag: string) {
+    console.log('delete tag ', tag)
   }
 </script>
 
@@ -33,7 +37,13 @@
   </StructuredListHead>
   <StructuredListBody>
     {#each tags as tag}
-      <StructuredListRow label for="row-{tag.name}">
+      <StructuredListRow
+        label
+        for="row-{tag.name}"
+        on:click={() => {
+          gotoTag(tag.name)
+        }}
+      >
         <StructuredListCell>{tag.name}</StructuredListCell>
         <StructuredListCell>{tag.count}</StructuredListCell>
         <StructuredListCell>
@@ -46,7 +56,7 @@
             tooltipPosition="left"
             tooltipAlignment="end"
             on:click={() => {
-              renameTag(tag)
+              renameTag(tag.name)
             }}
           />
           <!-- delete -->
@@ -58,7 +68,7 @@
             tooltipPosition="right"
             tooltipAlignment="end"
             on:click={() => {
-              deleteTag(tag)
+              deleteTag(tag.name)
             }}
           />
         </StructuredListCell>

@@ -1,4 +1,4 @@
-import { pinboardService } from './pinboard.service'
+import { pinboardService } from './pinboardv1.service'
 export { pinboardService }
 
 import type { PinboardLink, PinboardTag } from './typing'

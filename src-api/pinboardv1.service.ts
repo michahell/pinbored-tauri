@@ -7,12 +7,14 @@ import {
 	type RequestOptions,
 } from '@tauri-apps/api/http'
 import { HEADER_KEY_PINBOARD_APP_ID, HEADER_KEY_PINBOARD_TOKEN } from './contants'
+import type { Tags } from './typing'
 
 export class PinboardServiceV1 {
+	private username: string
 	private defaultHeaders: Record<string, string> = {}
 	private api: string = 'https://api.pinboard.in/v1'
 
-	private defaultFetchOptions: FetchOptions = {
+	private defaultFetchOptions: () => FetchOptions = () => ({
 		method: 'GET',
 		timeout: 50,
 		responseType: ResponseType.JSON,
@@ -21,9 +23,7 @@ export class PinboardServiceV1 {
 			auth_token: this.getAuthTokenQueryParam(),
 			format: 'json',
 		},
-	}
-
-	private username: string
+	})
 
 	constructor() {}
 
@@ -33,7 +33,8 @@ export class PinboardServiceV1 {
 
 	private async get<T>(url, extraOptions?: Partial<FetchOptions>) {
 		this.checkRequirements()
-		const options = { ...this.defaultFetchOptions, ...extraOptions }
+		const options = { ...this.defaultFetchOptions(), ...extraOptions }
+		console.info('options: ', options)
 		return await fetch<T>(`${this.api}/${url}`, options)
 	}
 
@@ -70,10 +71,11 @@ export class PinboardServiceV1 {
 		return true
 	}
 
-	public init(username: string, authToken: string) {
+	public init(username: string, authToken: string): void {
 		this.username = username
 		this.defaultHeaders[HEADER_KEY_PINBOARD_TOKEN] = authToken
-		console.info('pinboardServiceV1 username set: ', username)
+		console.info('username set: ', this.username)
+		console.info('authToken set: ', this.defaultHeaders[HEADER_KEY_PINBOARD_TOKEN])
 	}
 
 	public async getAllPosts(req?: {
@@ -88,9 +90,9 @@ export class PinboardServiceV1 {
 		return data
 	}
 
-	public async getTags(): Promise<any[]> {
-		const { data } = await this.get<any[]>(`/tags/get`)
-		return data
+	public async getTags(): Promise<Tags> {
+		const { data } = await this.get<{ [name: string]: number }>(`/tags/get`)
+		return Object.entries(data).map(([name, count]) => ({ name, count }))
 	}
 
 	public async renameTag(oldName: string, newName: string): Promise<any[]> {
@@ -113,5 +115,5 @@ export class PinboardServiceV1 {
 	}
 }
 
-const pinboardServiceV1 = new PinboardServiceV1()
-export { pinboardServiceV1 }
+const pinboardService = new PinboardServiceV1()
+export { pinboardService }

@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { onMount, setContext } from 'svelte'
+  import { readable, writable, get } from 'svelte/store'
+
   // app wide stuff
   import 'carbon-components-svelte/css/all.css' // All carbon themes
 
@@ -19,15 +22,28 @@
   import CollectionPage from './pages/collection/Collection.svelte'
   import TagsPage from './pages/tags/Tags.svelte'
   import TestingPage from './pages/testing/Testing.svelte'
+  import type { Tags } from '../src-api/typing'
+  import type { PinboredStore } from './core/types/pinbored.store'
+
+  // main app nested store
+  let store = readable<PinboredStore>({
+    bootstrapped: writable(false),
+    tags: writable<Tags>([]),
+  })
+  // made available through context
+  setContext('store', store)
 
   let isFirstRun: boolean
   async function getIsFirstRun() {
     isFirstRun = (await persistenceService.get<boolean>(PERSISTED_KEY_FIRST_RUN)) ?? true
     console.log('isFirstRun? ', isFirstRun)
   }
-  getIsFirstRun()
 
-  bootstrap()
+  onMount(async () => {
+    await getIsFirstRun()
+    await bootstrap()
+    get(store).bootstrapped.set(true)
+  })
 </script>
 
 <!-- Notifications              z-index: 9999; -->

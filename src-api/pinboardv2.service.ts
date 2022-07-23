@@ -146,5 +146,5 @@ export class PinboardServiceV2 {
 		})
 	}
 }
-const pinboardServiceV2 = new PinboardServiceV2()
-export { pinboardServiceV2 }
+const pinboardService = new PinboardServiceV2()
+export { pinboardService }

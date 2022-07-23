@@ -1,42 +1,32 @@
 <script lang="ts">
   import { Button, Column, Content, Grid, Row, Tag, TextInput } from 'carbon-components-svelte'
-  import { apiLayerService } from '../../core'
+  import { apiLayerService as api } from '../../core'
   import { getContext } from 'svelte'
+  import { type Writable } from 'svelte/store'
 
-  const api = apiLayerService
-  let context = getContext('tags::getSelectedTag')
-  console.log('getSelectedTag: ', context)
-  console.log('selectedTag: ', context.getSelectedTag())
-  let tags = []
+  let selectedTag: Writable<string> = getContext('selectedTag')
+  let tag
+  selectedTag.subscribe((value) => (tag = value))
+  console.log('selectedTag: ', tag)
 
-  const carbonTagColors: string[] = [
-    'red',
-    'magenta',
-    'purple',
-    'blue',
-    'cyan',
-    'teal',
-    'green',
-    'gray',
-    'cool-gray',
-    'warm-gray',
-  ]
-
-  export let updatedTag: {
-    id: string
-    name: string
-    url: string
-    lastUpdatedAt: string
-    createdAt: string
-  } = {}
+  // const carbonTagColors: string[] = [
+  //   'red',
+  //   'magenta',
+  //   'purple',
+  //   'blue',
+  //   'cyan',
+  //   'teal',
+  //   'green',
+  //   'gray',
+  //   'cool-gray',
+  //   'warm-gray',
+  // ]
 
   let newTagName: string = ''
 
   async function updateTag(tag) {
-    updatedTag = await api.updateTag({
-      ...tag,
-      name: newTagName,
-    })
+    await api.renameTag(tag, newTagName)
+    selectedTag.set(newTagName)
   }
 </script>
 
@@ -44,20 +34,20 @@
   <Grid>
     <Row>
       <Column>
-        <h2>{updatedTag.name}</h2>
-        <Tag type={'green'} />
+        <h2>{tag}</h2>
+        <Tag type={'green'} title={tag} />
       </Column>
     </Row>
     <Row>
       <Column>
         <TextInput
           inline
-          labelText="tag"
+          labelText="new tag name"
           placeholder="Enter new tag name..."
           bind:value={newTagName}
         />
         <br />
-        <Button on:click={updateTag()}>update tag name</Button>
+        <Button on:click={updateTag(tag)}>update tag name</Button>
       </Column>
     </Row>
   </Grid>
