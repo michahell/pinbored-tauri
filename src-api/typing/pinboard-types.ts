@@ -1,3 +1,4 @@
-type Tags = { name: string; count: number }[]
+type Tag = { name: string; count: number }
+type Tags = Tag[]
 
-export type { Tags }
+export type { Tag, Tags }

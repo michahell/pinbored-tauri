@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Tag, Tags } from '../../../src-api'
   import {
     StructuredList,
     StructuredListHead,
@@ -8,22 +9,37 @@
     Button,
   } from 'carbon-components-svelte'
   import { Edit, TrashCan } from 'carbon-icons-svelte'
-  import { router } from 'tinro'
+  import { createEventDispatcher } from 'svelte'
+  import TagHighlighted from './TagHighlighted.svelte'
 
-  export let tags: [tag: string, count: number][] = []
+  export let tags: Tags = []
+  export let tagSearchString: string = ''
 
-  function gotoTag(tag: string) {
-    console.log('go to tag ', tag)
-    router.goto(`/tags/${tag}`)
+  const dispatch = createEventDispatcher()
+
+  function emitClicked(tag: Tag): void {
+    console.log('emit clicked: ', tag)
+    dispatch('tagClicked', tag)
   }
 
-  function renameTag(tag: string) {
+  function renameTag(tag: string): void {
     console.log('rename tag ', tag)
-    router.goto(`/tags/${tag}`)
   }
 
-  function deleteTag(tag: string) {
+  function deleteTag(tag: string): void {
     console.log('delete tag ', tag)
+  }
+
+  function highlightedSearchTerm(tag: string): string {
+    const start = tag.indexOf(tagSearchString)
+    const highlighted = `${tag.substring(
+      0,
+      start
+    )}<span class="highlighted">${tagSearchString}</span>${tag.substring(
+      start + tagSearchString.length
+    )}`
+    console.log('highlighted: ', highlighted)
+    return highlighted
   }
 </script>
 
@@ -35,16 +51,23 @@
       <StructuredListCell head>actions</StructuredListCell>
     </StructuredListRow>
   </StructuredListHead>
-  <StructuredListBody>
+  <StructuredListBody class="body-wrapper">
     {#each tags as tag}
       <StructuredListRow
         label
         for="row-{tag.name}"
         on:click={() => {
-          gotoTag(tag.name)
+          emitClicked(tag)
         }}
       >
-        <StructuredListCell>{tag.name}</StructuredListCell>
+        <StructuredListCell>
+          {#if tagSearchString.length}
+            <!--{@html highlightedSearchTerm(tag.name)}-->
+            <TagHighlighted {tag} {tagSearchString} />
+          {:else}
+            {tag.name}
+          {/if}
+        </StructuredListCell>
         <StructuredListCell>{tag.count}</StructuredListCell>
         <StructuredListCell>
           <!-- edit -->
@@ -76,3 +99,9 @@
     {/each}
   </StructuredListBody>
 </StructuredList>
+
+<style lang="scss">
+  .body-wrapper {
+    height: calc(100% - 20px);
+  }
+</style>

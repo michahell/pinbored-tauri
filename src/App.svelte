@@ -22,13 +22,14 @@
   import CollectionPage from './pages/collection/Collection.svelte'
   import TagsPage from './pages/tags/Tags.svelte'
   import TestingPage from './pages/testing/Testing.svelte'
-  import type { Tags } from '../src-api/typing'
+  import type { Tags } from '../src-api'
   import type { PinboredStore } from './core/types/pinbored.store'
 
   // main app nested store
   let store = readable<PinboredStore>({
     bootstrapped: writable(false),
     tags: writable<Tags>([]),
+    filteredTags: writable<Tags>([]),
   })
   // made available through context
   setContext('store', store)

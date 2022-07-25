@@ -1,3 +1,3 @@
-import type { Tags } from './pinboard-types'
+import type { Tag, Tags } from './pinboard-types'
 
-export type { Tags }
+export type { Tag, Tags }

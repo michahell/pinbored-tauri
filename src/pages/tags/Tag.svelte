@@ -1,13 +1,11 @@
 <script lang="ts">
   import { Button, Column, Content, Grid, Row, Tag, TextInput } from 'carbon-components-svelte'
   import { apiLayerService as api } from '../../core'
-  import { getContext } from 'svelte'
+  import { getContext, onMount } from 'svelte'
   import { type Writable } from 'svelte/store'
 
   let selectedTag: Writable<string> = getContext('selectedTag')
-  let tag
-  selectedTag.subscribe((value) => (tag = value))
-  console.log('selectedTag: ', tag)
+  let tag: string = ''
 
   // const carbonTagColors: string[] = [
   //   'red',
@@ -28,6 +26,18 @@
     await api.renameTag(tag, newTagName)
     selectedTag.set(newTagName)
   }
+
+  onMount(() => {
+    console.log('onMount: ')
+    const unsubSelectedTag = selectedTag.subscribe((value) => {
+      tag = value
+      console.log('selectedTag: ', value)
+    })
+
+    return () => {
+      unsubSelectedTag()
+    }
+  })
 </script>
 
 <Content>

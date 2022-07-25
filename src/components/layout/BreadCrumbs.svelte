@@ -40,7 +40,7 @@
   <Breadcrumb>
     <BreadcrumbItem href="/">home</BreadcrumbItem>
     {#each breadcrumbs as breadcrumb}
-      <BreadcrumbItem href={breadcrumb.url}>{breadcrumb.name}</BreadcrumbItem>
+      <BreadcrumbItem class="breadcrumb" href={breadcrumb.url}>{breadcrumb.name}</BreadcrumbItem>
     {/each}
   </Breadcrumb>
 </section>
@@ -51,7 +51,7 @@
   .breadcrumbs {
     display: flex;
     flex: 1 1 2rem;
-    background: var(--cds-ui-background);
+    background: var(--cds-support-03); //var(--cds-ui-background);
     //color: var(--cds-text-01);
     padding: 8px;
   }

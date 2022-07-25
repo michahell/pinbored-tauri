@@ -1,50 +1,80 @@
 <script lang="ts">
-  import { Route } from 'tinro'
-  import { Pagination } from 'carbon-components-svelte'
-  import { onMount, setContext, getContext } from 'svelte'
-  import { get, type Readable, writable } from 'svelte/store'
   import type { Writable } from 'svelte/store'
+  import type { Tag, Tags } from '../../../src-api'
+  import { Route, router } from 'tinro'
+  import { Pagination } from 'carbon-components-svelte'
+  import { onMount, getContext } from 'svelte'
+  import { get } from 'svelte/store'
   import { apiLayerService as api } from '../../core'
+  import { tagStore } from './Tag.state'
   import TagPage from './Tag.svelte'
   import TagList from './TagList.svelte'
-  import type { Tags } from '../../../src-api/typing'
-  import type { PinboredStore } from '../../core/types/pinbored.store'
 
-  let tags: Tags = []
+  const bootstrapped: Writable<boolean> = get(getContext('store')).bootstrapped
+
+  const allTagsStore: Writable<Tags> = get(tagStore).allTags
+  const filteredTagsStore: Writable<Tags> = get(tagStore).filteredTags
+  const selectedTagStore: Writable<Tag | undefined> = get(tagStore).selectedTag
+  const tagStringSearchStore: Writable<string> = get(tagStore).tagStringSearch
+
+  let filteredTags: Tags = []
   let tagsPaged: Tags = []
-  const selectedTag = writable('')
-  setContext('selectedTag', selectedTag)
-
-  const store: Readable<PinboredStore> = getContext('store')
-  const bootstrapped: Writable<boolean> = get(store).bootstrapped
+  let page: number
+  let pageSize: number
 
   async function getTags(): Promise<Tags> {
     return (await api.getTags()) ?? []
   }
 
   function onPaginationUpdate(update: { detail: { pageSize: number; page: number } }) {
-    let { pageSize, page } = update.detail
-    tagsPaged = tags.filter(
+    updatePagination(filteredTags)
+  }
+
+  function tagClicked(event) {
+    const tag: Tag = event.detail
+    selectedTagStore.set(tag)
+    console.log('selected tag store tag: ', get(selectedTagStore))
+    console.log('go to tag ', tag.name)
+    router.goto(`/tags/${tag.name}`)
+  }
+
+  async function updateTagStores(): Promise<void> {
+    const storedTags = get(allTagsStore)
+    if (!storedTags?.length) {
+      console.info('fetching tags...')
+      const fetchedTags = await getTags()
+      allTagsStore.set(fetchedTags)
+      filteredTagsStore.set(fetchedTags) // also set filtered tags initially!
+    }
+  }
+
+  function updatePagination(filteredTags: Tags): void {
+    tagsPaged = filteredTags.filter(
       (tag, index) => index > page * pageSize && index <= (page + 1) * pageSize
     )
+    console.log('updatePagination triggered. tagsPaged: ', tagsPaged.length)
   }
 
   onMount(async () => {
+    const filteredTagsSub = filteredTagsStore.subscribe((newFilteredTags) => {
+      console.log('filteredTagsSub fired')
+      filteredTags = newFilteredTags
+      updatePagination(filteredTags)
+    })
+
+    const tagStringSearchStoreSub = tagStringSearchStore.subscribe((searchString) => {})
+
     const unsubBootstrapped = bootstrapped.subscribe(async (bootstrapped) => {
-      console.log('bootstrapped: ', bootstrapped)
       if (!bootstrapped) {
         return
       }
-      if (!tags || tags.length === 0) {
-        console.log('onMount, getting tags...')
-        tags = await getTags()
-      }
-      onPaginationUpdate({ detail: { pageSize: 10, page: 0 } })
+      await updateTagStores()
     })
 
     return () => {
       console.info('tags comp onDestroy...')
       unsubBootstrapped()
+      filteredTagsSub()
     }
   })
 </script>
@@ -52,12 +82,13 @@
 <Route path="/">
   <Pagination
     on:update={onPaginationUpdate}
-    totalItems={tags.length}
-    page={0}
+    bind:page
+    bind:pageSize
+    totalItems={filteredTags.length}
     pageSizes={[10, 15, 20, 25, 50]}
   />
   <section class="scrollable">
-    <TagList tags={tagsPaged} />
+    <TagList tags={tagsPaged} tagSearchString={$tagStringSearchStore} on:tagClicked={tagClicked} />
   </section>
 </Route>
 
