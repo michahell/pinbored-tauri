@@ -1,0 +1,9 @@
+# Ignore artifacts
+build
+coverage
+
+# ignore spartanNG
+libs
+
+# ignore tauri
+src-tauri
