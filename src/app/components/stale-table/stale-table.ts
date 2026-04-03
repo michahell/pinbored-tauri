@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core'
+import { Component, computed, input, signal } from '@angular/core'
 import { NgIcon, provideIcons } from '@ng-icons/core'
 import { FormsModule } from '@angular/forms'
 import {
@@ -28,6 +28,8 @@ import {
 import { TableHeadSortButton } from './components/sort-header-button'
 import { ActionDropdown } from './components/action-dropdown'
 import { Payment } from './stale-table.model'
+import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { StatusIndicator } from './components/status-indicator'
 
 @Component({
   selector: 'app-stale-table',
@@ -49,60 +51,57 @@ import { Payment } from './stale-table.model'
   styleUrl: './stale-table.css',
 })
 export class StaleTable {
-  readonly data = input<Payment[]>()
+  readonly bookmarks = input<Map<string, PinboardItemVM>>()
+  readonly #bookmarksAsList = computed(() => {
+    const bookmarks = this.bookmarks()
+    if (bookmarks) {
+      return Array.from(bookmarks.values())
+    } else {
+      return []
+    }
+  })
 
   readonly #columnFilters = signal<ColumnFiltersState>([])
   readonly #sorting = signal<SortingState>([])
   readonly #rowSelection = signal<RowSelectionState>({})
   readonly #columnVisibility = signal<VisibilityState>({})
 
-  protected readonly _columns: ColumnDef<Payment>[] = [
+  protected readonly _columns: ColumnDef<PinboardItemVM>[] = [
     {
-      id: 'select',
+      id: 'hash',
       header: () => flexRenderComponent(TableHeadSelection),
       cell: () => flexRenderComponent(TableRowSelection),
       enableSorting: false,
       enableHiding: false,
     },
     {
-      accessorKey: 'status',
-      id: 'status',
-      header: 'Status',
+      accessorKey: 'description',
+      id: 'description',
       enableSorting: false,
+      enableHiding: false,
       cell: (info) =>
-        `<span class="capitalize">${info.getValue<string>()}</span>`,
+        `<div class="text-right">${info.getValue<string>()}</div>`,
     },
     {
-      accessorKey: 'email',
-      id: 'email',
-      header: () =>
-        flexRenderComponent(TableHeadSortButton, { inputs: { header: '' } }),
+      accessorKey: 'href',
+      id: 'href',
+      enableSorting: false,
+      enableHiding: false,
       cell: (info) => `<div class="lowercase">${info.getValue<string>()}</div>`,
     },
     {
-      accessorKey: 'amount',
-      id: 'amount',
-      header: '<div class="text-right">Amount</div>',
-      enableSorting: false,
-      cell: (info) => {
-        const amount = parseFloat(info.getValue<string>())
-        const formatted = new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD',
-        }).format(amount)
-
-        return `<div class="text-right">${formatted}</div>`
-      },
-    },
-    {
-      id: 'actions',
+      id: 'status',
+      header: '<div class="text-right">Status</div>',
       enableHiding: false,
-      cell: () => flexRenderComponent(ActionDropdown),
+      enableSorting: false,
+      cell: (info) =>
+        `<div class="text-right">${info.getValue<string>()}</div>`,
+      // cell: () => flexRenderComponent(StatusIndicator),
     },
   ]
 
-  protected readonly _table = createAngularTable<Payment>(() => ({
-    data: this.data() ?? [],
+  protected readonly _table = createAngularTable<PinboardItemVM>(() => ({
+    data: this.#bookmarksAsList(),
     columns: this._columns,
     onSortingChange: (updater) => {
       updater instanceof Function

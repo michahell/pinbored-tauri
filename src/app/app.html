@@ -3,18 +3,45 @@
   <!--    <input #greetInput id="greet-input" placeholder="Enter a name..." />-->
   <!--    <button type="submit">Greet</button>-->
   <!--  </form>-->
-  <!--  <p>{{ greetingMessage }}</p>-->
 
   <!--  signality demo stuff -->
   <!--  <input [(ngModel)]="value" />-->
   <!--  <button (click)="synthesis.speak(value())">Speak</button>-->
+
+  <!-- pinboard API username and password -->
+  <div hlmFieldGroup class="flex flex-row mb-5">
+    <div hlmField class="w-64 flex-auto">
+      <label hlmFieldLabel for="username">username</label>
+      <input hlmInput id="username" [(ngModel)]="username" />
+    </div>
+    <div hlmField class="w-64 flex-auto">
+      <label hlmFieldLabel for="password">password</label>
+      <input hlmInput id="password" [(ngModel)]="password" />
+    </div>
+  </div>
+
+  <!-- get all pinboard bookmarks -->
+  <button
+    hlmBtn
+    variant="default"
+    (click)="getBookmarks()"
+    [attr.disabled]="bookmarksFetching()"
+  >
+    fetch all pinboard bookmarks
+    @if (bookmarksFetching()) {
+      <hlm-spinner data-icon="inline-start" />
+    }
+  </button>
 
   <!-- stale checker testing -->
   <button hlmBtn variant="destructive" (click)="staleCheck()">
     start stale checker
   </button>
 
-  <app-stale-table [data]="data()"></app-stale-table>
+  <h3>all bookmarks</h3>
+  <app-stale-table [bookmarks]="bookmarks()"></app-stale-table>
+
+  <h3>stale-checked bookmarks</h3>
 
   <!--  router outlet -->
   <router-outlet />

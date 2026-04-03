@@ -11,7 +11,7 @@
     "http:default",
     {
       "identifier": "http:default",
-      "allow": [{ "url": "https://*" }],
+      "allow": [{ "url": "http*://*"}],
       "deny": [{ "url": "https://private.tauri.app" }]
     }
   ]
