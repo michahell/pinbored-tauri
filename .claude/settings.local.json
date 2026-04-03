@@ -5,5 +5,9 @@
       "Bash(npx ng:*)"
     ]
   },
-  "outputStyle": "default"
+  "outputStyle": "default",
+  "enabledMcpjsonServers": [
+    "angular-cli",
+    "vitest"
+  ]
 }
