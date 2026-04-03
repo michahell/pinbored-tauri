@@ -1,6 +1,6 @@
 {
   "name": "pinbored-tauri",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "tauri": "tauri",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "mcps": "concurrently 'echo \"starting MCPs...\"' 'npx spartan-ng-mcp-server --dev'"
   },
   "private": true,
   "dependencies": {
@@ -48,6 +49,7 @@
     "@spartan-ng/cli": "0.0.1-alpha.656",
     "@tauri-apps/cli": "^2",
     "angular-eslint": "21.3.1",
+    "concurrently": "^9.2.1",
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
     "jsdom": "^28.0.0",
