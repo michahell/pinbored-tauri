@@ -1,6 +1,4 @@
 import { Component, computed, input, signal } from '@angular/core'
-import { NgIcon, provideIcons } from '@ng-icons/core'
-import { FormsModule } from '@angular/forms'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,19 +13,20 @@ import {
   SortingState,
   VisibilityState,
 } from '@tanstack/angular-table'
-import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
+import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmTableImports } from '@spartan-ng/helm/table'
-import { lucideChevronDown } from '@ng-icons/lucide'
+import { NgIcon } from '@ng-icons/core'
+import { PinboardItemVM } from '../../models/pinboard-view.model'
 import {
   TableHeadSelection,
   TableRowSelection,
 } from '../table/selection-column'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { FormsModule } from '@angular/forms'
 
 @Component({
-  selector: 'app-stale-table',
+  selector: 'app-bookmarks-table2',
   imports: [
     FlexRenderDirective,
     FormsModule,
@@ -37,13 +36,9 @@ import { PinboardItemVM } from '../../models/pinboard-view.model'
     HlmIconImports,
     HlmTableImports,
   ],
-  providers: [provideIcons({ lucideChevronDown })],
-  host: {
-    class: 'w-full',
-  },
-  templateUrl: './stale-table.html',
+  templateUrl: './bookmarks-table.html',
 })
-export class StaleTable {
+export class BookmarksTable {
   readonly bookmarks = input<Map<string, PinboardItemVM>>()
   readonly #bookmarksAsList = computed(() => {
     const bookmarks = this.bookmarks()

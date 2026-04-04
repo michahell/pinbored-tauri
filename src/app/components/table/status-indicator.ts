@@ -9,7 +9,7 @@ import {
 } from '@tanstack/angular-table'
 
 @Component({
-  imports: [HlmButtonImports, NgIcon, HlmIconImports],
+  imports: [],
   providers: [provideIcons({ lucideArrowUpDown })],
   template: `TODO statusIndicator`,
 })

@@ -9,7 +9,8 @@
     "tauri": "tauri",
     "test": "ng test",
     "lint": "ng lint",
-    "mcps": "concurrently 'echo \"starting MCPs...\"' 'npx spartan-ng-mcp-server --dev'"
+    "spartan-health": "ng g @spartan-ng/cli:healthcheck",
+    "spartan-update": "pnpm add @spartan-ng/brain@latest @spartan-ng/cli@latest"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +24,7 @@
     "@ng-icons/core": ">=32.0.0 <34.0.0",
     "@ng-icons/lucide": ">=32.0.0 <34.0.0",
     "@signality/core": "^0.1.1",
-    "@spartan-ng/brain": "0.0.1-alpha.656",
+    "@spartan-ng/brain": "0.0.1-alpha.661",
     "@tailwindcss/postcss": "^4.2.2",
     "@tanstack/angular-table": "^8.21.3",
     "@tauri-apps/api": "^2",
@@ -46,10 +47,9 @@
     "@angular/cli": "^21.2.4",
     "@angular/compiler-cli": "^21.2.6",
     "@eslint/js": "^10.0.1",
-    "@spartan-ng/cli": "0.0.1-alpha.656",
+    "@spartan-ng/cli": "0.0.1-alpha.661",
     "@tauri-apps/cli": "^2",
     "angular-eslint": "21.3.1",
-    "concurrently": "^9.2.1",
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
     "jsdom": "^28.0.0",

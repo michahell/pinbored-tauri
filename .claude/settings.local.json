@@ -1,11 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ng generate:*)",
-      "Bash(npx ng:*)"
+      "mcp__webstorm__get_repositories",
+      "mcp__angular-cli__list_projects",
+      "mcp__angular-cli__find_examples",
+      "mcp__angular-cli__search_documentation",
+      "mcp__spartan-ng-mcp-server__spartan_get_component",
+      "WebFetch(domain:www.pinboard.in)",
+      "mcp__webstorm__get_all_open_file_paths"
     ]
   },
-  "outputStyle": "default",
   "enabledMcpjsonServers": [
     "angular-cli",
     "vitest"

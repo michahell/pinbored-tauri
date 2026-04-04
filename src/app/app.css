@@ -5,17 +5,3 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
-.container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  text-align: left;
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}

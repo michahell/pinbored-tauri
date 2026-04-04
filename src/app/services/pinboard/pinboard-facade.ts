@@ -20,4 +20,8 @@ export class PinboardFacade {
   async getAllTags(): Promise<any> {
     return this.#pinboard.getAllTags()
   }
+
+  async deleteBookmark(url: string): Promise<void> {
+    await this.#pinboard.deleteBookmark(url)
+  }
 }

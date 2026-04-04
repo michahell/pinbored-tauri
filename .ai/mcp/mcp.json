@@ -7,11 +7,13 @@
     "vitest": {
       "type": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@djankies/vitest-mcp"
-      ],
+      "args": ["-y", "@djankies/vitest-mcp"],
       "env": {}
+    },
+    "spartan-ng-mcp-server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "spartan-ng-mcp-server"]
     }
   }
 }
