@@ -1,0 +1,24 @@
+<main class="container">
+  <!-- get all pinboard bookmarks -->
+  <button
+    hlmBtn
+    variant="default"
+    (click)="getBookmarks()"
+    [attr.disabled]="bookmarksFetching()"
+  >
+    fetch all pinboard bookmarks
+    @if (bookmarksFetching()) {
+      <hlm-spinner data-icon="inline-start" />
+    }
+  </button>
+
+  <!-- stale checker testing -->
+  <button hlmBtn variant="destructive" (click)="staleCheck()">
+    start stale checker
+  </button>
+
+  <h3>all bookmarks</h3>
+  <app-stale-table [bookmarks]="bookmarks()"></app-stale-table>
+
+  <h3>stale-checked bookmarks</h3>
+</main>
