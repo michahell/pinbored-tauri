@@ -26,7 +26,7 @@ import {
 import { FormsModule } from '@angular/forms'
 
 @Component({
-  selector: 'app-bookmarks-table2',
+  selector: 'app-bookmarks-table',
   imports: [
     FlexRenderDirective,
     FormsModule,

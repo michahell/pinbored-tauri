@@ -25,6 +25,8 @@ import {
   TableRowSelection,
 } from '../table/selection-column'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { HlmInputImports } from '@spartan-ng/helm/input'
+import { HlmProgress, HlmProgressIndicator } from '@spartan-ng/helm/progress'
 
 @Component({
   selector: 'app-stale-table',
@@ -36,6 +38,9 @@ import { PinboardItemVM } from '../../models/pinboard-view.model'
     HlmButtonImports,
     HlmIconImports,
     HlmTableImports,
+    HlmInputImports,
+    HlmProgress,
+    HlmProgressIndicator,
   ],
   providers: [provideIcons({ lucideChevronDown })],
   host: {

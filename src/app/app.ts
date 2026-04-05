@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import { storage, speechSynthesis, favicon } from '@signality/core'
 import { invoke } from '@tauri-apps/api/core'
+import { Menu } from './components/menu/menu'
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, Menu],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

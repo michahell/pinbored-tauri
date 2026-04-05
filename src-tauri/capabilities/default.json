@@ -11,8 +11,17 @@
     "http:default",
     {
       "identifier": "http:default",
-      "allow": [{ "url": "http*://*"}],
-      "deny": [{ "url": "https://private.tauri.app" }]
-    }
+      "allow": [
+        {
+          "url": "http*://*"
+        }
+      ],
+      "deny": [
+        {
+          "url": "https://private.tauri.app"
+        }
+      ]
+    },
+    "store:default"
   ]
 }

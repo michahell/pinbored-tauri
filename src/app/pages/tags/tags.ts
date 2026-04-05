@@ -4,6 +4,5 @@ import { Component } from '@angular/core'
   selector: 'app-tags',
   imports: [],
   templateUrl: './tags.html',
-  styleUrl: './tags.css',
 })
 export default class Tags {}

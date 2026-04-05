@@ -1,1 +1,39 @@
-<p>bookmarks works!</p>
+<div class="p-5 pt-0">
+  <hlm-tabs tab="account" class="w-full">
+    <hlm-tabs-list class="grid grid-cols-2" aria-label="tabs example">
+      <button hlmTabsTrigger="bookmarks">bookmarks</button>
+      <button hlmTabsTrigger="stale">stale</button>
+    </hlm-tabs-list>
+    <div hlmTabsContent="bookmarks">
+      <!--  get bookmarks -->
+      <button
+        hlmBtn
+        size="sm"
+        variant="secondary"
+        (click)="getBookmarks()"
+        [attr.disabled]="bookmarksFetching()"
+      >
+        fetch all pinboard bookmarks
+        @if (bookmarksFetching()) {
+          <hlm-spinner data-icon="inline-start" />
+        }
+      </button>
+
+      <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
+    </div>
+    <div hlmTabsContent="stale">
+      <!-- stale checker testing -->
+      <button
+        hlmBtn
+        size="sm"
+        variant="destructive"
+        (click)="staleCheck()"
+        [attr.disabled]="!hasBookmarks() || bookmarksFetching()"
+      >
+        start stale checker
+      </button>
+
+      <app-stale-table [bookmarks]="bookmarks()"></app-stale-table>
+    </div>
+  </hlm-tabs>
+</div>

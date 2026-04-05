@@ -1,10 +1,10 @@
 <div
-  class="flex flex-col justify-between gap-4 py-4 sm:flex-row sm:items-center"
+  class="flex flex-col justify-between gap-4 py-4 pb-0 sm:flex-row sm:items-center"
 >
   <input
     hlmInput
     class="w-full md:w-80"
-    placeholder="Filter emails..."
+    placeholder="Filter bookmarks..."
     (input)="_filterChanged($event)"
   />
 
@@ -27,6 +27,11 @@
       }
     </hlm-dropdown-menu>
   </ng-template>
+</div>
+<div>
+  <hlm-progress value="0">
+    <hlm-progress-indicator />
+  </hlm-progress>
 </div>
 <div class="overflow-hidden rounded-md border">
   <!-- we defer the loading of the table, because tanstack manipulates the DOM with flexRender which can cause errors during SSR -->

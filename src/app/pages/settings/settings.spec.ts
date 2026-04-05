@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
-import Stale from './stale'
+import Settings from './settings'
 
-describe('Stale', () => {
-  let component: Stale
-  let fixture: ComponentFixture<Stale>
+describe('Settings', () => {
+  let component: Settings
+  let fixture: ComponentFixture<Settings>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Stale],
+      imports: [Settings],
     }).compileComponents()
 
-    fixture = TestBed.createComponent(Stale)
+    fixture = TestBed.createComponent(Settings)
     component = fixture.componentInstance
     await fixture.whenStable()
   })

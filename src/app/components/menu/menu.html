@@ -1,0 +1,31 @@
+<nav hlmNavigationMenu class="p-3">
+  <ul hlmNavigationMenuList>
+    <li hlmNavigationMenuItem>
+      <button
+        hlmNavigationMenuTrigger
+        routerLink="bookmarks"
+        [routerLinkActive]="'active'"
+      >
+        bookmarks
+      </button>
+    </li>
+    <li hlmNavigationMenuItem>
+      <button hlmNavigationMenuTrigger routerLink="tags">tags</button>
+    </li>
+    <li hlmNavigationMenuItem>
+      <button hlmNavigationMenuTrigger routerLink="notes">notes</button>
+    </li>
+    <li hlmNavigationMenuItem>
+      <button hlmNavigationMenuTrigger routerLink="settings">settings</button>
+    </li>
+    <li hlmNavigationMenuItem>
+      <button
+        hlmNavigationMenuTrigger
+        (click)="logout()"
+        [attr.disabled]="isLoggedIn() ? null : 'disabled'"
+      >
+        logout
+      </button>
+    </li>
+  </ul>
+</nav>
