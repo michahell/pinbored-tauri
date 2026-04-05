@@ -12,6 +12,8 @@
   },
   "enabledMcpjsonServers": [
     "angular-cli",
-    "vitest"
-  ]
+    "vitest",
+    "spartan-ng-mcp-server"
+  ],
+  "enableAllProjectMcpServers": true
 }
