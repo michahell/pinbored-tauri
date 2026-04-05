@@ -5,28 +5,20 @@ import { pMapIterable } from 'p-map'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 
 export interface PinboardQueue {
-  startWith: (
-    list: Map<string, PinboardItemVM>,
-    updateHandler: PinboardStaleCheckUpdateHandler
-  ) => Promise<void>
+  startWith: (list: Map<string, PinboardItemVM>, updateHandler: PinboardStaleCheckUpdateHandler) => Promise<PQueue>
 }
 
-export type PinboardStaleCheckUpdateHandler = (
-  item: PinboardItemVM,
-  result: Response | null
-) => Promise<void>
+export type PinboardStaleCheckUpdateHandler = (item: PinboardItemVM, result: Response | null) => Promise<void>
 
 @Injectable({
   providedIn: 'root',
 })
-export class StaleChecker {
-  newQueue(): PinboardQueue {
-    const queue = new PQueue({ concurrency: 4 })
+export class StaleCheckerService {
+  newQueue(pQueueOptions = { concurrency: 4 }): PinboardQueue {
+    const queue = new PQueue(pQueueOptions)
     return {
-      startWith: (
-        list: Map<string, PinboardItemVM>,
-        updateHandler: PinboardStaleCheckUpdateHandler
-      ) => this.#startWith(queue, list, updateHandler),
+      startWith: (list: Map<string, PinboardItemVM>, updateHandler: PinboardStaleCheckUpdateHandler) =>
+        this.#startWith(queue, list, updateHandler),
     }
   }
 
@@ -34,7 +26,7 @@ export class StaleChecker {
     queue: PQueue,
     list: Map<string, PinboardItemVM>,
     handler: PinboardStaleCheckUpdateHandler
-  ): Promise<any> {
+  ): Promise<PQueue> {
     for await (const [pinboardItem, response] of pMapIterable(
       list,
       ([_, bookmark]) =>
@@ -45,11 +37,10 @@ export class StaleChecker {
     )) {
       await handler(pinboardItem, response)
     }
+    return Promise.resolve(queue)
   }
 
-  async #fetchBookmark(
-    pinboardItem: PinboardItemVM
-  ): Promise<[PinboardItemVM, Response | null]> {
+  async #fetchBookmark(pinboardItem: PinboardItemVM): Promise<[PinboardItemVM, Response | null]> {
     let result: [PinboardItemVM, Response | null]
     try {
       result = await fetch(pinboardItem.href, {
@@ -61,10 +52,7 @@ export class StaleChecker {
     return result
   }
 
-  #markAsChecking(
-    bookmark: PinboardItemVM,
-    list: Map<string, PinboardItemVM>
-  ): void {
+  #markAsChecking(bookmark: PinboardItemVM, list: Map<string, PinboardItemVM>): void {
     list.set(bookmark.hash, {
       ...bookmark,
       status: 'checking',

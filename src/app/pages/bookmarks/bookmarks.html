@@ -1,39 +1,42 @@
 <div class="p-5 pt-0">
-  <hlm-tabs tab="account" class="w-full">
-    <hlm-tabs-list class="grid grid-cols-2" aria-label="tabs example">
-      <button hlmTabsTrigger="bookmarks">bookmarks</button>
-      <button hlmTabsTrigger="stale">stale</button>
-    </hlm-tabs-list>
-    <div hlmTabsContent="bookmarks">
-      <!--  get bookmarks -->
-      <button
-        hlmBtn
-        size="sm"
-        variant="secondary"
-        (click)="getBookmarks()"
-        [attr.disabled]="bookmarksFetching()"
-      >
-        fetch all pinboard bookmarks
+  <div class="w-full flex flex-row justify-end-safe text-sm p-2 gap-1">
+    <span> status flags report:&nbsp;&nbsp;</span>
+    <hlm-badge variant="secondary">bookmarksFetching:&nbsp;{{ bookmarksFetching() }}</hlm-badge>
+    <hlm-badge variant="secondary">staleChecking:&nbsp;{{ staleChecking() }}</hlm-badge>
+    <hlm-badge variant="secondary">hasBookmarks:&nbsp;{{ hasBookmarks() }}</hlm-badge>
+    <hlm-badge variant="secondary">staleCheckDisabled:&nbsp;{{ staleCheckDisabled() }}</hlm-badge>
+  </div>
+  <div class="w-full flex flex-row justify-end-safe text-sm p-2 gap-1">
+    <span> queue flags report:&nbsp;&nbsp;</span>
+    <hlm-badge variant="secondary">queueLength:&nbsp;{{ queueLength() }}</hlm-badge>
+  </div>
+  <!--  get bookmarks -->
+  <div hlmButtonGroup>
+    <div hlmButtonGroup>
+      <!-- fetch all -->
+      <button hlmBtn variant="outline" size="sm" (click)="getBookmarks()" [attr.disabled]="bookmarksFetching()">
+        fetch all
         @if (bookmarksFetching()) {
           <hlm-spinner data-icon="inline-start" />
         }
       </button>
-
-      <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
-    </div>
-    <div hlmTabsContent="stale">
+      <!-- fetch most recent bookmarks -->
+      <button hlmBtn variant="outline" size="sm" disabled>fetch most recent</button>
       <!-- stale checker testing -->
       <button
         hlmBtn
         size="sm"
         variant="destructive"
         (click)="staleCheck()"
-        [attr.disabled]="!hasBookmarks() || bookmarksFetching()"
+        [attr.disabled]="staleCheckDisabled() ? 'disabled' : null"
       >
         start stale checker
+        @if (staleChecking()) {
+          <hlm-spinner data-icon="inline-start" />
+        }
       </button>
-
-      <app-stale-table [bookmarks]="bookmarks()"></app-stale-table>
     </div>
-  </hlm-tabs>
+  </div>
+  <!-- bookmarks table -->
+  <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
 </div>

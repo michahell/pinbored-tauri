@@ -38,7 +38,8 @@
       "@spartan-ng/helm/navigation-menu": [
         "./libs/ui/navigation-menu/src/index.ts"
       ],
-      "@spartan-ng/helm/tabs": ["./libs/ui/tabs/src/index.ts"]
+      "@spartan-ng/helm/tabs": ["./libs/ui/tabs/src/index.ts"],
+      "@spartan-ng/helm/button-group": ["./libs/ui/button-group/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

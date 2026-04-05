@@ -17,10 +17,10 @@ export class LocalStore {
     })
   }
 
-  async get(key: string): Promise<LocalStoreModel | undefined> {
+  async get<T>(key: string): Promise<T | undefined> {
     // Get a value.
     if (this.#store != null) {
-      return await this.#store.get<LocalStoreModel>(key)
+      return await this.#store.get<T>(key)
     }
     return undefined
   }

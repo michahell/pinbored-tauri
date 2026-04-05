@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import {
   FormControl,
   FormGroup,
@@ -12,7 +12,7 @@ import { HlmInputImports } from '@spartan-ng/helm/input'
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner'
 import { Pinboard } from '../../services/pinboard/pinboard'
 import { Router } from '@angular/router'
-import { LocalStore } from '../../services/store/local-store'
+import { Authentication } from '../../services/authentication/authentication'
 
 interface PinboardLoginForm {
   username: FormControl<string | null>
@@ -33,8 +33,8 @@ interface PinboardLoginForm {
   templateUrl: './login.html',
 })
 export default class Login implements OnInit {
+  readonly #authenticationService = inject(Authentication)
   readonly #pinboard = inject(Pinboard)
-  readonly #localStore = inject(LocalStore)
   readonly #router = inject(Router)
 
   readonly loginForm = new FormGroup<PinboardLoginForm>({
@@ -42,23 +42,11 @@ export default class Login implements OnInit {
     password: new FormControl('', {}),
   })
 
-  readonly authStatus = signal<
-    'checking' | 'unauthenticated' | 'authenticated'
-  >('checking')
+  readonly authStatus = this.#authenticationService.authStatus
 
   async ngOnInit(): Promise<void> {
-    try {
-      const username = await this.#localStore.get('username')
-      const password = await this.#localStore.get('password')
-      if (username && password) {
-        this.authenticated()
-      } else {
-        this.authStatus.set('unauthenticated')
-      }
-    } catch (error) {
-      console.log(error)
-      this.authStatus.set('unauthenticated')
-    }
+    console.log('Login page initialized, checking authentication...')
+    await this.#authenticationService.checkAuthentication()
   }
 
   async login(): Promise<void> {
@@ -72,7 +60,12 @@ export default class Login implements OnInit {
       // make a request to see if auth is correct
       try {
         const apiToken = await this.#pinboard.getUserApiToken()
-        apiToken != null ? this.authenticated(true) : this.#unauthenticated()
+        if (apiToken != null) {
+          this.#authenticationService.setAuthenticated(username, password, true)
+          this.#router.navigate(['/bookmarks']).then(() => {})
+        } else {
+          this.#unauthenticated()
+        }
       } catch (error: any) {
         this.#unauthenticated()
       }
@@ -81,20 +74,8 @@ export default class Login implements OnInit {
     }
   }
 
-  authenticated(store: boolean = false) {
-    if (store) {
-      // store username & password in localStorage
-      this.#localStore.set('username', this.#pinboard.user)
-      this.#localStore.set('password', this.#pinboard.password)
-    }
-    this.authStatus.set('authenticated')
-    this.#router.navigate(['/bookmarks'])
-  }
-
   #unauthenticated() {
     this.loginForm.setErrors({ unauthenticated: { something: 'wrong' } })
-    // remove stored username & password in Pinboard service
-    this.#pinboard.user = ''
-    this.#pinboard.password = ''
+    this.#authenticationService.setUnauthenticated()
   }
 }

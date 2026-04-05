@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing'
 
-import { StaleCheckerService } from './stale-checker.service'
+import { Authentication } from './authentication'
 
-describe('StaleChecker', () => {
-  let service: StaleCheckerService
+describe('Authentication', () => {
+  let service: Authentication
 
   beforeEach(() => {
     TestBed.configureTestingModule({})
-    service = TestBed.inject(StaleCheckerService)
+    service = TestBed.inject(Authentication)
   })
 
   it('should be created', () => {

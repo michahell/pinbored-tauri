@@ -1,0 +1,104 @@
+import { computed, inject, Injectable, signal } from '@angular/core'
+import { interval } from '@signality/core'
+import PQueue from 'p-queue'
+import { PinboardItemVM, PinboardItemVMStatus } from '../../models/pinboard-view.model'
+import { StaleCheckerService } from '../stale-checker/stale-checker.service'
+import { PinboardFacade } from '../pinboard/pinboard-facade'
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BookmarksService {
+  readonly #staleChecker = inject(StaleCheckerService)
+  readonly #pinboardFacade = inject(PinboardFacade)
+
+  // queue
+  queue: PQueue | null = null
+
+  // data signals
+  readonly bookmarks = signal<Map<string, PinboardItemVM>>(new Map())
+  // status signals
+  readonly bookmarksFetching = signal(false)
+  readonly staleChecking = signal(false)
+  readonly hasBookmarks = computed(() => this.bookmarks().size > 0)
+
+  // for queue
+  readonly queueLength = signal(0)
+  // other signals
+  readonly poller = interval(() => {
+    this.queueLength.update(() => this.queue?.size ?? 0)
+  }, 1)
+
+  async getAllBookmarks(): Promise<void> {
+    this.bookmarksFetching.set(true)
+    await this.#pinboardFacade
+      .getAllBookmarks()
+      .then((bookmarks) => {
+        if (bookmarks && bookmarks.length > 0) {
+          this.bookmarks.set(new Map(bookmarks.map((bm) => [bm.hash, bm])))
+        }
+      })
+      .catch((err) => {
+        this.bookmarks.set(new Map())
+        console.error('ERRORED!', err)
+      })
+      .finally(() => {
+        this.bookmarksFetching.set(false)
+      })
+  }
+
+  async staleCheck(): Promise<void> {
+    try {
+      this.queue = await this.#staleChecker
+        .newQueue()
+        .startWith(this.bookmarks(), this.#handleStaleCheckerUpdate.bind(this))
+      this.queue.onEmpty().then(() => {})
+      this.staleChecking.set(true)
+    } catch (error) {
+      console.error(error)
+      this.staleChecking.set(false)
+    }
+  }
+
+  #handleStaleCheckerUpdate(bookmark: PinboardItemVM, response: Response | null): Promise<void> {
+    // console.log('stale checker update method called for item: ', bookmark)
+    // console.log('response: ', response)
+
+    let status: PinboardItemVMStatus = 'unchecked'
+
+    if (response == null) {
+      console.info(`No Response -> invalid bookmark href -> stale`)
+      status = 'stale'
+    } else if (response?.ok) {
+      status = 'ok'
+    } else if (!response.ok) {
+      console.log(`Response status: ${response.status} -> maybe-stale`)
+      if (response.status === 301 || response.status === 308) {
+        status = 'stale'
+      } else if (response.status === 404) {
+        status = 'stale'
+      } else if (response.status === 401 || response.status === 403) {
+        status = 'maybe-stale'
+      } else if (response.status >= 500) {
+        status = 'maybe-stale'
+      }
+    }
+
+    // update bookmark item
+    const updatedBookmark = this.#updateStaleStatus(bookmark, status)
+    console.log('updated bookmark: ', updatedBookmark)
+
+    // update bookmarks data
+    const map = this.bookmarks()
+    this.bookmarks.set(map.set(bookmark.hash, updatedBookmark))
+
+    return Promise.resolve()
+  }
+
+  #updateStaleStatus(bookmark: PinboardItemVM, status: PinboardItemVMStatus): PinboardItemVM {
+    return {
+      ...bookmark,
+      status,
+    }
+  }
+}

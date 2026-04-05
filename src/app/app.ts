@@ -1,9 +1,10 @@
-import { Component, effect } from '@angular/core'
+import { Component, effect, inject, OnInit } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import { storage, speechSynthesis, favicon } from '@signality/core'
 import { invoke } from '@tauri-apps/api/core'
 import { Menu } from './components/menu/menu'
+import { Authentication } from './services/authentication/authentication'
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,9 @@ import { Menu } from './components/menu/menu'
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
+export class App implements OnInit {
+  readonly #authenticationService = inject(Authentication)
+
   readonly value = storage('key', 'Hi, Angular!') // Web Storage API
   readonly synthesis = speechSynthesis() // Web Speech API
   readonly fav = favicon() // Dynamic Favicon
@@ -25,6 +28,11 @@ export class App {
         this.fav.reset()
       }
     })
+  }
+
+  async ngOnInit(): Promise<void> {
+    console.log('App initialized, checking authentication...')
+    await this.#authenticationService.checkAuthentication()
   }
 
   async greet(event: SubmitEvent, name: string): Promise<void> {

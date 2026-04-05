@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing'
 
-import { StaleCheckerService } from './stale-checker.service'
+import { Bookmarks } from './bookmarks-service'
 
-describe('StaleChecker', () => {
-  let service: StaleCheckerService
+describe('Bookmarks', () => {
+  let service: Bookmarks
 
   beforeEach(() => {
     TestBed.configureTestingModule({})
-    service = TestBed.inject(StaleCheckerService)
+    service = TestBed.inject(Bookmarks)
   })
 
   it('should be created', () => {

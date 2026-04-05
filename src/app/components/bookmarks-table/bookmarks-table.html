@@ -28,6 +28,11 @@
     </hlm-dropdown-menu>
   </ng-template>
 </div>
+<div>
+  <hlm-progress value="0">
+    <hlm-progress-indicator />
+  </hlm-progress>
+</div>
 <div class="overflow-hidden rounded-md border">
   <!-- we defer the loading of the table, because tanstack manipulates the DOM with flexRender which can cause errors during SSR -->
   @defer {
