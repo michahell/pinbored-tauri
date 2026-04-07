@@ -1,13 +1,8 @@
-import {
-  ApplicationConfig,
-  inject,
-  provideAppInitializer,
-  provideBrowserGlobalErrorListeners,
-} from '@angular/core'
+import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core'
 import { provideRouter } from '@angular/router'
 
 import { routes } from './app.routes'
-import { LocalStore } from './services/store/local-store'
+import { LocalStoreService } from './services/store/local-store-service'
 import { provideIcons } from '@ng-icons/core'
 import {
   lucideArrowLeft,
@@ -29,7 +24,7 @@ export const appConfig: ApplicationConfig = {
       lucideArrowUpDown,
     }),
     provideAppInitializer(async () => {
-      const localStore = inject(LocalStore)
+      const localStore = inject(LocalStoreService)
       await localStore.load()
     }),
   ],

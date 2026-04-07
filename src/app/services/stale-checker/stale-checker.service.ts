@@ -4,29 +4,25 @@ import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 
-export interface PinboardQueue {
-  startWith: (list: Map<string, PinboardItemVM>, updateHandler: PinboardStaleCheckUpdateHandler) => Promise<PQueue>
-}
-
-export type PinboardStaleCheckUpdateHandler = (item: PinboardItemVM, result: Response | null) => Promise<void>
+export type PinboardStaleCheckUpdateHandler = (item: PinboardItemVM, result: Response | null) => void
 
 @Injectable({
   providedIn: 'root',
 })
 export class StaleCheckerService {
-  newQueue(pQueueOptions = { concurrency: 4 }): PinboardQueue {
-    const queue = new PQueue(pQueueOptions)
-    return {
-      startWith: (list: Map<string, PinboardItemVM>, updateHandler: PinboardStaleCheckUpdateHandler) =>
-        this.#startWith(queue, list, updateHandler),
-    }
+  newQueue(pQueueOptions = { concurrency: 4 }): PQueue {
+    return new PQueue(pQueueOptions)
   }
 
-  async #startWith(
+  async startWith(
     queue: PQueue,
     list: Map<string, PinboardItemVM>,
     handler: PinboardStaleCheckUpdateHandler
-  ): Promise<PQueue> {
+  ): Promise<void> {
+    queue.onEmpty().then(() => this.#queueEmpty())
+    queue.onIdle().then(() => this.#queueIdle())
+    queue.onError().then(() => this.#queueError())
+    // start queue
     for await (const [pinboardItem, response] of pMapIterable(
       list,
       ([_, bookmark]) =>
@@ -35,9 +31,8 @@ export class StaleCheckerService {
           return this.#fetchBookmark(bookmark)
         }) // { priority: item.priority }
     )) {
-      await handler(pinboardItem, response)
+      handler(pinboardItem, response)
     }
-    return Promise.resolve(queue)
   }
 
   async #fetchBookmark(pinboardItem: PinboardItemVM): Promise<[PinboardItemVM, Response | null]> {
@@ -57,5 +52,17 @@ export class StaleCheckerService {
       ...bookmark,
       status: 'checking',
     })
+  }
+
+  #queueEmpty(): void {
+    console.log('queue is empty!')
+  }
+
+  #queueIdle() {
+    console.log('queue is idle!')
+  }
+
+  #queueError() {
+    console.error('queue errored!')
   }
 }

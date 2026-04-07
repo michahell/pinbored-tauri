@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { Pinboard } from './pinboard'
+import { PinboardService } from './pinboard-service'
 
 const mockFetch = vi.fn()
 
@@ -13,13 +13,13 @@ function mockResponse(data: unknown) {
 }
 
 describe('Pinboard', () => {
-  let service: Pinboard
+  let service: PinboardService
 
   beforeEach(() => {
     TestBed.configureTestingModule({})
-    service = TestBed.inject(Pinboard)
-    service.user = 'testuser'
-    service.password = 'testpassword'
+    service = TestBed.inject(PinboardService)
+    service.storedUsername = 'testuser'
+    service.storedToken = 'testtoken'
     mockFetch.mockReset()
   })
 
@@ -31,8 +31,8 @@ describe('Pinboard', () => {
     const methods: Array<() => Promise<unknown>> = []
 
     beforeEach(() => {
-      service.user = ''
-      service.password = ''
+      service.storedUsername = ''
+      service.storedToken = ''
     })
 
     it('getLastUpdateTime throws when auth not set', () => {
@@ -106,7 +106,7 @@ describe('Pinboard', () => {
       expect(mockFetch).toHaveBeenCalledOnce()
       const [url] = mockFetch.mock.calls[0]
       expect(url).toContain('/posts/update')
-      expect(url).toContain('auth_token=testuser%3Atestpassword')
+      expect(url).toContain('auth_token=testuser%3Atesttoken')
       expect(result).toEqual(mockData)
     })
   })
@@ -414,10 +414,10 @@ describe('Pinboard', () => {
   })
 
   describe('auth token format', () => {
-    it('includes auth_token as user:password in all requests', async () => {
+    it('includes auth_token as user:token in all requests', async () => {
       mockFetch.mockReturnValue(mockResponse({}))
-      service.user = 'myuser'
-      service.password = 'mypass'
+      service.storedUsername = 'myuser'
+      service.storedToken = 'mypass'
 
       await service.getLastUpdateTime()
 

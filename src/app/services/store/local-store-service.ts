@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core'
 import { load, Store } from '@tauri-apps/plugin-store'
-import { LocalStoreModel } from './local-store.model'
 
 @Injectable({
   providedIn: 'root',
 })
-export class LocalStore {
+export class LocalStoreService {
   #store: Store | null = null
 
   async load(): Promise<void> {

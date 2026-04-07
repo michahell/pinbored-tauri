@@ -20,28 +20,27 @@ const PINBOARD_BASE_URL = 'https://api.pinboard.in/v1'
 @Injectable({
   providedIn: 'root',
 })
-export class Pinboard {
+export class PinboardService {
   #user: string = ''
-  #password: string = ''
+  #token: string = ''
 
-  get user(): string {
+  get storedUsername(): string {
     return this.#user
   }
-  set user(value: string) {
+  set storedUsername(value: string) {
     this.#user = value
   }
 
-  get password(): string {
-    return this.#password
+  get storedToken(): string {
+    return this.#token
   }
-  set password(value: string) {
-    this.#password = value
+  set storedToken(value: string) {
+    this.#token = value
   }
 
   /** user/api_token — returns the user's API token */
-  async getUserApiToken(): Promise<PinboardUserApiToken> {
-    this.#requireAuth()
-    const params = this.#getParams()
+  async getUserApiToken(username: string, token: string): Promise<PinboardUserApiToken> {
+    const params = this.#getParams({ username, token })
     const url = `${PINBOARD_BASE_URL}/user/api_token?${params}`
     return fetch(url, { method: 'GET' }).then((r) => r.json())
   }
@@ -100,9 +99,7 @@ export class Pinboard {
     this.#requireAuth()
     const params = this.#getParams()
     if (options?.tag != null) {
-      const tags = Array.isArray(options.tag)
-        ? options.tag.slice(0, 3)
-        : [options.tag]
+      const tags = Array.isArray(options.tag) ? options.tag.slice(0, 3) : [options.tag]
       tags.forEach((t) => params.append('tag', t))
     }
     if (options?.dt != null) params.append('dt', options.dt)
@@ -113,16 +110,11 @@ export class Pinboard {
   }
 
   /** posts/recent — returns the most recent bookmarks, optionally filtered by tag */
-  async getRecentBookmarks(options?: {
-    tag?: string | string[]
-    count?: number
-  }): Promise<PinboardPostsResult> {
+  async getRecentBookmarks(options?: { tag?: string | string[]; count?: number }): Promise<PinboardPostsResult> {
     this.#requireAuth()
     const params = this.#getParams()
     if (options?.tag != null) {
-      const tags = Array.isArray(options.tag)
-        ? options.tag.slice(0, 3)
-        : [options.tag]
+      const tags = Array.isArray(options.tag) ? options.tag.slice(0, 3) : [options.tag]
       tags.forEach((t) => params.append('tag', t))
     }
     if (options?.count != null) params.append('count', String(options.count))
@@ -131,9 +123,7 @@ export class Pinboard {
   }
 
   /** posts/dates — returns a list of dates with the number of posts at each date */
-  async getBookmarkDates(
-    tags?: string | string[]
-  ): Promise<PinboardDatesResult> {
+  async getBookmarkDates(tags?: string | string[]): Promise<PinboardDatesResult> {
     this.#requireAuth()
     const params = this.#getParams()
     if (tags != null) {
@@ -157,19 +147,16 @@ export class Pinboard {
     const params = this.#getParams()
     if (options?.tag != null) params.append('tag', options.tag)
     if (options?.start != null) params.append('start', String(options.start))
-    if (options?.results != null)
-      params.append('results', String(options.results))
+    if (options?.results != null) params.append('results', String(options.results))
     if (options?.fromdt != null) params.append('fromdt', options.fromdt)
     if (options?.todt != null) params.append('todt', options.todt)
     if (options?.meta != null) params.append('meta', String(options.meta))
     const url = `${PINBOARD_BASE_URL}/posts/all?${params}`
     console.log('getAllPosts url: ', url)
-    return fetch(url, { method: 'GET', headers: {} }).then<PinboardItem[]>(
-      (response) => {
-        console.log(response)
-        return response.json()
-      }
-    )
+    return fetch(url, { method: 'GET', headers: {} }).then<PinboardItem[]>((response) => {
+      console.log(response)
+      return response.json()
+    })
   }
 
   /** posts/suggest — returns a list of popular and recommended tags for a given URL */
@@ -236,9 +223,11 @@ export class Pinboard {
     return fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
-  #getParams() {
+  #getParams(authentication: { username: string; token: string } | null = null) {
     const params = new URLSearchParams()
-    params.append('auth_token', `${this.user}:${this.password}`)
+    const username = authentication?.username ?? this.storedUsername
+    const token = authentication?.token ?? this.storedToken
+    params.append('auth_token', `${username}:${token}`)
     params.append('format', `json`)
     return params
   }
@@ -250,6 +239,6 @@ export class Pinboard {
   }
 
   #authSet(): boolean {
-    return !!this.user && !!this.password
+    return !!this.storedUsername && !!this.storedToken
   }
 }

@@ -23,9 +23,7 @@
       "@spartan-ng/helm/progress": ["./libs/ui/progress/src/index.ts"],
       "@spartan-ng/helm/utils": ["./libs/ui/utils/src/index.ts"],
       "@spartan-ng/helm/separator": ["./libs/ui/separator/src/index.ts"],
-      "@spartan-ng/helm/dropdown-menu": [
-        "./libs/ui/dropdown-menu/src/index.ts"
-      ],
+      "@spartan-ng/helm/dropdown-menu": ["./libs/ui/dropdown-menu/src/index.ts"],
       "@spartan-ng/helm/select": ["./libs/ui/select/src/index.ts"],
       "@spartan-ng/helm/table": ["./libs/ui/table/src/index.ts"],
       "@spartan-ng/helm/checkbox": ["./libs/ui/checkbox/src/index.ts"],
@@ -35,11 +33,10 @@
       "@spartan-ng/helm/input": ["./libs/ui/input/src/index.ts"],
       "@spartan-ng/helm/field": ["./libs/ui/field/src/index.ts"],
       "@spartan-ng/helm/command": ["./libs/ui/command/src/index.ts"],
-      "@spartan-ng/helm/navigation-menu": [
-        "./libs/ui/navigation-menu/src/index.ts"
-      ],
+      "@spartan-ng/helm/navigation-menu": ["./libs/ui/navigation-menu/src/index.ts"],
       "@spartan-ng/helm/tabs": ["./libs/ui/tabs/src/index.ts"],
-      "@spartan-ng/helm/button-group": ["./libs/ui/button-group/src/index.ts"]
+      "@spartan-ng/helm/button-group": ["./libs/ui/button-group/src/index.ts"],
+      "@spartan-ng/helm/typography": ["./libs/ui/typography/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

@@ -1,32 +1,22 @@
-import { Component, inject, OnInit, signal } from '@angular/core'
-import { HlmNavigationMenuImports } from '@spartan-ng/helm/navigation-menu'
-import { LocalStore } from '../../services/store/local-store'
+import { Component, computed, inject } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router'
+import { HlmNavigationMenuImports } from '@spartan-ng/helm/navigation-menu'
+import { HlmButtonImports } from '@spartan-ng/helm/button'
+import { AuthenticationService } from '../../services/authentication/authentication-service'
 
 @Component({
   selector: 'app-menu',
-  imports: [HlmNavigationMenuImports, RouterLink, RouterLinkActive],
+  imports: [HlmNavigationMenuImports, HlmButtonImports, RouterLink, RouterLinkActive],
   templateUrl: './menu.html',
 })
-export class Menu implements OnInit {
-  #store = inject(LocalStore)
+export class Menu {
   #router = inject(Router)
+  #authentication = inject(AuthenticationService)
 
-  isLoggedIn = signal(false)
-
-  async ngOnInit(): Promise<void> {
-    const username = await this.#store.get('username')
-    const password = await this.#store.get('password')
-    if (username && password) {
-      this.isLoggedIn.set(true)
-    } else {
-      this.isLoggedIn.set(false)
-    }
-  }
+  isLoggedIn = computed(() => this.#authentication.authStatus() === 'authenticated')
 
   async logout(): Promise<void> {
-    await this.#store.set('username', null)
-    await this.#store.set('password', null)
+    await this.#authentication.logout()
     await this.#router.navigate(['/login'])
   }
 }

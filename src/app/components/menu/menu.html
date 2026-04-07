@@ -1,31 +1,23 @@
-<nav hlmNavigationMenu class="p-3">
-  <ul hlmNavigationMenuList>
-    <li hlmNavigationMenuItem>
-      <button
-        hlmNavigationMenuTrigger
-        routerLink="bookmarks"
-        [routerLinkActive]="'active'"
-      >
-        bookmarks
-      </button>
-    </li>
-    <li hlmNavigationMenuItem>
-      <button hlmNavigationMenuTrigger routerLink="tags">tags</button>
-    </li>
-    <li hlmNavigationMenuItem>
-      <button hlmNavigationMenuTrigger routerLink="notes">notes</button>
-    </li>
-    <li hlmNavigationMenuItem>
-      <button hlmNavigationMenuTrigger routerLink="settings">settings</button>
-    </li>
-    <li hlmNavigationMenuItem>
-      <button
-        hlmNavigationMenuTrigger
-        (click)="logout()"
-        [attr.disabled]="isLoggedIn() ? null : 'disabled'"
-      >
-        logout
-      </button>
-    </li>
-  </ul>
-</nav>
+<div class="bg-secondary w-full flex flex-row justify-between">
+  <nav hlmNavigationMenu class="p-3">
+    <ul hlmNavigationMenuList class="gap-2">
+      <li hlmNavigationMenuItem>
+        <button hlmNavigationMenuTrigger routerLink="bookmarks" [routerLinkActive]="'active'">bookmarks</button>
+      </li>
+      <li hlmNavigationMenuItem>
+        <button hlmNavigationMenuTrigger routerLink="tags">tags</button>
+      </li>
+      <li hlmNavigationMenuItem>
+        <button hlmNavigationMenuTrigger routerLink="notes">notes</button>
+      </li>
+      <li hlmNavigationMenuItem>
+        <button hlmNavigationMenuTrigger routerLink="settings">settings</button>
+      </li>
+    </ul>
+  </nav>
+  <div class="p-3">
+    @if (isLoggedIn()) {
+      <button hlmBtn variant="destructive" (click)="logout()">logout</button>
+    }
+  </div>
+</div>

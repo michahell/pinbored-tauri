@@ -1,10 +1,10 @@
-import { Component, effect, inject, OnInit } from '@angular/core'
+import { Component, effect, inject } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { FormsModule } from '@angular/forms'
-import { storage, speechSynthesis, favicon } from '@signality/core'
+import { storage } from '@signality/core'
 import { invoke } from '@tauri-apps/api/core'
 import { Menu } from './components/menu/menu'
-import { Authentication } from './services/authentication/authentication'
+import { SettingsService } from './services/settings/settings-service'
 
 @Component({
   selector: 'app-root',
@@ -12,27 +12,22 @@ import { Authentication } from './services/authentication/authentication'
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App implements OnInit {
-  readonly #authenticationService = inject(Authentication)
+export class App {
+  readonly #settingsService = inject(SettingsService)
 
   readonly value = storage('key', 'Hi, Angular!') // Web Storage API
-  readonly synthesis = speechSynthesis() // Web Speech API
-  readonly fav = favicon() // Dynamic Favicon
 
   constructor() {
-    effect(() => {
-      // signality
-      if (this.synthesis.isSpeaking()) {
-        this.fav.setEmoji('🔊')
-      } else {
-        this.fav.reset()
-      }
-    })
-  }
+    // RUN ALWAYS
+    effect(() => {})
 
-  async ngOnInit(): Promise<void> {
-    console.log('App initialized, checking authentication...')
-    await this.#authenticationService.checkAuthentication()
+    // RUN ONCE
+    const effectRef = effect(() => {
+      // automatically change theme based on user's system theme
+      const preference = this.#settingsService.colorschemePreference()
+      this.#settingsService.setTheme(preference)
+      effectRef.destroy()
+    })
   }
 
   async greet(event: SubmitEvent, name: string): Promise<void> {

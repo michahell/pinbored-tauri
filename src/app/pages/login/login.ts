@@ -1,22 +1,16 @@
-import { Component, inject, OnInit } from '@angular/core'
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms'
+import { Component, computed, inject, OnInit } from '@angular/core'
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmFieldImports } from '@spartan-ng/helm/field'
 import { HlmInputImports } from '@spartan-ng/helm/input'
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner'
-import { Pinboard } from '../../services/pinboard/pinboard'
 import { Router } from '@angular/router'
-import { Authentication } from '../../services/authentication/authentication'
+import { AuthenticationService } from '../../services/authentication/authentication-service'
 
 interface PinboardLoginForm {
   username: FormControl<string | null>
-  password: FormControl<string | null>
+  token: FormControl<string | null>
 }
 
 @Component({
@@ -33,49 +27,45 @@ interface PinboardLoginForm {
   templateUrl: './login.html',
 })
 export default class Login implements OnInit {
-  readonly #authenticationService = inject(Authentication)
-  readonly #pinboard = inject(Pinboard)
+  readonly #authenticationService = inject(AuthenticationService)
   readonly #router = inject(Router)
 
   readonly loginForm = new FormGroup<PinboardLoginForm>({
     username: new FormControl('', {}),
-    password: new FormControl('', {}),
+    token: new FormControl('', {}),
   })
 
-  readonly authStatus = this.#authenticationService.authStatus
+  readonly authStatus = computed(() => this.#authenticationService.authStatus())
 
   async ngOnInit(): Promise<void> {
     console.log('Login page initialized, checking authentication...')
-    await this.#authenticationService.checkAuthentication()
+    await this.#authenticationService.authenticate()
+    if (this.#authenticationService.authStatus() === 'authenticated') {
+      await this.#doLogin()
+    }
   }
 
   async login(): Promise<void> {
     const username = this.loginForm.controls.username.value
-    const password = this.loginForm.controls.password.value
+    const token = this.loginForm.controls.token.value
 
-    if (username != null && password != null) {
-      // update username & password
-      this.#pinboard.user = username
-      this.#pinboard.password = password
-      // make a request to see if auth is correct
+    if (username != null && token != null) {
       try {
-        const apiToken = await this.#pinboard.getUserApiToken()
-        if (apiToken != null) {
-          this.#authenticationService.setAuthenticated(username, password, true)
-          this.#router.navigate(['/bookmarks']).then(() => {})
-        } else {
-          this.#unauthenticated()
-        }
+        await this.#authenticationService.authenticate({ username, token })
       } catch (error: any) {
         this.#unauthenticated()
       }
+      await this.#doLogin()
     } else {
-      this.loginForm.setErrors({ unauthenticated: { something: 'wrong' } })
+      this.#unauthenticated()
     }
   }
 
   #unauthenticated() {
-    this.loginForm.setErrors({ unauthenticated: { something: 'wrong' } })
-    this.#authenticationService.setUnauthenticated()
+    this.loginForm.setErrors({ unauthenticated: { means: 'bad' } })
+  }
+
+  async #doLogin(): Promise<boolean> {
+    return this.#router.navigate(['/bookmarks'])
   }
 }

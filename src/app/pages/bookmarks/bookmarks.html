@@ -11,7 +11,7 @@
     <hlm-badge variant="secondary">queueLength:&nbsp;{{ queueLength() }}</hlm-badge>
   </div>
   <!--  get bookmarks -->
-  <div hlmButtonGroup>
+  <div class="flex flex-row align-middle place-items-center place-content-center justify-center justify-items-center">
     <div hlmButtonGroup>
       <!-- fetch all -->
       <button hlmBtn variant="outline" size="sm" (click)="getBookmarks()" [attr.disabled]="bookmarksFetching()">
@@ -21,19 +21,40 @@
         }
       </button>
       <!-- fetch most recent bookmarks -->
-      <button hlmBtn variant="outline" size="sm" disabled>fetch most recent</button>
+      <button hlmBtn variant="outline" size="sm" [disabled]="'disabled'">fetch most recent</button>
+    </div>
+    <p [class]="hlmMuted">stale checker</p>
+    <div hlmButtonGroup>
       <!-- stale checker testing -->
       <button
         hlmBtn
         size="sm"
         variant="destructive"
-        (click)="staleCheck()"
-        [attr.disabled]="staleCheckDisabled() ? 'disabled' : null"
+        (click)="startStaleCheck()"
+        [disabled]="staleCheckDisabled() ? 'disabled' : null"
       >
-        start stale checker
+        start
         @if (staleChecking()) {
           <hlm-spinner data-icon="inline-start" />
         }
+      </button>
+      <button
+        hlmBtn
+        size="sm"
+        variant="outline"
+        (click)="toggleStaleCheck()"
+        [disabled]="pauseStaleCheckDisabled() ? 'disabled' : null"
+      >
+        {{ staleChecking() ? 'pause' : 'resume' }}
+      </button>
+      <button
+        hlmBtn
+        size="sm"
+        variant="outline"
+        (click)="stopStaleCheck()"
+        [disabled]="stopStaleCheckDisabled() ? 'disabled' : null"
+      >
+        stop
       </button>
     </div>
   </div>

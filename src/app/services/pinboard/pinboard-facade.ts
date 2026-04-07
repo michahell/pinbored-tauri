@@ -1,20 +1,30 @@
 import { inject, Injectable } from '@angular/core'
-import { Pinboard } from './pinboard'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { PinboardService } from './pinboard-service'
+import { LocalStoreService } from '../store/local-store-service'
+import { PinboardItemVM, PinboardItemVMStatus } from '../../models/pinboard-view.model'
+import { LocalStoreModel } from '../store/local-store-model'
 
 @Injectable({
   providedIn: 'root',
 })
 export class PinboardFacade {
-  #pinboard = inject(Pinboard)
+  #pinboard = inject(PinboardService)
+  #localStore = inject(LocalStoreService)
 
   async getAllBookmarks(): Promise<PinboardItemVM[]> {
-    const bookmarks = await this.#pinboard.getAllBookmarks()
-    return bookmarks.map((bookmark) => ({
-      ...bookmark,
-      tagsList: bookmark.tags.split(' '),
-      status: 'unchecked',
-    }))
+    const storedBookmarks = await this.#localStore.get<PinboardItemVM[]>('bookmarks')
+    if (storedBookmarks != null) {
+      return Promise.resolve(storedBookmarks)
+    } else {
+      const bookmarks = await this.#pinboard.getAllBookmarks()
+      const mappedBookmarks = bookmarks.map((bookmark) => ({
+        ...bookmark,
+        tagsList: bookmark.tags.split(' '),
+        status: 'unchecked' as PinboardItemVMStatus,
+      }))
+      await this.#localStore.set('bookmarks', mappedBookmarks)
+      return Promise.resolve(mappedBookmarks)
+    }
   }
 
   async getAllTags(): Promise<any> {

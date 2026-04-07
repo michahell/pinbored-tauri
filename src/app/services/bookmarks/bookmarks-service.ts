@@ -24,10 +24,21 @@ export class BookmarksService {
 
   // for queue
   readonly queueLength = signal(0)
-  // other signals
+  readonly queueTasks = signal<
+    | ReadonlyArray<{
+        readonly id?: string
+        readonly priority: number
+        readonly startTime: number
+        readonly timeout?: number
+      }>
+    | undefined
+  >(undefined)
   readonly poller = interval(() => {
+    console.log('queue length: ', this.queue?.size ?? 0)
     this.queueLength.update(() => this.queue?.size ?? 0)
-  }, 1)
+    console.log('queue tasks: ', this.queue?.runningTasks ?? [])
+    this.queueTasks.update(() => this.queue?.runningTasks ?? undefined)
+  }, 1000)
 
   async getAllBookmarks(): Promise<void> {
     this.bookmarksFetching.set(true)
@@ -47,12 +58,10 @@ export class BookmarksService {
       })
   }
 
-  async staleCheck(): Promise<void> {
+  async startStaleCheck(): Promise<void> {
     try {
-      this.queue = await this.#staleChecker
-        .newQueue()
-        .startWith(this.bookmarks(), this.#handleStaleCheckerUpdate.bind(this))
-      this.queue.onEmpty().then(() => {})
+      this.queue = this.#staleChecker.newQueue()
+      await this.#staleChecker.startWith(this.queue, this.bookmarks(), this.#handleStaleCheckerUpdate.bind(this))
       this.staleChecking.set(true)
     } catch (error) {
       console.error(error)
@@ -60,10 +69,24 @@ export class BookmarksService {
     }
   }
 
-  #handleStaleCheckerUpdate(bookmark: PinboardItemVM, response: Response | null): Promise<void> {
-    // console.log('stale checker update method called for item: ', bookmark)
-    // console.log('response: ', response)
+  async pauseStaleCheck(): Promise<void> {
+    this.queue?.pause()
+    this.staleChecking.set(false)
+  }
 
+  async resumeStaleCheck(): Promise<void> {
+    if (this.queue?.isPaused) {
+      this.queue?.start()
+      this.staleChecking.set(true)
+    }
+  }
+
+  async stopStaleCheck(): Promise<void> {
+    this.queue?.clear()
+    this.staleChecking.set(false)
+  }
+
+  #handleStaleCheckerUpdate(bookmark: PinboardItemVM, response: Response | null): void {
     let status: PinboardItemVMStatus = 'unchecked'
 
     if (response == null) {
@@ -91,8 +114,6 @@ export class BookmarksService {
     // update bookmarks data
     const map = this.bookmarks()
     this.bookmarks.set(map.set(bookmark.hash, updatedBookmark))
-
-    return Promise.resolve()
   }
 
   #updateStaleStatus(bookmark: PinboardItemVM, status: PinboardItemVMStatus): PinboardItemVM {

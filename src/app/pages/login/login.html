@@ -1,9 +1,7 @@
 <div class="h-full -mt-[3%] flex items-center justify-center">
   <div hlmCard class="w-full max-w-sm">
     @if (authStatus() === 'checking') {
-      <div
-        class="text-muted-foreground text-sm flex items-center justify-center"
-      >
+      <div class="text-muted-foreground text-sm flex items-center justify-center">
         <span>{{ authStatus() }}...</span>
         <hlm-spinner class="text-base md:text-lg" />
       </div>
@@ -13,40 +11,19 @@
         <p hlmCardDescription>Enter your Pinboard credentials to continue.</p>
       </div>
       <div hlmCardContent [formGroup]="loginForm">
-        <!-- pinboard API username and password -->
+        <!-- pinboard API username and token -->
         <div hlmFieldGroup class="flex flex-col gap-4">
           <div hlmField>
             <label hlmFieldLabel for="username">Username</label>
-            <input
-              hlmInput
-              id="username"
-              formControlName="username"
-              required
-              minlength="3"
-            />
-            <hlm-field-error validator="required"
-              >username is required</hlm-field-error
-            >
-            <hlm-field-error validator="minlength"
-              >username is at least 3 characters long</hlm-field-error
-            >
+            <input hlmInput type="text" id="username" formControlName="username" required minlength="3" />
+            <hlm-field-error validator="required">username is required</hlm-field-error>
+            <hlm-field-error validator="minlength">username is at least 3 characters long</hlm-field-error>
           </div>
           <div hlmField>
-            <label hlmFieldLabel for="password">Password</label>
-            <input
-              hlmInput
-              type="password"
-              id="password"
-              formControlName="password"
-              required
-              minlength="3"
-            />
-            <hlm-field-error validator="required"
-              >password is required</hlm-field-error
-            >
-            <hlm-field-error validator="minlength"
-              >password is at least 3 characters long</hlm-field-error
-            >
+            <label hlmFieldLabel for="token">Token</label>
+            <input hlmInput type="password" id="token" formControlName="token" required minlength="3" />
+            <hlm-field-error validator="required">token is required</hlm-field-error>
+            <hlm-field-error validator="minlength">token is at least 3 characters long</hlm-field-error>
           </div>
         </div>
         @if (loginForm.errors) {
@@ -56,15 +33,9 @@
         }
       </div>
       <div hlmCardFooter class="flex flex-col gap-2">
-        <button hlmBtn class="w-full" (click)="login()">Login</button>
-        <a
-          hlmBtn
-          variant="outline"
-          class="w-full"
-          href="https://pinboard.in/signup/"
-          target="_blank"
-        >
-          Get Pinboard Account
+        <button hlmBtn class="w-full" (click)="login()">login</button>
+        <a hlmBtn variant="outline" class="w-full" href="https://pinboard.in/signup/" target="_blank">
+          Get a Pinboard account!
         </a>
       </div>
     }
