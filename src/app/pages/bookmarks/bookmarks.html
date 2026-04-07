@@ -1,18 +1,20 @@
-<div class="p-5 pt-0">
-  <div class="w-full flex flex-row justify-end-safe text-sm p-2 gap-1">
-    <span> status flags report:&nbsp;&nbsp;</span>
-    <hlm-badge variant="secondary" [class]="`${bookmarksFetching() ? greenBadge : redBadge}`"
-      >bookmarksFetching</hlm-badge
-    >
-    <hlm-badge variant="secondary" [class]="`${staleChecking() ? greenBadge : redBadge}`">staleChecking</hlm-badge>
-    <hlm-badge variant="secondary" [class]="`${hasBookmarks() ? greenBadge : redBadge}`">hasBookmarks</hlm-badge>
-    <hlm-badge variant="secondary" [class]="`${startStaleCheckDisabled() ? greenBadge : redBadge}`"
-      >staleCheckDisabled</hlm-badge
-    >
+<div class="pt-0">
+  <div class="w-full flex flex-row justify-end-safe dark:bg-blue-400/10 bg-secondary">
+    <div class="text-sm p-2 gap-1">
+      <span> status flags report:&nbsp;&nbsp;</span>
+      <hlm-badge variant="secondary" [class]="`${bookmarksFetching() ? greenBadge : redBadge}`"
+        >bookmarksFetching</hlm-badge
+      >
+      <hlm-badge variant="secondary" [class]="`${staleChecking() ? greenBadge : redBadge}`">staleChecking</hlm-badge>
+      <hlm-badge variant="secondary" [class]="`${hasBookmarks() ? greenBadge : redBadge}`">hasBookmarks</hlm-badge>
+      <hlm-badge variant="secondary" [class]="`${startStaleCheckDisabled() ? greenBadge : redBadge}`"
+        >staleCheckDisabled</hlm-badge
+      >
+    </div>
   </div>
   <div class="w-full flex flex-row justify-end-safe text-sm p-2 gap-1">
     <span> queue flags report:&nbsp;&nbsp;</span>
-    <hlm-badge variant="secondary" [class]="`${skyBadge}`">queueLength:&nbsp;{{ queueLength() }}</hlm-badge>
+    <hlm-badge variant="secondary" [class]="`${skyBadge}`">queued:&nbsp;{{ queueLength() }}</hlm-badge>
   </div>
   <!--  get bookmarks -->
   <div class="flex flex-row align-middle place-items-center place-content-center justify-center justify-items-center">
@@ -63,5 +65,7 @@
     </div>
   </div>
   <!-- bookmarks table -->
-  <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
+  <div class="p-5">
+    <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
+  </div>
 </div>

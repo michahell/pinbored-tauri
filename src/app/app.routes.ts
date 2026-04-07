@@ -8,8 +8,19 @@ export const routes: Routes = [
   },
   {
     path: 'bookmarks',
-    loadComponent: () => import('./pages/bookmarks/bookmarks'),
     canActivate: [isAuthenticatedGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./pages/bookmarks/bookmarks'),
+      },
+      {
+        path: '#/:hash',
+        pathMatch: 'full',
+        loadComponent: () => import('./pages/bookmark/bookmark'),
+      },
+    ],
   },
   {
     path: 'tags',

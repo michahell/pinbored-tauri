@@ -21,7 +21,6 @@ import { NgIcon } from '@ng-icons/core'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { FormsModule } from '@angular/forms'
-import { HlmProgress, HlmProgressIndicator } from '@spartan-ng/helm/progress'
 import { HlmInputImports } from '@spartan-ng/helm/input'
 import { TagsCellRenderer } from '../table/tags-cell-renderer'
 import { TagCellRenderer } from '../table/tag-cell-renderer'
@@ -37,8 +36,6 @@ import { TagCellRenderer } from '../table/tag-cell-renderer'
     HlmIconImports,
     HlmTableImports,
     HlmInputImports,
-    HlmProgress,
-    HlmProgressIndicator,
   ],
   templateUrl: './bookmarks-table.html',
 })
@@ -125,6 +122,6 @@ export class BookmarksTable {
   protected readonly _hidableColumns = this._table.getAllColumns().filter((column) => column.getCanHide())
 
   protected _filterChanged(event: Event) {
-    this._table.getColumn('email')?.setFilterValue((event.target as HTMLInputElement).value)
+    this._table.getColumn('status')?.setFilterValue((event.target as HTMLInputElement).value)
   }
 }

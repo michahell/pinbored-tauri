@@ -1,13 +1,5 @@
-<div
-  class="flex flex-col justify-between gap-4 py-4 sm:flex-row sm:items-center"
->
-  <input
-    hlmInput
-    class="w-full md:w-80"
-    placeholder="Filter emails..."
-    (input)="_filterChanged($event)"
-  />
-
+<div class="flex flex-col justify-between gap-4 py-4 sm:flex-row sm:items-center">
+  <input hlmInput class="w-full md:w-80" placeholder="filter status..." (input)="_filterChanged($event)" />
   <button hlmBtn variant="outline" align="end" [hlmDropdownMenuTrigger]="menu">
     Columns
     <ng-icon hlm name="lucideChevronDown" class="ml-2" size="sm" />
@@ -28,11 +20,6 @@
     </hlm-dropdown-menu>
   </ng-template>
 </div>
-<div>
-  <hlm-progress value="0">
-    <hlm-progress-indicator />
-  </hlm-progress>
-</div>
 <div class="overflow-hidden rounded-md border">
   <!-- we defer the loading of the table, because tanstack manipulates the DOM with flexRender which can cause errors during SSR -->
   @defer {
@@ -45,11 +32,7 @@
                 <th hlmTh [attr.colSpan]="header.colSpan">
                   @if (!header.isPlaceholder) {
                     <ng-container
-                      *flexRender="
-                        header.column.columnDef.header;
-                        props: header.getContext();
-                        let headerText
-                      "
+                      *flexRender="header.column.columnDef.header; props: header.getContext(); let headerText"
                     >
                       <div [innerHTML]="headerText"></div>
                     </ng-container>
@@ -61,20 +44,10 @@
         </thead>
         <tbody hlmTBody>
           @for (row of _table.getRowModel().rows; track row.id) {
-            <tr
-              hlmTr
-              [attr.key]="row.id"
-              [attr.data-state]="row.getIsSelected() && 'selected'"
-            >
+            <tr hlmTr [attr.key]="row.id" [attr.data-state]="row.getIsSelected() && 'selected'">
               @for (cell of row.getVisibleCells(); track $index) {
                 <td hlmTd>
-                  <ng-container
-                    *flexRender="
-                      cell.column.columnDef.cell;
-                      props: cell.getContext();
-                      let cell
-                    "
-                  >
+                  <ng-container *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cell">
                     <div [innerHTML]="cell"></div>
                   </ng-container>
                 </td>
@@ -82,13 +55,7 @@
             </tr>
           } @empty {
             <tr hlmTr>
-              <td
-                hlmTd
-                class="h-24 text-center"
-                [attr.colspan]="_columns.length"
-              >
-                No results.
-              </td>
+              <td hlmTd class="h-24 text-center" [attr.colspan]="_columns.length">No results.</td>
             </tr>
           }
         </tbody>
@@ -100,8 +67,7 @@
 <div class="flex flex-col justify-between py-4 sm:flex-row sm:items-center">
   @if (_table.getRowCount() > 0) {
     <div class="${hlmMuted}">
-      {{ _table.getSelectedRowModel().rows.length }} of
-      {{ _table.getRowCount() }} row(s) selected
+      {{ _table.getSelectedRowModel().rows.length }} of {{ _table.getRowCount() }} row(s) selected
     </div>
     <div class="mt-2 flex space-x-2 sm:mt-0">
       <button
@@ -113,13 +79,7 @@
       >
         Previous
       </button>
-      <button
-        size="sm"
-        variant="outline"
-        hlmBtn
-        [disabled]="!_table.getCanNextPage()"
-        (click)="_table.nextPage()"
-      >
+      <button size="sm" variant="outline" hlmBtn [disabled]="!_table.getCanNextPage()" (click)="_table.nextPage()">
         Next
       </button>
     </div>
