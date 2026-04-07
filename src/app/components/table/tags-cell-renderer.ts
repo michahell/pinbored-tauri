@@ -8,8 +8,7 @@ import { PinboardItemVM } from '../../models/pinboard-view.model'
   providers: [],
   template: `
     @for (tag of tags; track $index) {
-      <hlm-badge>{{ tag }}</hlm-badge
-      >&nbsp;
+      &nbsp;<hlm-badge>{{ tag }}</hlm-badge>
     }
   `,
 })

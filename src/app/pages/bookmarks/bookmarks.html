@@ -1,14 +1,18 @@
 <div class="p-5 pt-0">
   <div class="w-full flex flex-row justify-end-safe text-sm p-2 gap-1">
     <span> status flags report:&nbsp;&nbsp;</span>
-    <hlm-badge variant="secondary">bookmarksFetching:&nbsp;{{ bookmarksFetching() }}</hlm-badge>
-    <hlm-badge variant="secondary">staleChecking:&nbsp;{{ staleChecking() }}</hlm-badge>
-    <hlm-badge variant="secondary">hasBookmarks:&nbsp;{{ hasBookmarks() }}</hlm-badge>
-    <hlm-badge variant="secondary">staleCheckDisabled:&nbsp;{{ startStaleCheckDisabled() }}</hlm-badge>
+    <hlm-badge variant="secondary" [class]="`${bookmarksFetching() ? greenBadge : redBadge}`"
+      >bookmarksFetching</hlm-badge
+    >
+    <hlm-badge variant="secondary" [class]="`${staleChecking() ? greenBadge : redBadge}`">staleChecking</hlm-badge>
+    <hlm-badge variant="secondary" [class]="`${hasBookmarks() ? greenBadge : redBadge}`">hasBookmarks</hlm-badge>
+    <hlm-badge variant="secondary" [class]="`${startStaleCheckDisabled() ? greenBadge : redBadge}`"
+      >staleCheckDisabled</hlm-badge
+    >
   </div>
   <div class="w-full flex flex-row justify-end-safe text-sm p-2 gap-1">
     <span> queue flags report:&nbsp;&nbsp;</span>
-    <hlm-badge variant="secondary">queueLength:&nbsp;{{ queueLength() }}</hlm-badge>
+    <hlm-badge variant="secondary" [class]="`${skyBadge}`">queueLength:&nbsp;{{ queueLength() }}</hlm-badge>
   </div>
   <!--  get bookmarks -->
   <div class="flex flex-row align-middle place-items-center place-content-center justify-center justify-items-center">
@@ -23,7 +27,7 @@
       <!-- fetch most recent bookmarks -->
       <button hlmBtn variant="outline" size="sm" [disabled]="'disabled'">fetch most recent</button>
     </div>
-    <p [class]="hlmMuted">stale checker</p>
+    <p [class]="`${hlmMuted} p-2`">stale checker</p>
     <div hlmButtonGroup>
       <!-- stale checker testing -->
       <button

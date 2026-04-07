@@ -4,13 +4,8 @@ import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 
-export type PinboardStaleCheckStartHandler = (list: Map<string, PinboardItemVM>, item: PinboardItemVM) => void
-
-export type PinboardStaleCheckCompleteHandler = (
-  list: Map<string, PinboardItemVM>,
-  item: PinboardItemVM,
-  result: Response | null
-) => void
+export type PinboardStaleCheckStartHandler = (item: PinboardItemVM) => void
+export type PinboardStaleCheckCompleteHandler = (item: PinboardItemVM, result: Response | null) => void
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +17,7 @@ export class StaleCheckerService {
 
   async startWith(
     queue: PQueue,
-    list: Map<string, PinboardItemVM>,
+    list: PinboardItemVM[],
     startHandler: PinboardStaleCheckStartHandler,
     completeHandler: PinboardStaleCheckCompleteHandler
   ): Promise<void> {
@@ -30,13 +25,13 @@ export class StaleCheckerService {
     queue.onIdle().then(() => this.#queueIdle())
     queue.onError().then(() => this.#queueError())
     // start queue
-    for await (const [pinboardItem, response] of pMapIterable(list, ([_, bookmark]) =>
+    for await (const [pinboardItem, response] of pMapIterable(list, (bookmark) =>
       queue.add(() => {
-        startHandler(list, bookmark)
+        startHandler(bookmark)
         return this.#fetchBookmark(bookmark)
       })
     )) {
-      completeHandler(list, pinboardItem, response)
+      completeHandler(pinboardItem, response)
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core'
+import { Component, input, signal } from '@angular/core'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -43,16 +43,7 @@ import { TagCellRenderer } from '../table/tag-cell-renderer'
   templateUrl: './bookmarks-table.html',
 })
 export class BookmarksTable {
-  readonly bookmarks = input<Map<string, PinboardItemVM>>()
-  readonly #bookmarksAsList = computed(() => {
-    const bookmarks = this.bookmarks()
-    if (bookmarks) {
-      console.log('bookmarks as list updating...')
-      return Array.from(bookmarks.values())
-    } else {
-      return []
-    }
-  })
+  readonly bookmarks = input<PinboardItemVM[]>()
 
   readonly #columnFilters = signal<ColumnFiltersState>([])
   readonly #sorting = signal<SortingState>([])
@@ -71,10 +62,14 @@ export class BookmarksTable {
     {
       accessorKey: 'status',
       id: 'status',
-
       enableHiding: false,
       enableSorting: false,
-      cell: () => flexRenderComponent(TagCellRenderer),
+      cell: (context) =>
+        flexRenderComponent(TagCellRenderer, {
+          inputs: {
+            status: context.cell.getValue() as string,
+          },
+        }),
     },
     {
       accessorKey: 'description',
@@ -101,7 +96,7 @@ export class BookmarksTable {
   ]
 
   protected readonly _table = createAngularTable<PinboardItemVM>(() => ({
-    data: this.#bookmarksAsList(),
+    data: this.bookmarks() ?? [],
     columns: this._columns,
     onSortingChange: (updater) => {
       updater instanceof Function ? this.#sorting.update(updater) : this.#sorting.set(updater)

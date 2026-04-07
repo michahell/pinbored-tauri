@@ -1,11 +1,12 @@
 import { Component, computed, inject } from '@angular/core'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
-import { hlmH4, hlmMuted } from '@spartan-ng/helm/typography'
+import { hlmMuted } from '@spartan-ng/helm/typography'
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
 import { HlmBadgeImports } from '@spartan-ng/helm/badge'
 import { BookmarksTable } from '../../components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from '../../services/bookmarks/bookmarks-service'
+import { skyBadge, greenBadge, redBadge } from '../../constants/tailwind-styles'
 
 @Component({
   selector: 'app-bookmarks',
@@ -14,7 +15,10 @@ import { BookmarksService } from '../../services/bookmarks/bookmarks-service'
 })
 export default class Bookmarks {
   readonly hlmMuted = hlmMuted
-  readonly hlmH4 = hlmH4
+  readonly redBadge = redBadge
+  readonly greenBadge = greenBadge
+  readonly skyBadge = skyBadge
+
   readonly #bookmarks = inject(BookmarksService)
 
   // data signals
@@ -22,7 +26,7 @@ export default class Bookmarks {
   // status signals
   readonly bookmarksFetching = computed(() => this.#bookmarks.bookmarksFetching())
   readonly staleChecking = computed(() => this.#bookmarks.staleChecking())
-  readonly hasBookmarks = computed(() => this.#bookmarks.hasBookmarks)
+  readonly hasBookmarks = computed(() => this.#bookmarks.hasBookmarks())
   // for queue
   readonly queueLength = computed(() => this.#bookmarks.queueLength())
   readonly queueExists = computed(() => this.#bookmarks.hasQueue())
@@ -45,7 +49,7 @@ export default class Bookmarks {
 
   async toggleStaleCheck(): Promise<void> {
     if (this.#bookmarks.queue?.isPaused) {
-      await this.#bookmarks.startStaleCheck()
+      await this.#bookmarks.resumeStaleCheck()
       console.info('restarting stale checking...')
     } else {
       await this.#bookmarks.pauseStaleCheck()

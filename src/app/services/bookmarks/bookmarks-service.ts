@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core'
+import { computed, effect, inject, Injectable, signal } from '@angular/core'
 import { interval } from '@signality/core'
 import PQueue from 'p-queue'
 import { PinboardItemVM, PinboardItemVMStatus } from '../../models/pinboard-view.model'
@@ -16,11 +16,11 @@ export class BookmarksService {
   queue: PQueue | null = null
 
   // data signals
-  readonly bookmarks = signal<Map<string, PinboardItemVM>>(new Map())
+  readonly bookmarks = signal<PinboardItemVM[]>([])
   // status signals
   readonly bookmarksFetching = signal(false)
   readonly staleChecking = signal(false)
-  readonly hasBookmarks = computed(() => this.bookmarks().size > 0)
+  readonly hasBookmarks = computed(() => this.bookmarks().length > 0)
 
   // for queue
   readonly hasQueue = signal(false)
@@ -42,17 +42,23 @@ export class BookmarksService {
     this.queueTasks.update(() => this.queue?.runningTasks ?? undefined)
   }, 1000)
 
+  constructor() {
+    effect(() => {
+      console.log('staleChecking: ', this.staleChecking())
+    })
+  }
+
   async getAllBookmarks(): Promise<void> {
     this.bookmarksFetching.set(true)
     await this.#pinboardFacade
       .getAllBookmarks()
       .then((bookmarks) => {
         if (bookmarks && bookmarks.length > 0) {
-          this.bookmarks.set(new Map(bookmarks.map((bm) => [bm.hash, bm])))
+          this.bookmarks.set(bookmarks)
         }
       })
       .catch((err) => {
-        this.bookmarks.set(new Map())
+        this.bookmarks.set([])
         console.error('ERRORED!', err)
       })
       .finally(() => {
@@ -63,48 +69,49 @@ export class BookmarksService {
   async startStaleCheck(): Promise<void> {
     try {
       this.queue = this.#staleChecker.newQueue()
+      const uncheckedBookmarks = this.bookmarks().filter((bookmark) => bookmark.status === 'unchecked')
+      this.staleChecking.update(() => true)
       await this.#staleChecker.startWith(
         this.queue,
-        this.bookmarks(),
+        uncheckedBookmarks,
         this.#handleStaleCheckStart.bind(this),
         this.#handleStaleCheckComplete.bind(this)
       )
-      this.staleChecking.set(true)
     } catch (error) {
       console.error(error)
-      this.staleChecking.set(false)
+      this.staleChecking.update(() => false)
     }
   }
 
   async pauseStaleCheck(): Promise<void> {
     this.queue?.pause()
-    this.staleChecking.set(false)
+    this.#updateBookmarksInLocalStore()
+    this.staleChecking.update(() => false)
   }
 
   async resumeStaleCheck(): Promise<void> {
     if (this.queue?.isPaused) {
       this.queue?.start()
-      this.staleChecking.set(true)
+      this.#updateBookmarksInLocalStore()
+      this.staleChecking.update(() => true)
     }
   }
 
   async stopStaleCheck(): Promise<void> {
     this.queue?.clear()
-    this.staleChecking.set(false)
+    this.staleChecking.update(() => false)
   }
 
-  #handleStaleCheckStart(list: Map<string, PinboardItemVM>, bookmark: PinboardItemVM): void {
-    list.set(bookmark.hash, {
-      ...bookmark,
-      status: 'checking',
-    })
+  #handleStaleCheckStart(bookmark: PinboardItemVM): void {
+    const bookmarks = this.bookmarks()
+    const bookmarkInList = bookmarks.find((b) => b.hash === bookmark.hash)
+    if (bookmarkInList) {
+      bookmarkInList.status = 'checking'
+      this.bookmarks.update(() => [...bookmarks])
+    }
   }
 
-  #handleStaleCheckComplete(
-    list: Map<string, PinboardItemVM>,
-    bookmark: PinboardItemVM,
-    response: Response | null
-  ): void {
+  #handleStaleCheckComplete(bookmark: PinboardItemVM, response: Response | null): void {
     let status: PinboardItemVMStatus = 'unchecked'
 
     if (response == null) {
@@ -125,13 +132,15 @@ export class BookmarksService {
       }
     }
 
-    list.set(bookmark.hash, {
-      ...bookmark,
-      status,
-    })
+    const bookmarks = this.bookmarks()
+    const bookmarkInList = bookmarks.find((b) => b.hash === bookmark.hash)
+    if (bookmarkInList) {
+      bookmarkInList.status = status
+      this.bookmarks.set([...bookmarks])
+    }
+  }
 
-    console.log('updated bookmark: ', list.get(bookmark.hash))
-    // update bookmarks signal
-    this.bookmarks.update(() => list)
+  #updateBookmarksInLocalStore(): void {
+    // update stored bookmarks in localStore
   }
 }
