@@ -24,6 +24,7 @@ import { FormsModule } from '@angular/forms'
 import { HlmProgress, HlmProgressIndicator } from '@spartan-ng/helm/progress'
 import { HlmInputImports } from '@spartan-ng/helm/input'
 import { TagsCellRenderer } from '../table/tags-cell-renderer'
+import { TagCellRenderer } from '../table/tag-cell-renderer'
 
 @Component({
   selector: 'app-bookmarks-table',
@@ -46,6 +47,7 @@ export class BookmarksTable {
   readonly #bookmarksAsList = computed(() => {
     const bookmarks = this.bookmarks()
     if (bookmarks) {
+      console.log('bookmarks as list updating...')
       return Array.from(bookmarks.values())
     } else {
       return []
@@ -60,6 +62,7 @@ export class BookmarksTable {
   protected readonly _columns: ColumnDef<PinboardItemVM>[] = [
     {
       id: 'hash',
+      accessorKey: 'hash',
       header: () => flexRenderComponent(TableHeadSelection),
       cell: () => flexRenderComponent(TableRowSelection),
       enableSorting: false,
@@ -68,11 +71,10 @@ export class BookmarksTable {
     {
       accessorKey: 'status',
       id: 'status',
-      header: '<div class="text-right">Status</div>',
+
       enableHiding: false,
       enableSorting: false,
-      // cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
-      cell: () => flexRenderComponent(TagsCellRenderer),
+      cell: () => flexRenderComponent(TagCellRenderer),
     },
     {
       accessorKey: 'description',
@@ -82,19 +84,20 @@ export class BookmarksTable {
       cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
     },
     {
-      accessorKey: 'tags',
-      id: 'tags',
+      accessorKey: 'link',
+      id: 'href',
       enableSorting: false,
       enableHiding: true,
-      cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
+      cell: (info) => `<div class="lowercase"><a href="${info.getValue<string>()}">url</a></div>`,
     },
-    // {
-    //   accessorKey: 'href',
-    //   id: 'href',
-    //   enableSorting: false,
-    //   enableHiding: true,
-    //   cell: (info) => `<div class="lowercase">${info.getValue<string>()}</div>`,
-    // },
+    {
+      accessorKey: 'tagsList',
+      id: 'tagsList',
+      header: 'tags',
+      enableSorting: false,
+      enableHiding: true,
+      cell: () => flexRenderComponent(TagsCellRenderer),
+    },
   ]
 
   protected readonly _table = createAngularTable<PinboardItemVM>(() => ({

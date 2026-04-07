@@ -6,14 +6,8 @@ import { PinboardItemVM } from '../../models/pinboard-view.model'
 @Component({
   imports: [HlmBadge],
   providers: [],
-  template: `
-    @for (tag of tags; track $index) {
-      <hlm-badge>{{ tag }}</hlm-badge
-      >&nbsp;
-    }
-  `,
+  template: `<hlm-badge>{{ _context.cell.getValue() }}</hlm-badge>`,
 })
-export class TagsCellRenderer {
+export class TagCellRenderer {
   protected readonly _context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()
-  readonly tags = this._context.cell.getValue() as string[]
 }

@@ -18,16 +18,18 @@ export default class Bookmarks {
   readonly #bookmarks = inject(BookmarksService)
 
   // data signals
-  readonly bookmarks = this.#bookmarks.bookmarks
+  readonly bookmarks = computed(() => this.#bookmarks.bookmarks())
   // status signals
-  readonly bookmarksFetching = this.#bookmarks.bookmarksFetching
-  readonly staleChecking = this.#bookmarks.staleChecking
-  readonly hasBookmarks = this.#bookmarks.hasBookmarks
+  readonly bookmarksFetching = computed(() => this.#bookmarks.bookmarksFetching())
+  readonly staleChecking = computed(() => this.#bookmarks.staleChecking())
+  readonly hasBookmarks = computed(() => this.#bookmarks.hasBookmarks)
   // for queue
-  readonly queueLength = this.#bookmarks.queueLength
-  readonly queueExists = computed(() => this.#bookmarks.queue != null)
+  readonly queueLength = computed(() => this.#bookmarks.queueLength())
+  readonly queueExists = computed(() => this.#bookmarks.hasQueue())
   // flag signals
-  readonly staleCheckDisabled = computed(() => !this.hasBookmarks() || this.bookmarksFetching() || this.staleChecking())
+  readonly startStaleCheckDisabled = computed(
+    () => this.queueExists() || !this.hasBookmarks() || this.bookmarksFetching() || this.staleChecking()
+  )
   readonly pauseStaleCheckDisabled = computed(() => !this.queueExists())
   readonly stopStaleCheckDisabled = computed(() => !this.queueExists())
 

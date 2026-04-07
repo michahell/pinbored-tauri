@@ -89,7 +89,7 @@ Uses Vitest via `@angular/build:unit-test`. Test files are `*.spec.ts` co-locate
 
 To run a single test file:
 ```bash
-ng test --include='**/stale-checker.spec.ts'
+ng test --include='**/stale-checker-service.spec.ts'
 ```
 
 ## Code Style

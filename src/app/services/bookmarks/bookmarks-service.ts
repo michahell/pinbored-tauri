@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core'
 import { interval } from '@signality/core'
 import PQueue from 'p-queue'
 import { PinboardItemVM, PinboardItemVMStatus } from '../../models/pinboard-view.model'
-import { StaleCheckerService } from '../stale-checker/stale-checker.service'
+import { StaleCheckerService } from '../stale-checker/stale-checker-service'
 import { PinboardFacade } from '../pinboard/pinboard-facade'
 
 @Injectable({
@@ -23,6 +23,7 @@ export class BookmarksService {
   readonly hasBookmarks = computed(() => this.bookmarks().size > 0)
 
   // for queue
+  readonly hasQueue = signal(false)
   readonly queueLength = signal(0)
   readonly queueTasks = signal<
     | ReadonlyArray<{
@@ -33,10 +34,11 @@ export class BookmarksService {
       }>
     | undefined
   >(undefined)
+
+  // queue poller
   readonly poller = interval(() => {
-    console.log('queue length: ', this.queue?.size ?? 0)
+    this.hasQueue.update(() => !!this.queue)
     this.queueLength.update(() => this.queue?.size ?? 0)
-    console.log('queue tasks: ', this.queue?.runningTasks ?? [])
     this.queueTasks.update(() => this.queue?.runningTasks ?? undefined)
   }, 1000)
 
@@ -61,7 +63,12 @@ export class BookmarksService {
   async startStaleCheck(): Promise<void> {
     try {
       this.queue = this.#staleChecker.newQueue()
-      await this.#staleChecker.startWith(this.queue, this.bookmarks(), this.#handleStaleCheckerUpdate.bind(this))
+      await this.#staleChecker.startWith(
+        this.queue,
+        this.bookmarks(),
+        this.#handleStaleCheckStart.bind(this),
+        this.#handleStaleCheckComplete.bind(this)
+      )
       this.staleChecking.set(true)
     } catch (error) {
       console.error(error)
@@ -86,7 +93,18 @@ export class BookmarksService {
     this.staleChecking.set(false)
   }
 
-  #handleStaleCheckerUpdate(bookmark: PinboardItemVM, response: Response | null): void {
+  #handleStaleCheckStart(list: Map<string, PinboardItemVM>, bookmark: PinboardItemVM): void {
+    list.set(bookmark.hash, {
+      ...bookmark,
+      status: 'checking',
+    })
+  }
+
+  #handleStaleCheckComplete(
+    list: Map<string, PinboardItemVM>,
+    bookmark: PinboardItemVM,
+    response: Response | null
+  ): void {
     let status: PinboardItemVMStatus = 'unchecked'
 
     if (response == null) {
@@ -107,19 +125,13 @@ export class BookmarksService {
       }
     }
 
-    // update bookmark item
-    const updatedBookmark = this.#updateStaleStatus(bookmark, status)
-    console.log('updated bookmark: ', updatedBookmark)
-
-    // update bookmarks data
-    const map = this.bookmarks()
-    this.bookmarks.set(map.set(bookmark.hash, updatedBookmark))
-  }
-
-  #updateStaleStatus(bookmark: PinboardItemVM, status: PinboardItemVMStatus): PinboardItemVM {
-    return {
+    list.set(bookmark.hash, {
       ...bookmark,
       status,
-    }
+    })
+
+    console.log('updated bookmark: ', list.get(bookmark.hash))
+    // update bookmarks signal
+    this.bookmarks.update(() => list)
   }
 }

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing'
 
-import { StaleCheckerService } from './stale-checker.service'
+import { StaleCheckerService } from './stale-checker-service'
 
 describe('StaleChecker', () => {
   let service: StaleCheckerService

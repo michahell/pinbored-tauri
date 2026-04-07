@@ -4,7 +4,13 @@ import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 
-export type PinboardStaleCheckUpdateHandler = (item: PinboardItemVM, result: Response | null) => void
+export type PinboardStaleCheckStartHandler = (list: Map<string, PinboardItemVM>, item: PinboardItemVM) => void
+
+export type PinboardStaleCheckCompleteHandler = (
+  list: Map<string, PinboardItemVM>,
+  item: PinboardItemVM,
+  result: Response | null
+) => void
 
 @Injectable({
   providedIn: 'root',
@@ -17,21 +23,20 @@ export class StaleCheckerService {
   async startWith(
     queue: PQueue,
     list: Map<string, PinboardItemVM>,
-    handler: PinboardStaleCheckUpdateHandler
+    startHandler: PinboardStaleCheckStartHandler,
+    completeHandler: PinboardStaleCheckCompleteHandler
   ): Promise<void> {
     queue.onEmpty().then(() => this.#queueEmpty())
     queue.onIdle().then(() => this.#queueIdle())
     queue.onError().then(() => this.#queueError())
     // start queue
-    for await (const [pinboardItem, response] of pMapIterable(
-      list,
-      ([_, bookmark]) =>
-        queue.add(() => {
-          this.#markAsChecking(bookmark, list)
-          return this.#fetchBookmark(bookmark)
-        }) // { priority: item.priority }
+    for await (const [pinboardItem, response] of pMapIterable(list, ([_, bookmark]) =>
+      queue.add(() => {
+        startHandler(list, bookmark)
+        return this.#fetchBookmark(bookmark)
+      })
     )) {
-      handler(pinboardItem, response)
+      completeHandler(list, pinboardItem, response)
     }
   }
 
@@ -45,13 +50,6 @@ export class StaleCheckerService {
       result = [pinboardItem, null]
     }
     return result
-  }
-
-  #markAsChecking(bookmark: PinboardItemVM, list: Map<string, PinboardItemVM>): void {
-    list.set(bookmark.hash, {
-      ...bookmark,
-      status: 'checking',
-    })
   }
 
   #queueEmpty(): void {
