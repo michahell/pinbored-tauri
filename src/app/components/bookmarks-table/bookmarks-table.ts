@@ -17,13 +17,14 @@ import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmTableImports } from '@spartan-ng/helm/table'
+import { HlmInputImports } from '@spartan-ng/helm/input'
 import { NgIcon } from '@ng-icons/core'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { FormsModule } from '@angular/forms'
-import { HlmInputImports } from '@spartan-ng/helm/input'
 import { TagsCellRenderer } from '../table/tags-cell-renderer'
 import { TagCellRenderer } from '../table/tag-cell-renderer'
+import { ActionDropdown } from '../table/action-dropdown'
 
 @Component({
   selector: 'app-bookmarks-table',
@@ -59,6 +60,7 @@ export class BookmarksTable {
     {
       accessorKey: 'status',
       id: 'status',
+      header: 'stale status',
       enableHiding: false,
       enableSorting: false,
       cell: (context) =>
@@ -89,6 +91,13 @@ export class BookmarksTable {
       enableSorting: false,
       enableHiding: true,
       cell: () => flexRenderComponent(TagsCellRenderer),
+    },
+    {
+      accessorKey: 'actions',
+      id: 'actions',
+      enableSorting: false,
+      enableHiding: false,
+      cell: () => flexRenderComponent(ActionDropdown),
     },
   ]
 
