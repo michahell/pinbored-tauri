@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { describe, it, expect, beforeEach } from 'vitest'
 import Tags from './tags'
+import { provideAllIcons } from '../../utils/provide-all-icons'
 
 describe('Tags', () => {
   let component: Tags
@@ -8,6 +10,7 @@ describe('Tags', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Tags],
+      providers: [provideAllIcons],
     }).compileComponents()
 
     fixture = TestBed.createComponent(Tags)

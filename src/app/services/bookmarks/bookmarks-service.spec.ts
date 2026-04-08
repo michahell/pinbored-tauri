@@ -1,16 +1,262 @@
 import { TestBed } from '@angular/core/testing'
+import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { BookmarksService } from './bookmarks-service'
+import { PinboardFacade } from '../pinboard/pinboard-facade'
+import { StaleCheckerService } from '../stale-checker/stale-checker-service'
+import { PinboardItemVM } from '../../models/pinboard-view.model'
 
-import { Bookmarks } from './bookmarks-service'
+vi.mock('@signality/core', () => ({
+  interval: vi.fn(() => null),
+}))
 
-describe('Bookmarks', () => {
-  let service: Bookmarks
+function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
+  return {
+    hash: 'abc123',
+    href: 'https://example.com',
+    description: 'Example',
+    extended: '',
+    meta: '',
+    shared: 'no',
+    tags: 'dev tools',
+    time: '2024-01-01',
+    toread: 'no',
+    tagsList: ['dev', 'tools'],
+    status: 'unchecked',
+    ...overrides,
+  }
+}
+
+describe('BookmarksService', () => {
+  let service: BookmarksService
+  let mockFacade: { getAllBookmarks: ReturnType<typeof vi.fn> }
+  let mockQueue: {
+    pause: ReturnType<typeof vi.fn>
+    start: ReturnType<typeof vi.fn>
+    clear: ReturnType<typeof vi.fn>
+    isPaused: boolean
+  }
+  let mockStaleChecker: {
+    newQueue: ReturnType<typeof vi.fn>
+    startWith: ReturnType<typeof vi.fn>
+  }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({})
-    service = TestBed.inject(Bookmarks)
+    mockQueue = { pause: vi.fn(), start: vi.fn(), clear: vi.fn(), isPaused: false }
+    mockFacade = { getAllBookmarks: vi.fn() }
+    mockStaleChecker = {
+      newQueue: vi.fn().mockReturnValue(mockQueue),
+      startWith: vi.fn().mockResolvedValue(undefined),
+    }
+
+    TestBed.configureTestingModule({
+      providers: [
+        BookmarksService,
+        { provide: PinboardFacade, useValue: mockFacade },
+        { provide: StaleCheckerService, useValue: mockStaleChecker },
+      ],
+    })
+    service = TestBed.inject(BookmarksService)
   })
 
   it('should be created', () => {
     expect(service).toBeTruthy()
+  })
+
+  describe('initial signal state', () => {
+    it('bookmarks is empty', () => {
+      expect(service.bookmarks()).toEqual([])
+    })
+
+    it('bookmarksFetching is false', () => {
+      expect(service.bookmarksFetching()).toBe(false)
+    })
+
+    it('staleChecking is false', () => {
+      expect(service.staleChecking()).toBe(false)
+    })
+
+    it('hasBookmarks is false', () => {
+      expect(service.hasBookmarks()).toBe(false)
+    })
+  })
+
+  describe('getAllBookmarks()', () => {
+    it('sets bookmarks signal from the facade response', async () => {
+      const items = [makeBookmark()]
+      mockFacade.getAllBookmarks.mockResolvedValue(items)
+
+      await service.getAllBookmarks()
+
+      expect(service.bookmarks()).toEqual(items)
+    })
+
+    it('hasBookmarks becomes true once bookmarks are loaded', async () => {
+      mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
+
+      await service.getAllBookmarks()
+
+      expect(service.hasBookmarks()).toBe(true)
+    })
+
+    it('resets bookmarksFetching to false after completion', async () => {
+      mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
+
+      await service.getAllBookmarks()
+
+      expect(service.bookmarksFetching()).toBe(false)
+    })
+
+    it('sets bookmarks to [] when the facade throws', async () => {
+      mockFacade.getAllBookmarks.mockRejectedValue(new Error('Network error'))
+
+      await service.getAllBookmarks()
+
+      expect(service.bookmarks()).toEqual([])
+    })
+
+    it('resets bookmarksFetching to false even when the facade throws', async () => {
+      mockFacade.getAllBookmarks.mockRejectedValue(new Error('Network error'))
+
+      await service.getAllBookmarks()
+
+      expect(service.bookmarksFetching()).toBe(false)
+    })
+  })
+
+  describe('startStaleCheck()', () => {
+    beforeEach(async () => {
+      mockFacade.getAllBookmarks.mockResolvedValue([
+        makeBookmark({ hash: 'a', status: 'unchecked' }),
+        makeBookmark({ hash: 'b', status: 'ok' }),
+      ])
+      await service.getAllBookmarks()
+    })
+
+    it('creates a new queue via StaleCheckerService', async () => {
+      await service.startStaleCheck()
+      expect(mockStaleChecker.newQueue).toHaveBeenCalled()
+    })
+
+    it('only passes bookmarks with "unchecked" status to the checker', async () => {
+      await service.startStaleCheck()
+
+      const [, passedList] = mockStaleChecker.startWith.mock.calls[0]
+      expect(passedList).toHaveLength(1)
+      expect(passedList[0].hash).toBe('a')
+    })
+  })
+
+  describe('pauseStaleCheck()', () => {
+    it('calls pause on the queue', async () => {
+      service.queue = mockQueue as any
+      await service.pauseStaleCheck()
+      expect(mockQueue.pause).toHaveBeenCalled()
+    })
+
+    it('sets staleChecking to false', async () => {
+      service.queue = mockQueue as any
+      await service.pauseStaleCheck()
+      expect(service.staleChecking()).toBe(false)
+    })
+  })
+
+  describe('resumeStaleCheck()', () => {
+    it('calls start on the queue when paused', async () => {
+      mockQueue.isPaused = true
+      service.queue = mockQueue as any
+
+      await service.resumeStaleCheck()
+
+      expect(mockQueue.start).toHaveBeenCalled()
+    })
+
+    it('sets staleChecking to true when resuming a paused queue', async () => {
+      mockQueue.isPaused = true
+      service.queue = mockQueue as any
+
+      await service.resumeStaleCheck()
+
+      expect(service.staleChecking()).toBe(true)
+    })
+
+    it('does nothing when the queue is not paused', async () => {
+      mockQueue.isPaused = false
+      service.queue = mockQueue as any
+
+      await service.resumeStaleCheck()
+
+      expect(mockQueue.start).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('stopStaleCheck()', () => {
+    it('clears the queue', async () => {
+      service.queue = mockQueue as any
+      await service.stopStaleCheck()
+      expect(mockQueue.clear).toHaveBeenCalled()
+    })
+
+    it('sets staleChecking to false', async () => {
+      service.queue = mockQueue as any
+      await service.stopStaleCheck()
+      expect(service.staleChecking()).toBe(false)
+    })
+  })
+
+  describe('stale check status mapping', () => {
+    let completeHandler: (bookmark: PinboardItemVM, response: Response | null) => void
+    const bookmark = makeBookmark({ hash: 'target' })
+
+    beforeEach(async () => {
+      mockFacade.getAllBookmarks.mockResolvedValue([bookmark])
+      await service.getAllBookmarks()
+
+      mockStaleChecker.startWith.mockImplementation(
+        async (_queue: unknown, _list: unknown, _start: unknown, handler: typeof completeHandler) => {
+          completeHandler = handler
+        }
+      )
+      await service.startStaleCheck()
+    })
+
+    it('sets status to "ok" for a successful response', () => {
+      completeHandler(bookmark, { ok: true, status: 200 } as Response)
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('ok')
+    })
+
+    it('sets status to "stale" when response is null (invalid URL)', () => {
+      completeHandler(bookmark, null)
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('stale')
+    })
+
+    it('sets status to "stale" for 404', () => {
+      completeHandler(bookmark, { ok: false, status: 404 } as Response)
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('stale')
+    })
+
+    it('sets status to "stale" for 301 (permanent redirect)', () => {
+      completeHandler(bookmark, { ok: false, status: 301 } as Response)
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('stale')
+    })
+
+    it('sets status to "stale" for 308 (permanent redirect)', () => {
+      completeHandler(bookmark, { ok: false, status: 308 } as Response)
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('stale')
+    })
+
+    it('sets status to "maybe-stale" for 401 (unauthorized)', () => {
+      completeHandler(bookmark, { ok: false, status: 401 } as Response)
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('maybe-stale')
+    })
+
+    it('sets status to "maybe-stale" for 403 (forbidden)', () => {
+      completeHandler(bookmark, { ok: false, status: 403 } as Response)
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('maybe-stale')
+    })
+
+    it('sets status to "maybe-stale" for 5xx server errors', () => {
+      completeHandler(bookmark, { ok: false, status: 503 } as Response)
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('maybe-stale')
+    })
   })
 })

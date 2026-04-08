@@ -7,10 +7,11 @@ import { HlmBadgeImports } from '@spartan-ng/helm/badge'
 import { BookmarksTable } from '../../components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from '../../services/bookmarks/bookmarks-service'
 import { skyBadge, greenBadge, redBadge } from '../../constants/tailwind-styles'
+import { NgTemplateOutlet } from '@angular/common'
 
 @Component({
   selector: 'app-bookmarks',
-  imports: [HlmButton, HlmSpinner, HlmButtonGroupImports, HlmBadgeImports, BookmarksTable],
+  imports: [HlmButton, HlmSpinner, HlmButtonGroupImports, HlmBadgeImports, BookmarksTable, NgTemplateOutlet],
   templateUrl: './bookmarks.html',
 })
 export default class Bookmarks {

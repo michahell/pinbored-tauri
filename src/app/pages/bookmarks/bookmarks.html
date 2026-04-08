@@ -1,4 +1,22 @@
 <div class="pt-0">
+  <!-- debug flags -->
+  <div *ngTemplateOutlet="debugFlags"></div>
+
+  <!--  actions -->
+  <div
+    class="flex flex-row align-middle place-items-center place-content-center justify-center justify-items-center dark:bg-blue-600/5 bg-secondary"
+  >
+    <div *ngTemplateOutlet="fetchActions"></div>
+    <div *ngTemplateOutlet="staleActions"></div>
+  </div>
+  <!-- bookmarks table -->
+  <div class="p-5">
+    <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
+  </div>
+</div>
+
+<!-- templates -->
+<ng-template #debugFlags>
   <div class="w-full flex flex-row justify-end-safe dark:bg-blue-400/10 bg-secondary">
     <div class="text-sm p-2 gap-1">
       <span> status flags report:&nbsp;&nbsp;</span>
@@ -16,56 +34,57 @@
     <span> queue flags report:&nbsp;&nbsp;</span>
     <hlm-badge variant="secondary" [class]="`${skyBadge}`">queued:&nbsp;{{ queueLength() }}</hlm-badge>
   </div>
-  <!--  get bookmarks -->
-  <div class="flex flex-row align-middle place-items-center place-content-center justify-center justify-items-center">
-    <div hlmButtonGroup>
-      <!-- fetch all -->
-      <button hlmBtn variant="outline" size="sm" (click)="getBookmarks()" [attr.disabled]="bookmarksFetching()">
-        fetch all
-        @if (bookmarksFetching()) {
-          <hlm-spinner data-icon="inline-start" />
-        }
-      </button>
-      <!-- fetch most recent bookmarks -->
-      <button hlmBtn variant="outline" size="sm" [disabled]="'disabled'">fetch most recent</button>
-    </div>
-    <p [class]="`${hlmMuted} p-2`">stale checker</p>
-    <div hlmButtonGroup>
-      <!-- stale checker testing -->
-      <button
-        hlmBtn
-        size="sm"
-        variant="destructive"
-        (click)="startStaleCheck()"
-        [disabled]="startStaleCheckDisabled() ? 'disabled' : null"
-      >
+</ng-template>
+
+<ng-template #fetchActions>
+  <div hlmButtonGroup>
+    <!-- fetch all -->
+    <button hlmBtn variant="secondary" size="sm" (click)="getBookmarks()" [attr.disabled]="bookmarksFetching()">
+      fetch all
+      @if (bookmarksFetching()) {
+        <hlm-spinner data-icon="inline-start" />
+      }
+    </button>
+    <!-- fetch most recent bookmarks -->
+    <button hlmBtn variant="secondary" size="sm" [disabled]="'disabled'">fetch most recent</button>
+  </div>
+</ng-template>
+
+<ng-template #staleActions>
+  <p [class]="`${hlmMuted} p-2 ml-5`">stale checker</p>
+  <div hlmButtonGroup>
+    <!-- stale checker testing -->
+    <button
+      hlmBtn
+      size="sm"
+      variant="secondary"
+      (click)="startStaleCheck()"
+      [disabled]="startStaleCheckDisabled() ? 'disabled' : null"
+    >
+      @if (staleChecking()) {
+        running
+        <hlm-spinner data-icon="inline-start" />
+      } @else {
         start
-        @if (staleChecking()) {
-          <hlm-spinner data-icon="inline-start" />
-        }
-      </button>
-      <button
-        hlmBtn
-        size="sm"
-        variant="outline"
-        (click)="toggleStaleCheck()"
-        [disabled]="pauseStaleCheckDisabled() ? 'disabled' : null"
-      >
-        {{ staleChecking() ? 'pause' : 'resume' }}
-      </button>
-      <button
-        hlmBtn
-        size="sm"
-        variant="outline"
-        (click)="stopStaleCheck()"
-        [disabled]="stopStaleCheckDisabled() ? 'disabled' : null"
-      >
-        stop
-      </button>
-    </div>
+      }
+    </button>
+    <button
+      hlmBtn
+      size="sm"
+      variant="secondary"
+      (click)="toggleStaleCheck()"
+      [disabled]="pauseStaleCheckDisabled() ? 'disabled' : null"
+    >
+      {{ staleChecking() ? 'pause' : 'resume' }}
+    </button>
+    <button
+      hlmBtn
+      size="sm"
+      variant="secondary"
+      (click)="stopStaleCheck()"
+      [disabled]="stopStaleCheckDisabled() ? 'disabled' : null"
+    >
+      stop
+    </button>
   </div>
-  <!-- bookmarks table -->
-  <div class="p-5">
-    <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
-  </div>
-</div>
+</ng-template>

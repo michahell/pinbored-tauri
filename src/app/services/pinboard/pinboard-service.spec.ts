@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { PinboardService } from './pinboard-service'
 
-const mockFetch = vi.fn()
+const mockFetch = vi.hoisted(() => vi.fn())
 
 vi.mock('@tauri-apps/plugin-http', () => ({
   fetch: mockFetch,
@@ -28,71 +28,65 @@ describe('Pinboard', () => {
   })
 
   describe('auth guard', () => {
-    const methods: Array<() => Promise<unknown>> = []
-
     beforeEach(() => {
       service.storedUsername = ''
       service.storedToken = ''
     })
 
-    it('getLastUpdateTime throws when auth not set', () => {
-      expect(() => service.getLastUpdateTime()).toThrow('auth not set!')
+    it('getLastUpdateTime rejects when auth not set', async () => {
+      await expect(service.getLastUpdateTime()).rejects.toThrow('auth not set!')
     })
 
-    it('addBookmark throws when auth not set', () => {
-      expect(() => service.addBookmark('https://example.com', 'Example')).toThrow('auth not set!')
+    it('addBookmark rejects when auth not set', async () => {
+      await expect(service.addBookmark('https://example.com', 'Example')).rejects.toThrow('auth not set!')
     })
 
-    it('deleteBookmark throws when auth not set', () => {
-      expect(() => service.deleteBookmark('https://example.com')).toThrow('auth not set!')
+    it('deleteBookmark rejects when auth not set', async () => {
+      await expect(service.deleteBookmark('https://example.com')).rejects.toThrow('auth not set!')
     })
 
-    it('getBookmarks throws when auth not set', () => {
-      expect(() => service.getBookmarks()).toThrow('auth not set!')
+    it('getBookmarks rejects when auth not set', async () => {
+      await expect(service.getBookmarks()).rejects.toThrow('auth not set!')
     })
 
-    it('getRecentBookmarks throws when auth not set', () => {
-      expect(() => service.getRecentBookmarks()).toThrow('auth not set!')
+    it('getRecentBookmarks rejects when auth not set', async () => {
+      await expect(service.getRecentBookmarks()).rejects.toThrow('auth not set!')
     })
 
-    it('getBookmarkDates throws when auth not set', () => {
-      expect(() => service.getBookmarkDates()).toThrow('auth not set!')
+    it('getBookmarkDates rejects when auth not set', async () => {
+      await expect(service.getBookmarkDates()).rejects.toThrow('auth not set!')
     })
 
-    it('getAllBookmarks throws when auth not set', () => {
-      expect(() => service.getAllBookmarks()).toThrow('auth not set!')
+    it('getAllBookmarks rejects when auth not set', async () => {
+      await expect(service.getAllBookmarks()).rejects.toThrow('auth not set!')
     })
 
-    it('suggestTagsForUrl throws when auth not set', () => {
-      expect(() => service.suggestTagsForUrl('https://example.com')).toThrow('auth not set!')
+    it('suggestTagsForUrl rejects when auth not set', async () => {
+      await expect(service.suggestTagsForUrl('https://example.com')).rejects.toThrow('auth not set!')
     })
 
-    it('getAllTags throws when auth not set', () => {
-      expect(() => service.getAllTags()).toThrow('auth not set!')
+    it('getAllTags rejects when auth not set', async () => {
+      await expect(service.getAllTags()).rejects.toThrow('auth not set!')
     })
 
-    it('deleteTag throws when auth not set', () => {
-      expect(() => service.deleteTag('mytag')).toThrow('auth not set!')
+    it('deleteTag rejects when auth not set', async () => {
+      await expect(service.deleteTag('mytag')).rejects.toThrow('auth not set!')
     })
 
-    it('renameTag throws when auth not set', () => {
-      expect(() => service.renameTag('old', 'new')).toThrow('auth not set!')
+    it('renameTag rejects when auth not set', async () => {
+      await expect(service.renameTag('old', 'new')).rejects.toThrow('auth not set!')
     })
 
-    it('getUserSecret throws when auth not set', () => {
-      expect(() => service.getUserSecret()).toThrow('auth not set!')
+    it('getUserSecret rejects when auth not set', async () => {
+      await expect(service.getUserSecret()).rejects.toThrow('auth not set!')
     })
 
-    it('getUserApiToken throws when auth not set', () => {
-      expect(() => service.getUserApiToken()).toThrow('auth not set!')
+    it('getNotesList rejects when auth not set', async () => {
+      await expect(service.getNotesList()).rejects.toThrow('auth not set!')
     })
 
-    it('getNotesList throws when auth not set', () => {
-      expect(() => service.getNotesList()).toThrow('auth not set!')
-    })
-
-    it('getNote throws when auth not set', () => {
-      expect(() => service.getNote('abc123')).toThrow('auth not set!')
+    it('getNote rejects when auth not set', async () => {
+      await expect(service.getNote('abc123')).rejects.toThrow('auth not set!')
     })
   })
 
@@ -357,14 +351,24 @@ describe('Pinboard', () => {
   })
 
   describe('getUserApiToken', () => {
-    it('calls user/api_token and returns result', async () => {
+    it('calls user/api_token with explicit credentials and returns result', async () => {
       mockFetch.mockReturnValue(mockResponse({ result: 'user:token123' }))
 
-      const result = await service.getUserApiToken()
+      const result = await service.getUserApiToken('testuser', 'testtoken')
 
       const [url] = mockFetch.mock.calls[0]
       expect(url).toContain('/user/api_token')
       expect(result).toEqual({ result: 'user:token123' })
+    })
+
+    it('does not require stored credentials (takes username and token as params)', async () => {
+      service.storedUsername = ''
+      service.storedToken = ''
+      mockFetch.mockReturnValue(mockResponse({ result: 'explicit:token' }))
+
+      const result = await service.getUserApiToken('explicit', 'token')
+
+      expect(result).toEqual({ result: 'explicit:token' })
     })
   })
 
