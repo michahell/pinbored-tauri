@@ -8,10 +8,19 @@ import { BookmarksTable } from '../../components/bookmarks-table/bookmarks-table
 import { BookmarksService } from '../../services/bookmarks/bookmarks-service'
 import { skyBadge, greenBadge, redBadge } from '../../constants/tailwind-styles'
 import { NgTemplateOutlet } from '@angular/common'
+import { MainLayout } from '../../layouts/main-layout/main-layout'
 
 @Component({
   selector: 'app-bookmarks',
-  imports: [HlmButton, HlmSpinner, HlmButtonGroupImports, HlmBadgeImports, BookmarksTable, NgTemplateOutlet],
+  imports: [
+    HlmButton,
+    HlmSpinner,
+    HlmButtonGroupImports,
+    HlmBadgeImports,
+    BookmarksTable,
+    NgTemplateOutlet,
+    MainLayout,
+  ],
   templateUrl: './bookmarks.html',
 })
 export default class Bookmarks {

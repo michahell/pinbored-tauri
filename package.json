@@ -12,6 +12,9 @@
     "spartan-health": "ng g @spartan-ng/cli:healthcheck",
     "spartan-update": "pnpm add @spartan-ng/brain@latest @spartan-ng/cli@latest"
   },
+  "browserslist": [
+    "defaults"
+  ],
   "private": true,
   "dependencies": {
     "@angular/cdk": "21.0.0",

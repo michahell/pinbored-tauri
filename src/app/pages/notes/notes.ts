@@ -1,8 +1,9 @@
 import { Component } from '@angular/core'
+import { MainLayout } from '../../layouts/main-layout/main-layout'
 
 @Component({
   selector: 'app-notes',
-  imports: [],
+  imports: [MainLayout],
   templateUrl: './notes.html',
 })
 export default class Notes {}

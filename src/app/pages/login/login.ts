@@ -52,7 +52,8 @@ export default class Login implements OnInit {
     if (username != null && token != null) {
       try {
         await this.#authenticationService.authenticate({ username, token })
-      } catch (error: any) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error: unknown) {
         this.#unauthenticated()
       }
       await this.#doLogin()
