@@ -1,7 +1,10 @@
 ### rough planning
 
 - [x] update all unit-tests ('bout 13)
-- [ ] login page should use a different page layout compared to pages visible after login
+- [x] implement persisting stale status in store as well
+- [x] login page should use a different page layout compared to pages visible after login
+- [x] bookmarks page should load bookmarks initially, on init
+- [x] stale checker should by default resume stale checking only unchecked bookmarks
 - [ ] implement tags page
 - [ ] implement single bookmark page
 - [ ] implement arch unit TS: https://github.com/LukasNiessen/ArchUnitTS

@@ -1,0 +1,11 @@
+<div class="flex flex-col w-full">
+  <span class="w-full"> {{ context.row.original.description }} </span>
+  <span class="w-full"> {{ context.row.original.href }} </span>
+  <div class="w-full -ml-1 pt-1">
+    @for (tag of context.row.original.tagsList; track $index) {
+      <a hlmBadge variant="secondary" [class]="`${skyBadge} select-none cursor-pointer`" [routerLink]="`/tags/${tag}`"
+        >{{ tag }}
+      </a>
+    }
+  </div>
+</div>

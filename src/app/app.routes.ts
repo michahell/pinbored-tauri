@@ -16,7 +16,7 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/bookmarks/bookmarks'),
       },
       {
-        path: '#/:hash',
+        path: ':hash',
         pathMatch: 'full',
         loadComponent: () => import('./pages/bookmark/bookmark'),
       },
@@ -24,8 +24,19 @@ export const routes: Routes = [
   },
   {
     path: 'tags',
-    loadComponent: () => import('./pages/tags/tags'),
     canActivate: [isAuthenticatedGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./pages/tags/tags'),
+      },
+      {
+        path: ':hash',
+        pathMatch: 'full',
+        loadComponent: () => import('./pages/tag/tag'),
+      },
+    ],
   },
   {
     path: 'notes',

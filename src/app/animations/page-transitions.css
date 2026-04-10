@@ -1,0 +1,25 @@
+:root {
+  --delay: 500ms;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-slide-in {
+  animation: fadeSlideIn 500ms ease-out;
+  animation-delay: calc((var(--delay) - 1) * 25ms);
+}
+
+.fade-slide-out {
+  animation: fadeSlideIn 500ms ease-in reverse;
+  animation-delay: calc((var(--delay) - 1) * 25ms);
+}

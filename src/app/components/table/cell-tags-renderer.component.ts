@@ -12,7 +12,7 @@ import { PinboardItemVM } from '../../models/pinboard-view.model'
     }
   `,
 })
-export class TagsCellRenderer {
-  protected readonly _context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()
-  readonly tags = this._context.cell.getValue() as string[]
+export class CellTagsRenderer {
+  readonly #context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()
+  readonly tags = this.#context.cell.getValue() as string[]
 }

@@ -1,7 +1,7 @@
-<app-main-layout>
+<app-main-layout animate.enter="fade-slide-in" animate.leave="fade-slide-out">
   <div class="pt-0">
     <!-- debug flags -->
-    <div *ngTemplateOutlet="debugFlags"></div>
+    <!--    <div *ngTemplateOutlet="debugFlags"></div>-->
 
     <!--  actions -->
     <div
@@ -11,7 +11,7 @@
       <div *ngTemplateOutlet="staleActions"></div>
     </div>
     <!-- bookmarks table -->
-    <div class="p-5">
+    <div class="px-5">
       <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
     </div>
   </div>
@@ -30,10 +30,10 @@
           >staleCheckDisabled</hlm-badge
         >
       </div>
-    </div>
-    <div class="w-full flex flex-row justify-end-safe text-sm p-2 gap-1">
-      <span> queue flags report:&nbsp;&nbsp;</span>
-      <hlm-badge variant="secondary" [class]="`${skyBadge}`">queued:&nbsp;{{ queueLength() }}</hlm-badge>
+      <div class="text-sm p-2 gap-1">
+        <span> queue flags report:&nbsp;&nbsp;</span>
+        <hlm-badge variant="secondary" [class]="`${skyBadge}`">queued:&nbsp;{{ queueLength() }}</hlm-badge>
+      </div>
     </div>
   </ng-template>
 

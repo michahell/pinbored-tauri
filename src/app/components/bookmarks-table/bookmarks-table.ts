@@ -22,9 +22,9 @@ import { NgIcon } from '@ng-icons/core'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { FormsModule } from '@angular/forms'
-import { TagsCellRenderer } from '../table/tags-cell-renderer'
-import { TagCellRenderer } from '../table/tag-cell-renderer'
+import { CellTagRenderer } from '../table/cell-tag-renderer.component'
 import { ActionDropdown } from '../table/action-dropdown'
+import { CellBookmark } from '../table/cell-bookmark.component'
 
 @Component({
   selector: 'app-bookmarks-table',
@@ -64,33 +64,18 @@ export class BookmarksTable {
       enableHiding: false,
       enableSorting: false,
       cell: (context) =>
-        flexRenderComponent(TagCellRenderer, {
+        flexRenderComponent(CellTagRenderer, {
           inputs: {
             status: context.cell.getValue() as string,
           },
         }),
     },
     {
-      accessorKey: 'description',
-      id: 'description',
-      enableSorting: false,
-      enableHiding: true,
-      cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
-    },
-    {
-      accessorKey: 'link',
+      accessorKey: 'bookmark',
       id: 'href',
       enableSorting: false,
       enableHiding: true,
-      cell: (info) => `<div class="lowercase"><a href="${info.getValue<string>()}">url</a></div>`,
-    },
-    {
-      accessorKey: 'tagsList',
-      id: 'tagsList',
-      header: 'tags',
-      enableSorting: false,
-      enableHiding: true,
-      cell: () => flexRenderComponent(TagsCellRenderer),
+      cell: () => flexRenderComponent(CellBookmark),
     },
     {
       accessorKey: 'actions',

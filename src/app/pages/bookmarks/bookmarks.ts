@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core'
+import { Component, computed, inject, OnInit } from '@angular/core'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { hlmMuted } from '@spartan-ng/helm/typography'
@@ -23,7 +23,7 @@ import { MainLayout } from '../../layouts/main-layout/main-layout'
   ],
   templateUrl: './bookmarks.html',
 })
-export default class Bookmarks {
+export default class Bookmarks implements OnInit {
   readonly hlmMuted = hlmMuted
   readonly redBadge = redBadge
   readonly greenBadge = greenBadge
@@ -46,6 +46,10 @@ export default class Bookmarks {
   )
   readonly pauseStaleCheckDisabled = computed(() => !this.queueExists())
   readonly stopStaleCheckDisabled = computed(() => !this.queueExists())
+
+  async ngOnInit(): Promise<void> {
+    await this.getBookmarks()
+  }
 
   async getBookmarks(): Promise<void> {
     console.info('getting all bookmarks...')

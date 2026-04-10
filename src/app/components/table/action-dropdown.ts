@@ -23,10 +23,12 @@ import { Router } from '@angular/router'
       <hlm-dropdown-menu>
         <hlm-dropdown-menu-label>actions</hlm-dropdown-menu-label>
         <hlm-dropdown-menu-separator />
-        <button hlmDropdownMenuItem (click)="editBookmark()">edit</button>
-        <button hlmDropdownMenuItem (click)="deleteBookmark()" variant="destructive">delete</button>
+        <button hlmDropdownMenuItem (click)="editBookmark()"><ng-icon name="lucideEdit2" /> edit</button>
+        <button hlmDropdownMenuItem (click)="deleteBookmark()" variant="destructive">
+          <ng-icon name="lucideTrash2" /> delete
+        </button>
         <!--        <div>-->
-        <!--          <button hlmBtn size="icon" variant="outline"><ng-icon name="lucideTrash2" /></button>-->
+        <!--          <button hlmBtn size="icon" variant="outline"></button>-->
         <!--        </div>-->
       </hlm-dropdown-menu>
     </ng-template>

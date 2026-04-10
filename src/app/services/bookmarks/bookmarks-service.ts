@@ -1,9 +1,10 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core'
+import { computed, inject, Injectable, signal } from '@angular/core'
 import { interval } from '@signality/core'
 import PQueue from 'p-queue'
 import { PinboardItemVM, PinboardItemVMStatus } from '../../models/pinboard-view.model'
 import { StaleCheckerService } from '../stale-checker/stale-checker-service'
 import { PinboardFacade } from '../pinboard/pinboard-facade'
+import { LocalStoreService } from '../store/local-store-service'
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { PinboardFacade } from '../pinboard/pinboard-facade'
 export class BookmarksService {
   readonly #staleChecker = inject(StaleCheckerService)
   readonly #pinboardFacade = inject(PinboardFacade)
+  readonly #localStore = inject(LocalStoreService)
 
   // queue
   queue: PQueue | null = null
@@ -42,12 +44,6 @@ export class BookmarksService {
     this.queueTasks.update(() => this.queue?.runningTasks ?? undefined)
   }, 1000)
 
-  constructor() {
-    effect(() => {
-      console.log('staleChecking: ', this.staleChecking())
-    })
-  }
-
   async getAllBookmarks(): Promise<void> {
     this.bookmarksFetching.set(true)
     await this.#pinboardFacade
@@ -66,14 +62,16 @@ export class BookmarksService {
       })
   }
 
-  async startStaleCheck(): Promise<void> {
+  async startStaleCheck(restart = false): Promise<void> {
     try {
       this.queue = this.#staleChecker.newQueue()
-      const uncheckedBookmarks = this.bookmarks().filter((bookmark) => bookmark.status === 'unchecked')
+      const uncheckedBookmarks = this.bookmarks().filter(
+        (bookmark) => bookmark.status === 'unchecked' || bookmark.status === 'checking'
+      )
       this.staleChecking.update(() => true)
       await this.#staleChecker.startWith(
         this.queue,
-        uncheckedBookmarks,
+        restart ? this.bookmarks() : uncheckedBookmarks,
         this.#handleStaleCheckStart.bind(this),
         this.#handleStaleCheckComplete.bind(this)
       )
@@ -85,20 +83,21 @@ export class BookmarksService {
 
   async pauseStaleCheck(): Promise<void> {
     this.queue?.pause()
-    this.#updateBookmarksInLocalStore()
+    await this.#updateBookmarksInLocalStore()
     this.staleChecking.update(() => false)
   }
 
   async resumeStaleCheck(): Promise<void> {
     if (this.queue?.isPaused) {
       this.queue?.start()
-      this.#updateBookmarksInLocalStore()
       this.staleChecking.update(() => true)
     }
   }
 
   async stopStaleCheck(): Promise<void> {
     this.queue?.clear()
+    this.queue = null
+    await this.#updateBookmarksInLocalStore()
     this.staleChecking.update(() => false)
   }
 
@@ -140,7 +139,7 @@ export class BookmarksService {
     }
   }
 
-  #updateBookmarksInLocalStore(): void {
-    // update stored bookmarks in localStore
+  async #updateBookmarksInLocalStore(): Promise<void> {
+    await this.#localStore.set('bookmarks', this.bookmarks())
   }
 }

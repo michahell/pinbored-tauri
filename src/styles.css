@@ -4,6 +4,7 @@
 @import 'tailwindcss/utilities.css';
 
 @import "@spartan-ng/brain/hlm-tailwind-preset.css";
+@import "./app/animations/page-transitions.css";
 
 :root {
 color-scheme: light;
@@ -71,10 +72,11 @@ color-scheme: dark;
 }
 
 @layer base {
-* {
-@apply border-border outline-ring/50;
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
-body {
-@apply bg-background text-foreground;
-}
-}
+
