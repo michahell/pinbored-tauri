@@ -1,15 +1,15 @@
 import { CanActivateFn } from '@angular/router'
 import { inject } from '@angular/core'
-import { LocalStoreService } from '../services/store/local-store-service'
+import { AuthenticationService } from '../services/authentication/authentication-service'
 
-export const isAuthenticatedGuard: CanActivateFn = async (route, state) => {
-  const store = inject(LocalStoreService)
-  const username = store.get<string>('username')
-  const token = store.get<string>('token')
-  return Promise.all([username, token])
-    .then(([username, token]) => {
-      console.log(`isAuthenticatedGuard invoked, username: ${username} / ${token}`)
-      return !!username && !!token
+export const isAuthenticatedGuard: CanActivateFn = async () => {
+  const authenticationService = inject(AuthenticationService)
+
+  return authenticationService
+    .authenticate()
+    .then(() => {
+      console.log(`isAuthenticatedGuard invoked, authenticated!`)
+      return true
     })
     .catch(() => {
       console.log(`isAuthenticatedGuard invoked, returning false`)

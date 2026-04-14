@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core'
+import { Component, input, OnInit, signal } from '@angular/core'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -9,6 +9,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  GlobalFilterTableState,
   RowSelectionState,
   SortingState,
   VisibilityState,
@@ -25,6 +26,7 @@ import { FormsModule } from '@angular/forms'
 import { CellTagRenderer } from '../table/cell-tag-renderer.component'
 import { ActionDropdown } from '../table/action-dropdown'
 import { CellBookmark } from '../table/cell-bookmark.component'
+import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 
 @Component({
   selector: 'app-bookmarks-table',
@@ -37,10 +39,11 @@ import { CellBookmark } from '../table/cell-bookmark.component'
     HlmIconImports,
     HlmTableImports,
     HlmInputImports,
+    HlmInputGroupImports,
   ],
   templateUrl: './bookmarks-table.html',
 })
-export class BookmarksTable {
+export class BookmarksTable implements OnInit {
   readonly bookmarks = input<PinboardItemVM[]>()
 
   readonly #columnFilters = signal<ColumnFiltersState>([])
@@ -48,7 +51,7 @@ export class BookmarksTable {
   readonly #rowSelection = signal<RowSelectionState>({})
   readonly #columnVisibility = signal<VisibilityState>({})
 
-  protected readonly _columns: ColumnDef<PinboardItemVM>[] = [
+  protected readonly columns: ColumnDef<PinboardItemVM>[] = [
     {
       id: 'hash',
       accessorKey: 'hash',
@@ -56,6 +59,7 @@ export class BookmarksTable {
       cell: () => flexRenderComponent(TableRowSelection),
       enableSorting: false,
       enableHiding: false,
+      enableGlobalFilter: false,
     },
     {
       accessorKey: 'status',
@@ -63,6 +67,7 @@ export class BookmarksTable {
       header: 'stale status',
       enableHiding: false,
       enableSorting: false,
+      enableGlobalFilter: false,
       cell: (context) =>
         flexRenderComponent(CellTagRenderer, {
           inputs: {
@@ -72,9 +77,10 @@ export class BookmarksTable {
     },
     {
       accessorKey: 'bookmark',
-      id: 'href',
+      id: 'bookmark',
       enableSorting: false,
-      enableHiding: true,
+      enableHiding: false,
+      enableGlobalFilter: false,
       cell: () => flexRenderComponent(CellBookmark),
     },
     {
@@ -82,13 +88,31 @@ export class BookmarksTable {
       id: 'actions',
       enableSorting: false,
       enableHiding: false,
+      enableGlobalFilter: false,
       cell: () => flexRenderComponent(ActionDropdown),
+    },
+    {
+      id: 'href',
+      accessorKey: 'href',
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      id: 'description',
+      accessorKey: 'description',
+      enableSorting: false,
+      enableHiding: false,
     },
   ]
 
-  protected readonly _table = createAngularTable<PinboardItemVM>(() => ({
+  protected readonly table = createAngularTable<PinboardItemVM>(() => ({
     data: this.bookmarks() ?? [],
-    columns: this._columns,
+    initialState: {
+      pagination: {
+        pageSize: 9,
+      },
+    },
+    columns: this.columns,
     onSortingChange: (updater) => {
       updater instanceof Function ? this.#sorting.update(updater) : this.#sorting.set(updater)
     },
@@ -98,7 +122,8 @@ export class BookmarksTable {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    getFilteredRowModel: getFilteredRowModel(), // needed for client-side global filtering
+    globalFilterFn: 'includesString',
     onColumnVisibilityChange: (updater) => {
       updater instanceof Function ? this.#columnVisibility.update(updater) : this.#columnVisibility.set(updater)
     },
@@ -113,9 +138,32 @@ export class BookmarksTable {
     },
   }))
 
-  protected readonly _hidableColumns = this._table.getAllColumns().filter((column) => column.getCanHide())
+  protected readonly hidableColumns = this.table.getAllColumns().filter((column) => column.getCanHide())
 
-  protected _filterChanged(event: Event) {
-    this._table.getColumn('status')?.setFilterValue((event.target as HTMLInputElement).value)
+  ngOnInit(): void {
+    // hide the href and description columns - only used for searching
+    this.#columnVisibility.update((visibilityState) => ({
+      ...visibilityState,
+      href: false,
+      description: false,
+    }))
+  }
+
+  protected filterStatusChanged(event: Event) {
+    this.table.getColumn('status')?.setFilterValue((event.target as HTMLInputElement).value)
+  }
+
+  protected clearFilterStatus(element: HTMLInputElement): void {
+    element.value = ''
+    this.table.getColumn('status')?.setFilterValue('')
+  }
+
+  protected filterTextChanged(event: Event) {
+    this.table.setGlobalFilter((event.target as HTMLInputElement).value)
+  }
+
+  protected clearFilterText(element: HTMLInputElement): void {
+    element.value = ''
+    this.table.setGlobalFilter('')
   }
 }

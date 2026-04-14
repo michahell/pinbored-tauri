@@ -3,31 +3,18 @@ import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { hlmMuted } from '@spartan-ng/helm/typography'
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
-import { HlmBadgeImports } from '@spartan-ng/helm/badge'
 import { BookmarksTable } from '../../components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from '../../services/bookmarks/bookmarks-service'
-import { skyBadge, greenBadge, redBadge } from '../../constants/tailwind-styles'
 import { NgTemplateOutlet } from '@angular/common'
 import { MainLayout } from '../../layouts/main-layout/main-layout'
 
 @Component({
   selector: 'app-bookmarks',
-  imports: [
-    HlmButton,
-    HlmSpinner,
-    HlmButtonGroupImports,
-    HlmBadgeImports,
-    BookmarksTable,
-    NgTemplateOutlet,
-    MainLayout,
-  ],
+  imports: [HlmButton, HlmSpinner, HlmButtonGroupImports, BookmarksTable, NgTemplateOutlet, MainLayout],
   templateUrl: './bookmarks.html',
 })
 export default class Bookmarks implements OnInit {
   readonly hlmMuted = hlmMuted
-  readonly redBadge = redBadge
-  readonly greenBadge = greenBadge
-  readonly skyBadge = skyBadge
 
   readonly #bookmarks = inject(BookmarksService)
 
@@ -38,7 +25,6 @@ export default class Bookmarks implements OnInit {
   readonly staleChecking = computed(() => this.#bookmarks.staleChecking())
   readonly hasBookmarks = computed(() => this.#bookmarks.hasBookmarks())
   // for queue
-  readonly queueLength = computed(() => this.#bookmarks.queueLength())
   readonly queueExists = computed(() => this.#bookmarks.hasQueue())
   // flag signals
   readonly startStaleCheckDisabled = computed(

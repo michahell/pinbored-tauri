@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core'
-import { fetch } from '@tauri-apps/plugin-http'
+import { inject, Injectable } from '@angular/core'
+import { FetchService } from '../fetch/fetch-service'
 import {
   PinboardDatesResult,
   PinboardItem,
@@ -14,6 +14,7 @@ import {
   PinboardUserApiToken,
   PinboardUserSecret,
 } from '../../models/pinboard.model'
+import { fetch } from '@tauri-apps/plugin-http'
 
 const PINBOARD_BASE_URL = 'https://api.pinboard.in/v1'
 
@@ -21,6 +22,12 @@ const PINBOARD_BASE_URL = 'https://api.pinboard.in/v1'
   providedIn: 'root',
 })
 export class PinboardService {
+  #fetchService = inject(FetchService)
+  // we alias #fetch to be able to 'intercept' fetching and do things before and after
+  #fetch = this.#fetchService.fetch
+  // for debug issues, re-alias back to tauri fetch!
+  // #fetch = fetch
+
   #user: string = ''
   #token: string = ''
 
@@ -42,7 +49,7 @@ export class PinboardService {
   async getUserApiToken(username: string, token: string): Promise<PinboardUserApiToken> {
     const params = this.#getParams({ username, token })
     const url = `${PINBOARD_BASE_URL}/user/api_token?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** posts/update — returns the most recent time a bookmark was added, updated or deleted */
@@ -50,7 +57,7 @@ export class PinboardService {
     this.#requireAuth()
     const params = this.#getParams()
     const url = `${PINBOARD_BASE_URL}/posts/update?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** posts/add — add a new bookmark */
@@ -77,7 +84,7 @@ export class PinboardService {
     if (options?.shared != null) params.append('shared', options.shared)
     if (options?.toread != null) params.append('toread', options.toread)
     const url = `${PINBOARD_BASE_URL}/posts/add?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** posts/delete — delete a bookmark */
@@ -86,7 +93,7 @@ export class PinboardService {
     const params = this.#getParams()
     params.append('url', bookmarkUrl)
     const url = `${PINBOARD_BASE_URL}/posts/delete?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** posts/get — returns one or more posts on a single day matching the criteria */
@@ -106,7 +113,7 @@ export class PinboardService {
     if (options?.url != null) params.append('url', options.url)
     if (options?.meta != null) params.append('meta', options.meta)
     const url = `${PINBOARD_BASE_URL}/posts/get?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** posts/recent — returns the most recent bookmarks, optionally filtered by tag */
@@ -119,7 +126,7 @@ export class PinboardService {
     }
     if (options?.count != null) params.append('count', String(options.count))
     const url = `${PINBOARD_BASE_URL}/posts/recent?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** posts/dates — returns a list of dates with the number of posts at each date */
@@ -131,7 +138,7 @@ export class PinboardService {
       tagList.forEach((t) => params.append('tag', t))
     }
     const url = `${PINBOARD_BASE_URL}/posts/dates?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** posts/all — returns all bookmarks in the user's account */
@@ -153,7 +160,7 @@ export class PinboardService {
     if (options?.meta != null) params.append('meta', String(options.meta))
     const url = `${PINBOARD_BASE_URL}/posts/all?${params}`
     console.log('getAllPosts url: ', url)
-    return fetch(url, { method: 'GET', headers: {} }).then<PinboardItem[]>((response) => {
+    return this.#fetch(url, { method: 'GET', headers: {} }).then<PinboardItem[]>((response) => {
       console.log(response)
       return response.json()
     })
@@ -165,7 +172,7 @@ export class PinboardService {
     const params = this.#getParams()
     params.append('url', bookmarkUrl)
     const url = `${PINBOARD_BASE_URL}/posts/suggest?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** tags/get — returns a full list of the user's tags along with the number of times they were used */
@@ -174,7 +181,7 @@ export class PinboardService {
     const params = this.#getParams()
     const url = `${PINBOARD_BASE_URL}/tags/get?${params}`
     console.log('getAllTags url: ', url)
-    return fetch(url, { method: 'GET' }).then((response) => {
+    return this.#fetch(url, { method: 'GET' }).then((response) => {
       console.log(response)
       return response.json()
     })
@@ -186,7 +193,7 @@ export class PinboardService {
     const params = this.#getParams()
     params.append('tag', tag)
     const url = `${PINBOARD_BASE_URL}/tags/delete?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** tags/rename — rename a tag */
@@ -196,7 +203,7 @@ export class PinboardService {
     params.append('old', oldTag)
     params.append('new', newTag)
     const url = `${PINBOARD_BASE_URL}/tags/rename?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** user/secret — returns the user's secret RSS key */
@@ -204,7 +211,7 @@ export class PinboardService {
     this.#requireAuth()
     const params = this.#getParams()
     const url = `${PINBOARD_BASE_URL}/user/secret?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** notes/list — returns a list of the user's notes */
@@ -212,7 +219,7 @@ export class PinboardService {
     this.#requireAuth()
     const params = this.#getParams()
     const url = `${PINBOARD_BASE_URL}/notes/list?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   /** notes/{ID} — returns an individual user note */
@@ -220,7 +227,7 @@ export class PinboardService {
     this.#requireAuth()
     const params = this.#getParams()
     const url = `${PINBOARD_BASE_URL}/notes/${id}?${params}`
-    return fetch(url, { method: 'GET' }).then((r) => r.json())
+    return this.#fetch(url, { method: 'GET' }).then((r) => r.json())
   }
 
   #getParams(authentication: { username: string; token: string } | null = null) {

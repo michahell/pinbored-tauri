@@ -58,6 +58,7 @@ export class BookmarksService {
         console.error('ERRORED!', err)
       })
       .finally(() => {
+        console.log('finally : bookmarks fetched!')
         this.bookmarksFetching.set(false)
       })
   }

@@ -35,6 +35,15 @@ importers:
       '@ng-icons/lucide':
         specifier: '>=32.0.0 <34.0.0'
         version: 33.2.0
+      '@ngx-loading-bar/core':
+        specifier: ^7.0.1
+        version: 7.0.1(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2)
+      '@ngx-loading-bar/http-client':
+        specifier: ^7.0.1
+        version: 7.0.1(@ngx-loading-bar/core@7.0.1(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2))
+      '@ngx-loading-bar/router':
+        specifier: ^7.0.1
+        version: 7.0.1(@angular/router@21.2.7(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.7(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))(@ngx-loading-bar/core@7.0.1(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2))
       '@signality/core':
         specifier: ^0.1.1
         version: 0.1.2(fc494b8b6a62aefa8171203a4f0df2ff)
@@ -1887,6 +1896,23 @@ packages:
 
   '@ng-icons/lucide@33.2.0':
     resolution: {integrity: sha512-/r+Q71JqglIRfgaZ9b6lkEe06I2fWYkmqwK0F7y6OhKYCbtKhsDF/B8jYDItlZkoCelviS0pA4/Ybd9njSYnUw==}
+
+  '@ngx-loading-bar/core@7.0.1':
+    resolution: {integrity: sha512-myVfxA+BI9lXtNMNcM3uYCS8jVg9aAc37CY77f0W31p/skY9Js254fARB0UtI8PWv4YTFI/NANShK5/tlZPqNg==}
+    peerDependencies:
+      '@angular/common': '>=16.0.0'
+      rxjs: ^7.0.0
+
+  '@ngx-loading-bar/http-client@7.0.1':
+    resolution: {integrity: sha512-frk3tzunQgbtqeEbvyKb3WHFqyaAiEGx5apovLBa+R/lRjPBZ8KDaXlXPFmhtvtmYMVd6kHOzYnnnhOp0n7Wyg==}
+    peerDependencies:
+      '@ngx-loading-bar/core': 7.0.1
+
+  '@ngx-loading-bar/router@7.0.1':
+    resolution: {integrity: sha512-v7KZh0WCByJPqOElMp3ZLP0XVurvwxVzXIzHkT5/RJwZOpcv7HOa3Tl3yLqTqYsevPpWqIxqw7DiNNBK98ocHw==}
+    peerDependencies:
+      '@angular/router': '>=16.0.0'
+      '@ngx-loading-bar/core': 7.0.1
 
   '@noble/hashes@1.4.0':
     resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
@@ -8799,6 +8825,23 @@ snapshots:
 
   '@ng-icons/lucide@33.2.0':
     dependencies:
+      tslib: 2.8.1
+
+  '@ngx-loading-bar/core@7.0.1(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/common': 21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
+  '@ngx-loading-bar/http-client@7.0.1(@ngx-loading-bar/core@7.0.1(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2))':
+    dependencies:
+      '@ngx-loading-bar/core': 7.0.1(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2)
+      tslib: 2.8.1
+
+  '@ngx-loading-bar/router@7.0.1(@angular/router@21.2.7(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.7(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))(@ngx-loading-bar/core@7.0.1(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2))':
+    dependencies:
+      '@angular/router': 21.2.7(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.7(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
+      '@ngx-loading-bar/core': 7.0.1(@angular/common@21.2.7(@angular/core@21.2.7(@angular/compiler@21.2.7)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2)
       tslib: 2.8.1
 
   '@noble/hashes@1.4.0': {}

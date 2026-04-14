@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { PinboardService } from './pinboard-service'
 import { LocalStoreService } from '../store/local-store-service'
 import { PinboardItemVM, PinboardItemVMStatus } from '../../models/pinboard-view.model'
+import { PinboardTagResult, PinboardTagsMap } from '../../models/pinboard.model'
 
 @Injectable({
   providedIn: 'root',
@@ -26,8 +27,23 @@ export class PinboardFacade {
     }
   }
 
-  async getAllTags(): Promise<any> {
-    return this.#pinboard.getAllTags()
+  async getAllTags(): Promise<PinboardTagsMap> {
+    const storedTags = await this.#localStore.get<PinboardTagsMap>('tags')
+    if (storedTags != null) {
+      return Promise.resolve(storedTags)
+    } else {
+      const tags = await this.#pinboard.getAllTags()
+      await this.#localStore.set('tags', tags)
+      return Promise.resolve(tags)
+    }
+  }
+
+  async renameTag(oldName: string, newName: string): Promise<PinboardTagResult> {
+    return this.#pinboard.renameTag(oldName, newName)
+  }
+
+  async deleteTag(name: string): Promise<PinboardTagResult> {
+    return this.#pinboard.deleteTag(name)
   }
 
   async deleteBookmark(url: string): Promise<void> {

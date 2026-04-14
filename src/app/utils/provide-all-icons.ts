@@ -1,5 +1,6 @@
 import { provideIcons } from '@ng-icons/core'
 import {
+  lucideArrowDown,
   lucideArrowLeft,
   lucideArrowUpDown,
   lucideChevronDown,
@@ -14,6 +15,7 @@ export const provideAllIcons = provideIcons({
   lucideChevronDown,
   lucideChevronRight,
   lucideArrowLeft,
+  lucideArrowDown,
   lucideArrowUpDown,
   lucideTrash2,
   lucideEdit2,
