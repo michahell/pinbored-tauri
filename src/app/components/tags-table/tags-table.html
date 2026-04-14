@@ -1,0 +1,68 @@
+<div class="overflow-hidden rounded-md border">
+  @defer {
+    <div hlmTableContainer>
+      <table hlmTable>
+        <thead hlmTHead>
+          @for (headerGroup of _table.getHeaderGroups(); track headerGroup.id) {
+            <tr hlmTr>
+              @for (header of headerGroup.headers; track header.id) {
+                <th hlmTh [attr.colSpan]="header.colSpan">
+                  @if (!header.isPlaceholder) {
+                    <ng-container
+                      *flexRender="header.column.columnDef.header; props: header.getContext(); let headerText"
+                    >
+                      <div [innerHTML]="headerText"></div>
+                    </ng-container>
+                  }
+                </th>
+              }
+            </tr>
+          }
+        </thead>
+        <tbody hlmTBody>
+          @for (row of _table.getRowModel().rows; track row.id) {
+            <tr
+              hlmTr
+              [attr.key]="row.id"
+              class="cursor-pointer"
+              (click)="openEditModal(row.original)"
+            >
+              @for (cell of row.getVisibleCells(); track $index) {
+                <td
+                  hlmTd
+                  (click)="cell.column.id === 'actions' ? $event.stopPropagation() : null"
+                >
+                  <ng-container *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cell">
+                    <div [innerHTML]="cell"></div>
+                  </ng-container>
+                </td>
+              }
+            </tr>
+          } @empty {
+            <tr hlmTr>
+              <td hlmTd class="h-24 text-center" [attr.colspan]="_columns.length">No results.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+<div class="flex flex-col justify-between py-4 sm:flex-row sm:items-center">
+  @if (_table.getRowCount() > 0) {
+    <div class="text-muted-foreground text-sm">{{ _table.getRowCount() }} tag(s)</div>
+    <div class="mt-2 flex space-x-2 sm:mt-0">
+      <button size="sm" variant="outline" hlmBtn [disabled]="!_table.getCanPreviousPage()" (click)="_table.previousPage()">
+        Previous
+      </button>
+      <button size="sm" variant="outline" hlmBtn [disabled]="!_table.getCanNextPage()" (click)="_table.nextPage()">
+        Next
+      </button>
+    </div>
+  } @else {
+    <div class="flex h-full w-full items-center justify-center">
+      <div class="text-muted-foreground text-sm">No Data</div>
+    </div>
+  }
+</div>

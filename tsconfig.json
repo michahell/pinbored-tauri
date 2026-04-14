@@ -37,7 +37,10 @@
       "@spartan-ng/helm/tabs": ["./libs/ui/tabs/src/index.ts"],
       "@spartan-ng/helm/button-group": ["./libs/ui/button-group/src/index.ts"],
       "@spartan-ng/helm/typography": ["./libs/ui/typography/src/index.ts"],
-      "@spartan-ng/helm/breadcrumb": ["./libs/ui/breadcrumb/src/index.ts"]
+      "@spartan-ng/helm/breadcrumb": ["./libs/ui/breadcrumb/src/index.ts"],
+      "@spartan-ng/helm/dialog": ["./libs/ui/dialog/src/index.ts"],
+      "@spartan-ng/helm/alert-dialog": ["./libs/ui/alert-dialog/src/index.ts"],
+      "@spartan-ng/helm/alert": ["./libs/ui/alert/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

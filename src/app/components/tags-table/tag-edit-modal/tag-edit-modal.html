@@ -1,0 +1,41 @@
+<div hlmDialogHeader>
+  <h2 hlmDialogTitle>Edit tag</h2>
+  <p hlmDialogDescription>Rename "{{ tag()?.name }}" or review its bookmarks.</p>
+</div>
+
+<div class="flex flex-col gap-4 py-2">
+  <div class="flex flex-col gap-1.5">
+    <label class="text-sm font-medium">Tag name</label>
+    <input
+      hlmInput
+      [value]="newName()"
+      (input)="newName.set($any($event.target).value)"
+      placeholder="Enter tag name"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <p class="text-sm font-medium">Bookmarks with this tag ({{ taggedBookmarks().length }})</p>
+    <div class="max-h-64 overflow-y-auto rounded-md border p-2 flex flex-col gap-1">
+      @if (taggedBookmarks().length === 0) {
+        <p [class]="hlmMuted">No bookmarks tagged with "{{ tag()?.name }}".</p>
+      }
+      @for (bookmark of taggedBookmarks(); track bookmark.hash) {
+        <a
+          [href]="bookmark.href"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm truncate hover:underline"
+          [title]="bookmark.description"
+        >
+          {{ bookmark.description || bookmark.href }}
+        </a>
+      }
+    </div>
+  </div>
+</div>
+
+<div hlmDialogFooter>
+  <button hlmBtn variant="outline" (click)="cancel()">Cancel</button>
+  <button hlmBtn (click)="save()">Save</button>
+</div>

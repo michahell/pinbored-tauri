@@ -10,11 +10,17 @@ Display the user's Pinboard tags with their bookmark counts, support rename and 
 
 - Inject `PinboardFacade`
 - Signals: `tags = signal<TagVM[]>([])`, `tagsFetching = signal(false)`, `hasTags = computed(...)`
-- Methods: `getAllTags()` → fetches via facade, maps `PinboardTagsMap` (a `Record<string, string>`) to `TagVM[]`
+- Methods:
+  - `getAllTags()` → fetches via facade (local store first), maps `PinboardTagsMap` (`Record<string, string>`) to `TagVM[]`
+  - `renameTag(oldName, newName)` → calls facade → updates `tags` signal locally
+  - `deleteTag(name)` → calls facade → removes tag from `tags` signal
 - `TagVM`: `{ name: string; count: number }` — add to `src/app/models/`
 
-## 2. `PinboardFacade` — fix `getAllTags` return type
-Currently returns `Promise<any>`. Type it properly: `Promise<PinboardTagsMap>`.
+## 2. `PinboardFacade` — fix `getAllTags` + add local-store caching
+- Fix return type: `Promise<any>` → `Promise<PinboardTagsMap>`
+- Add local-store caching mirroring `getAllBookmarks()`: check `'tags'` key first, only call API when empty, persist result
+- Add `renameTag(oldName, newName)` → `PinboardService.renameTag()`
+- Add `deleteTag(name)` → `PinboardService.deleteTag()`
 
 ## 3. Tags Page component
 **Files:** `src/app/pages/tags/tags.ts` + `tags.html`
@@ -36,12 +42,17 @@ Currently returns `Promise<any>`. Type it properly: `Promise<PinboardTagsMap>`.
 - Columns: **Name** (sortable), **Count** (sortable), **Actions**
 - Actions column: rename (pencil icon) + delete (trash icon) using `ng-icons` + `HlmButton`
 - Row selection optional (can be added later)
-- Accept `@Input() tags: TagVM[]`
+- Accept `tags = input<TagVM[]>()`
 
-## 5. Inline rename interaction
-- Clicking rename opens an inline `<input>` in the name cell (or a small popover via `HlmPopover`)
-- On confirm: call `PinboardService.renameTag()` directly from the table or via a future `TagsService.renameTag()`
-- On success: update signal state locally
+## 5. Edit modal
+**File:** `src/app/components/tags-table/tag-edit-modal/tag-edit-modal.ts` + `.html`
+
+- Triggered by clicking a row or the edit (pencil) button
+- Uses `HlmDialog` (spartan-ng)
+- Shows all tag fields (current name, editable new name)
+- Lists bookmarks tagged with this tag, derived from `BookmarksService` store (already loaded)
+- On confirm: call `TagsService.renameTag(oldName, newName)` → `PinboardFacade` → `PinboardService.renameTag()`
+- On success: update `tags` signal in `TagsService` locally
 
 ## 6. Delete interaction
 - Clicking delete: call `TagsService.deleteTag(name)` → `PinboardFacade` → `PinboardService.deleteTag()`
@@ -49,8 +60,9 @@ Currently returns `Promise<any>`. Type it properly: `Promise<PinboardTagsMap>`.
 
 ---
 
-## Open questions for refinement
-1. **Rename UX** — inline input in the row vs. a popover/dialog?
-2. **Fetch strategy** — always fetch fresh from API, or check local store first (like bookmarks)?
-3. **Delete confirmation** — silent delete or a confirmation dialog (`HlmAlertDialog`)?
-4. **Tag count source** — use `PinboardTagsMap` counts directly, or derive from already-loaded bookmarks?
+## Decisions
+
+1. **Rename UX** — clicking a row or the edit button opens a modal (large enough to hold all tag fields). The modal also shows which bookmarks are tagged with that tag.
+2. **Fetch strategy** — always check local store first, mirroring the bookmarks page implementation. Only fetch from API when the store is empty.
+3. **Delete confirmation** — always show a confirmation dialog (`HlmAlertDialog`) before deleting a tag, consistent with the app-wide rule of confirming all destructive actions.
+4. **Tag count source** — use `PinboardTagsMap` counts directly.

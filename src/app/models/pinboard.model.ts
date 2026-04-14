@@ -10,8 +10,6 @@ export interface PinboardItem {
   toread: string
 }
 
-export type PinboardTag = string
-
 /** posts/update */
 export interface PinboardUpdateResult {
   update_time: string

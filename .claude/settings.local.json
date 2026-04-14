@@ -7,13 +7,14 @@
       "mcp__angular-cli__search_documentation",
       "mcp__spartan-ng-mcp-server__spartan_get_component",
       "WebFetch(domain:www.pinboard.in)",
-      "mcp__webstorm__get_all_open_file_paths"
+      "mcp__webstorm__get_all_open_file_paths",
+      "Bash(npx ng:*)"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "angular-cli",
     "vitest",
     "spartan-ng-mcp-server"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }
