@@ -22,4 +22,16 @@ describe('Breadcrumbs', () => {
   it('should create', () => {
     expect(component).toBeTruthy()
   })
+
+  it('renders a nav element', () => {
+    fixture.detectChanges()
+    const nav: HTMLElement = fixture.nativeElement.querySelector('nav')
+    expect(nav).toBeTruthy()
+  })
+
+  it('renders breadcrumb link items', () => {
+    fixture.detectChanges()
+    const links: NodeList = fixture.nativeElement.querySelectorAll('a')
+    expect(links.length).toBeGreaterThan(0)
+  })
 })

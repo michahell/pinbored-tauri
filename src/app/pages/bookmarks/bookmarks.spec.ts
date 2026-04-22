@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { signal } from '@angular/core'
+import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Bookmarks from './bookmarks'
 import { BookmarksService } from '../../services/bookmarks/bookmarks-service'
@@ -74,7 +75,7 @@ describe('Bookmarks', () => {
 
     await TestBed.configureTestingModule({
       imports: [Bookmarks],
-      providers: [provideAllIcons, { provide: BookmarksService, useValue: mockBookmarksService }],
+      providers: [provideAllIcons, provideRouter([]), { provide: BookmarksService, useValue: mockBookmarksService }],
     }).compileComponents()
 
     fixture = TestBed.createComponent(Bookmarks)

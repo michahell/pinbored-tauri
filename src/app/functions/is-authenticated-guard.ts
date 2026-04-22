@@ -5,14 +5,5 @@ import { AuthenticationService } from '../services/authentication/authentication
 export const isAuthenticatedGuard: CanActivateFn = async () => {
   const authenticationService = inject(AuthenticationService)
 
-  return authenticationService
-    .authenticate()
-    .then(() => {
-      console.log(`isAuthenticatedGuard invoked, authenticated!`)
-      return true
-    })
-    .catch(() => {
-      console.log(`isAuthenticatedGuard invoked, returning false`)
-      return false
-    })
+  return authenticationService.authenticate().catch(() => false)
 }

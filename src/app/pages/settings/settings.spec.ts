@@ -1,11 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Settings from './settings'
 import { provideAllIcons } from '../../utils/provide-all-icons'
 
-vi.mock('@signality/core', () => ({
-  mediaQuery: vi.fn().mockReturnValue(() => false),
-}))
+vi.mock('@signality/core', async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...(actual as object),
+    mediaQuery: vi.fn().mockReturnValue(() => false),
+  }
+})
 
 describe('Settings', () => {
   let component: Settings
@@ -14,7 +19,7 @@ describe('Settings', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Settings],
-      providers: [provideAllIcons],
+      providers: [provideAllIcons, provideRouter([])],
     }).compileComponents()
 
     fixture = TestBed.createComponent(Settings)

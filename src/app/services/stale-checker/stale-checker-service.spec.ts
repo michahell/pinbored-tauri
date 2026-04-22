@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { StaleCheckerService } from './stale-checker-service'
+import { ProgressBarService } from '../progress-bar/progress-bar-service'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 
 const mockFetch = vi.hoisted(() => vi.fn())
@@ -28,9 +29,29 @@ function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
 
 describe('StaleCheckerService', () => {
   let service: StaleCheckerService
+  let mockProgressBar: {
+    start: ReturnType<typeof vi.fn>
+    stop: ReturnType<typeof vi.fn>
+    complete: ReturnType<typeof vi.fn>
+    increment: ReturnType<typeof vi.fn>
+    disable: ReturnType<typeof vi.fn>
+  }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({})
+    mockProgressBar = {
+      start: vi.fn(),
+      stop: vi.fn(),
+      complete: vi.fn(),
+      increment: vi.fn(),
+      disable: vi.fn(),
+    }
+
+    TestBed.configureTestingModule({
+      providers: [
+        StaleCheckerService,
+        { provide: ProgressBarService, useValue: mockProgressBar },
+      ],
+    })
     service = TestBed.inject(StaleCheckerService)
     mockFetch.mockReset()
   })
@@ -110,6 +131,72 @@ describe('StaleCheckerService', () => {
 
       expect(mockFetch).toHaveBeenCalledWith('https://example.com', { method: 'GET' })
       expect(mockFetch).toHaveBeenCalledWith('https://other.com', { method: 'GET' })
+    })
+
+    it('processes each bookmark independently — one failing does not skip others', async () => {
+      const bookmarks = [
+        makeBookmark({ hash: 'a', href: 'https://fails.com' }),
+        makeBookmark({ hash: 'b', href: 'https://ok.com' }),
+      ]
+      mockFetch
+        .mockRejectedValueOnce(new Error('fail'))
+        .mockResolvedValueOnce({ ok: true, status: 200 })
+
+      const completeHandler = vi.fn()
+      const queue = service.newQueue()
+      await service.startWith(queue, bookmarks, vi.fn(), completeHandler)
+
+      expect(completeHandler).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('progress bar', () => {
+    it('starts the stale progress bar before processing', async () => {
+      mockFetch.mockResolvedValue({ ok: true, status: 200 })
+      const queue = service.newQueue()
+
+      await service.startWith(queue, [makeBookmark()], vi.fn(), vi.fn())
+
+      expect(mockProgressBar.start).toHaveBeenCalledWith('staleProgress', 0)
+    })
+
+    it('increments the progress bar once per bookmark', async () => {
+      const bookmarks = [makeBookmark({ hash: 'a' }), makeBookmark({ hash: 'b' })]
+      mockFetch.mockResolvedValue({ ok: true, status: 200 })
+      const queue = service.newQueue()
+
+      await service.startWith(queue, bookmarks, vi.fn(), vi.fn())
+
+      expect(mockProgressBar.increment).toHaveBeenCalledTimes(2)
+    })
+
+    it('increments by 1/list.length for each bookmark', async () => {
+      const bookmarks = [makeBookmark({ hash: 'a' }), makeBookmark({ hash: 'b' }), makeBookmark({ hash: 'c' })]
+      mockFetch.mockResolvedValue({ ok: true, status: 200 })
+      const queue = service.newQueue()
+
+      await service.startWith(queue, bookmarks, vi.fn(), vi.fn())
+
+      const expectedIncrement = 1 / 3
+      expect(mockProgressBar.increment).toHaveBeenCalledWith('staleProgress', expectedIncrement)
+    })
+
+    it('stops the stale progress bar after all bookmarks are processed', async () => {
+      mockFetch.mockResolvedValue({ ok: true, status: 200 })
+      const queue = service.newQueue()
+
+      await service.startWith(queue, [makeBookmark()], vi.fn(), vi.fn())
+
+      expect(mockProgressBar.stop).toHaveBeenCalledWith('staleProgress')
+    })
+
+    it('stops the progress bar even when a bookmark fetch fails', async () => {
+      mockFetch.mockRejectedValue(new Error('fail'))
+      const queue = service.newQueue()
+
+      await service.startWith(queue, [makeBookmark()], vi.fn(), vi.fn())
+
+      expect(mockProgressBar.stop).toHaveBeenCalledWith('staleProgress')
     })
   })
 })

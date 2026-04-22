@@ -2,19 +2,19 @@ import { TestBed } from '@angular/core/testing'
 import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { isAuthenticatedGuard } from './is-authenticated-guard'
-import { LocalStoreService } from '../services/store/local-store-service'
+import { AuthenticationService } from '../services/authentication/authentication-service'
 
 describe('isAuthenticatedGuard', () => {
-  let mockLocalStore: { get: ReturnType<typeof vi.fn> }
+  let mockAuthService: { authenticate: ReturnType<typeof vi.fn> }
 
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => isAuthenticatedGuard(...guardParameters))
 
   beforeEach(() => {
-    mockLocalStore = { get: vi.fn() }
+    mockAuthService = { authenticate: vi.fn() }
 
     TestBed.configureTestingModule({
-      providers: [{ provide: LocalStoreService, useValue: mockLocalStore }],
+      providers: [{ provide: AuthenticationService, useValue: mockAuthService }],
     })
   })
 
@@ -22,10 +22,8 @@ describe('isAuthenticatedGuard', () => {
     expect(executeGuard).toBeTruthy()
   })
 
-  it('returns true when both username and token are stored', async () => {
-    mockLocalStore.get.mockImplementation((key: string) =>
-      Promise.resolve(key === 'username' ? 'michael' : 'mytoken')
-    )
+  it('returns true when authentication succeeds', async () => {
+    mockAuthService.authenticate.mockResolvedValue(true)
 
     const result = await executeGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 
@@ -33,9 +31,7 @@ describe('isAuthenticatedGuard', () => {
   })
 
   it('returns false when username is missing', async () => {
-    mockLocalStore.get.mockImplementation((key: string) =>
-      Promise.resolve(key === 'token' ? 'mytoken' : undefined)
-    )
+    mockAuthService.authenticate.mockResolvedValue(false)
 
     const result = await executeGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 
@@ -43,9 +39,7 @@ describe('isAuthenticatedGuard', () => {
   })
 
   it('returns false when token is missing', async () => {
-    mockLocalStore.get.mockImplementation((key: string) =>
-      Promise.resolve(key === 'username' ? 'michael' : undefined)
-    )
+    mockAuthService.authenticate.mockResolvedValue(false)
 
     const result = await executeGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 
@@ -53,7 +47,7 @@ describe('isAuthenticatedGuard', () => {
   })
 
   it('returns false when both credentials are missing', async () => {
-    mockLocalStore.get.mockResolvedValue(undefined)
+    mockAuthService.authenticate.mockResolvedValue(false)
 
     const result = await executeGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 
@@ -61,7 +55,7 @@ describe('isAuthenticatedGuard', () => {
   })
 
   it('returns false when store.get throws', async () => {
-    mockLocalStore.get.mockRejectedValue(new Error('Storage unavailable'))
+    mockAuthService.authenticate.mockRejectedValue(new Error('Storage unavailable'))
 
     const result = await executeGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 

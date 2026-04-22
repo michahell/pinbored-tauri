@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { provideRouter } from '@angular/router'
 import { describe, it, expect, beforeEach } from 'vitest'
 import Tags from './tags'
 import { provideAllIcons } from '../../utils/provide-all-icons'
@@ -10,7 +11,7 @@ describe('Tags', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Tags],
-      providers: [provideAllIcons],
+      providers: [provideAllIcons, provideRouter([])],
     }).compileComponents()
 
     fixture = TestBed.createComponent(Tags)

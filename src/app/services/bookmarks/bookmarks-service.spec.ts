@@ -3,6 +3,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksService } from './bookmarks-service'
 import { PinboardFacade } from '../pinboard/pinboard-facade'
 import { StaleCheckerService } from '../stale-checker/stale-checker-service'
+import { LocalStoreService } from '../store/local-store-service'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 
 vi.mock('@signality/core', () => ({
@@ -39,6 +40,10 @@ describe('BookmarksService', () => {
     newQueue: ReturnType<typeof vi.fn>
     startWith: ReturnType<typeof vi.fn>
   }
+  let mockLocalStore: {
+    get: ReturnType<typeof vi.fn>
+    set: ReturnType<typeof vi.fn>
+  }
 
   beforeEach(() => {
     mockQueue = { pause: vi.fn(), start: vi.fn(), clear: vi.fn(), isPaused: false }
@@ -47,12 +52,17 @@ describe('BookmarksService', () => {
       newQueue: vi.fn().mockReturnValue(mockQueue),
       startWith: vi.fn().mockResolvedValue(undefined),
     }
+    mockLocalStore = {
+      get: vi.fn().mockResolvedValue(undefined),
+      set: vi.fn().mockResolvedValue(undefined),
+    }
 
     TestBed.configureTestingModule({
       providers: [
         BookmarksService,
         { provide: PinboardFacade, useValue: mockFacade },
         { provide: StaleCheckerService, useValue: mockStaleChecker },
+        { provide: LocalStoreService, useValue: mockLocalStore },
       ],
     })
     service = TestBed.inject(BookmarksService)
@@ -257,6 +267,99 @@ describe('BookmarksService', () => {
     it('sets status to "maybe-stale" for 5xx server errors', () => {
       completeHandler(bookmark, { ok: false, status: 503 } as Response)
       expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('maybe-stale')
+    })
+  })
+
+  describe('startStaleCheck() with restart=true', () => {
+    beforeEach(async () => {
+      mockFacade.getAllBookmarks.mockResolvedValue([
+        makeBookmark({ hash: 'a', status: 'unchecked' }),
+        makeBookmark({ hash: 'b', status: 'ok' }),
+        makeBookmark({ hash: 'c', status: 'stale' }),
+      ])
+      await service.getAllBookmarks()
+    })
+
+    it('passes ALL bookmarks when restart=true, regardless of status', async () => {
+      await service.startStaleCheck(true)
+
+      const [, passedList] = mockStaleChecker.startWith.mock.calls[0]
+      expect(passedList).toHaveLength(3)
+    })
+
+    it('passes only unchecked/checking bookmarks when restart=false (default)', async () => {
+      await service.startStaleCheck(false)
+
+      const [, passedList] = mockStaleChecker.startWith.mock.calls[0]
+      expect(passedList).toHaveLength(1)
+      expect(passedList[0].hash).toBe('a')
+    })
+  })
+
+  describe('staleChecking signal during startStaleCheck()', () => {
+    it('is true while stale checking is in progress', async () => {
+      let resolveStartWith!: () => void
+      mockStaleChecker.startWith.mockImplementation(
+        () => new Promise<void>((resolve) => { resolveStartWith = resolve })
+      )
+
+      mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
+      await service.getAllBookmarks()
+
+      const promise = service.startStaleCheck()
+      expect(service.staleChecking()).toBe(true)
+
+      resolveStartWith()
+      await promise
+    })
+  })
+
+  describe('#handleStaleCheckStart', () => {
+    it('marks the bookmark as "checking" when start handler is called', async () => {
+      const bookmark = makeBookmark({ hash: 'target', status: 'unchecked' })
+      mockFacade.getAllBookmarks.mockResolvedValue([bookmark])
+      await service.getAllBookmarks()
+
+      let startHandler!: (b: PinboardItemVM) => void
+      mockStaleChecker.startWith.mockImplementation(
+        async (_q: unknown, _l: unknown, handler: typeof startHandler) => {
+          startHandler = handler
+        }
+      )
+      await service.startStaleCheck()
+      startHandler(bookmark)
+
+      expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('checking')
+    })
+  })
+
+  describe('pauseStaleCheck() — local store', () => {
+    it('persists current bookmarks to local store', async () => {
+      mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
+      await service.getAllBookmarks()
+      service.queue = mockQueue as any
+
+      await service.pauseStaleCheck()
+
+      expect(mockLocalStore.set).toHaveBeenCalledWith('bookmarks', service.bookmarks())
+    })
+  })
+
+  describe('stopStaleCheck()', () => {
+    it('sets queue to null after stopping', async () => {
+      service.queue = mockQueue as any
+      await service.stopStaleCheck()
+      expect(service.queue).toBeNull()
+    })
+
+    it('persists current bookmarks to local store', async () => {
+      mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
+      await service.getAllBookmarks()
+      service.queue = mockQueue as any
+
+      await service.stopStaleCheck()
+
+      expect(mockLocalStore.set).toHaveBeenCalledWith('bookmarks', service.bookmarks())
     })
   })
 })
