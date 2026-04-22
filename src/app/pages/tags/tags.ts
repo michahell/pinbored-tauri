@@ -4,10 +4,11 @@ import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { MainLayout } from '../../layouts/main-layout/main-layout'
 import { TagsTable } from '../../components/tags-table/tags-table'
 import { TagsService } from '../../services/tags/tags-service'
+import { HlmButtonGroup, HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
 
 @Component({
   selector: 'app-tags',
-  imports: [MainLayout, HlmButton, HlmSpinner, TagsTable],
+  imports: [HlmButtonGroupImports, MainLayout, HlmButton, HlmSpinner, TagsTable, HlmButtonGroup],
   templateUrl: './tags.html',
 })
 export default class Tags implements OnInit {

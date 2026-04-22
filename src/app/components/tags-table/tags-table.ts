@@ -19,10 +19,30 @@ import { TableHeadSortButton } from '../table/sort-header-button'
 import { TagActionCell } from './tag-action-cell'
 import { TagEditModal } from './tag-edit-modal/tag-edit-modal'
 import { TagEditStateService } from './tag-edit-state.service'
+import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
+import { HlmIcon } from '@spartan-ng/helm/icon'
+import {
+  HlmInputGroup,
+  HlmInputGroupAddon,
+  HlmInputGroupButton,
+  HlmInputGroupInput,
+} from '@spartan-ng/helm/input-group'
+import { NgIcon } from '@ng-icons/core'
 
 @Component({
   selector: 'app-tags-table',
-  imports: [FlexRenderDirective, HlmTableImports, HlmButtonImports],
+  imports: [
+    FlexRenderDirective,
+    HlmTableImports,
+    HlmButtonImports,
+    HlmDropdownMenuImports,
+    HlmIcon,
+    HlmInputGroup,
+    HlmInputGroupAddon,
+    HlmInputGroupButton,
+    HlmInputGroupInput,
+    NgIcon,
+  ],
   templateUrl: './tags-table.html',
 })
 export class TagsTable {
@@ -34,7 +54,7 @@ export class TagsTable {
   readonly #sorting = signal<SortingState>([])
   readonly #columnFilters = signal<ColumnFiltersState>([])
 
-  protected readonly _columns: ColumnDef<TagVM>[] = [
+  protected readonly columns: ColumnDef<TagVM>[] = [
     {
       accessorKey: 'name',
       id: 'name',
@@ -52,13 +72,19 @@ export class TagsTable {
       accessorKey: 'actions',
       header: 'actions',
       enableSorting: false,
-      cell: () => flexRenderComponent(TagActionCell),
+      cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
+      // cell: () => flexRenderComponent(TagActionCell),
     },
   ]
 
-  protected readonly _table = createAngularTable<TagVM>(() => ({
-    data: this.tags(),
-    columns: this._columns,
+  protected readonly table = createAngularTable<TagVM>(() => ({
+    data: this.tags() ?? [],
+    initialState: {
+      pagination: {
+        pageSize: 9,
+      },
+    },
+    columns: this.columns,
     onSortingChange: (updater) => {
       updater instanceof Function ? this.#sorting.update(updater) : this.#sorting.set(updater)
     },
@@ -79,5 +105,14 @@ export class TagsTable {
     this.#tagEditState.selectedTag.set(tag)
     const ref = this.#dialogService.open(TagEditModal, { contentClass: 'sm:max-w-2xl' })
     this.#tagEditState.close = () => ref.close()
+  }
+
+  filterTextChanged(event: Event) {
+    this.table.setGlobalFilter((event.target as HTMLInputElement).value)
+  }
+
+  clearFilterText(element: HTMLInputElement): void {
+    element.value = ''
+    this.table.setGlobalFilter('')
   }
 }

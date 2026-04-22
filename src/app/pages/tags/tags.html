@@ -1,15 +1,17 @@
 <app-main-layout animate.enter="fade-slide-in" animate.leave="fade-slide-out">
   <div class="pt-0">
-    <!-- toolbar -->
+    <!-- actions -->
     <div
-      class="flex flex-row align-middle place-items-center place-content-center justify-center justify-items-center dark:bg-blue-100/20 bg-primary/10 p-2"
+      class="flex flex-row align-middle place-items-center place-content-center justify-center justify-items-center dark:bg-blue-100/20 bg-primary/10"
     >
-      <button hlmBtn variant="secondary" size="sm" (click)="getTags()" [attr.disabled]="tagsFetching() || null">
-        fetch tags
-        @if (tagsFetching()) {
-          <hlm-spinner data-icon="inline-start" />
-        }
-      </button>
+      <div hlmButtonGroup>
+        <button hlmBtn variant="secondary" size="sm" (click)="getTags()" [attr.disabled]="tagsFetching() || null">
+          fetch tags
+          @if (tagsFetching()) {
+            <hlm-spinner data-icon="inline-start" />
+          }
+        </button>
+      </div>
     </div>
 
     <!-- tags table -->

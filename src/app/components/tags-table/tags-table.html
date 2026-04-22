@@ -1,9 +1,34 @@
+<div class="flex flex-row justify-between gap-4 py-4 items-center">
+  <div class="flex flex-row gap-4 py-4 items-center">
+    <!-- fuzzy search -->
+    <div hlmInputGroup class="w-full md:w-80">
+      <input #fuzzySearch hlmInputGroupInput placeholder="filter text" (input)="filterTextChanged($event)" />
+      <div hlmInputGroupAddon align="inline-end">
+        <button
+          hlmInputGroupButton
+          aria-label="Copy"
+          title="Copy"
+          size="icon-xs"
+          (click)="clearFilterText(fuzzySearch)"
+        >
+          <ng-icon [name]="'lucideTrash2'" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <button hlmBtn variant="outline" align="end" [hlmDropdownMenuTrigger]="menu">
+    columns
+    <ng-icon hlm name="lucideChevronDown" class="ml-2" size="sm" />
+  </button>
+  <ng-template #menu> test </ng-template>
+</div>
+
 <div class="overflow-hidden rounded-md border">
   @defer {
     <div hlmTableContainer>
       <table hlmTable>
         <thead hlmTHead>
-          @for (headerGroup of _table.getHeaderGroups(); track headerGroup.id) {
+          @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
             <tr hlmTr>
               @for (header of headerGroup.headers; track header.id) {
                 <th hlmTh [attr.colSpan]="header.colSpan">
@@ -20,18 +45,10 @@
           }
         </thead>
         <tbody hlmTBody>
-          @for (row of _table.getRowModel().rows; track row.id) {
-            <tr
-              hlmTr
-              [attr.key]="row.id"
-              class="cursor-pointer"
-              (click)="openEditModal(row.original)"
-            >
+          @for (row of table.getRowModel().rows; track row.id) {
+            <tr hlmTr [attr.key]="row.id" class="cursor-pointer" (click)="openEditModal(row.original)">
               @for (cell of row.getVisibleCells(); track $index) {
-                <td
-                  hlmTd
-                  (click)="cell.column.id === 'actions' ? $event.stopPropagation() : null"
-                >
+                <td hlmTd (click)="cell.column.id === 'actions' ? $event.stopPropagation() : null">
                   <ng-container *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cell">
                     <div [innerHTML]="cell"></div>
                   </ng-container>
@@ -40,7 +57,7 @@
             </tr>
           } @empty {
             <tr hlmTr>
-              <td hlmTd class="h-24 text-center" [attr.colspan]="_columns.length">No results.</td>
+              <td hlmTd class="h-24 text-center" [attr.colspan]="columns.length">No results.</td>
             </tr>
           }
         </tbody>
@@ -50,13 +67,19 @@
 </div>
 
 <div class="flex flex-col justify-between py-4 sm:flex-row sm:items-center">
-  @if (_table.getRowCount() > 0) {
-    <div class="text-muted-foreground text-sm">{{ _table.getRowCount() }} tag(s)</div>
+  @if (table.getRowCount() > 0) {
+    <div class="text-muted-foreground text-sm">{{ table.getRowCount() }} tag(s)</div>
     <div class="mt-2 flex space-x-2 sm:mt-0">
-      <button size="sm" variant="outline" hlmBtn [disabled]="!_table.getCanPreviousPage()" (click)="_table.previousPage()">
+      <button
+        size="sm"
+        variant="outline"
+        hlmBtn
+        [disabled]="!table.getCanPreviousPage()"
+        (click)="table.previousPage()"
+      >
         Previous
       </button>
-      <button size="sm" variant="outline" hlmBtn [disabled]="!_table.getCanNextPage()" (click)="_table.nextPage()">
+      <button size="sm" variant="outline" hlmBtn [disabled]="!table.getCanNextPage()" (click)="table.nextPage()">
         Next
       </button>
     </div>
