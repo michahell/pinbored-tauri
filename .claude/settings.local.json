@@ -8,7 +8,8 @@
       "mcp__spartan-ng-mcp-server__spartan_get_component",
       "WebFetch(domain:www.pinboard.in)",
       "mcp__webstorm__get_all_open_file_paths",
-      "Bash(npx ng:*)"
+      "Bash(npx ng:*)",
+      "mcp__angular-cli__get_best_practices"
     ]
   },
   "enableAllProjectMcpServers": true,

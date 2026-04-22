@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "spartan-health": "ng g @spartan-ng/cli:healthcheck",
-    "spartan-update": "pnpm add @spartan-ng/brain@latest @spartan-ng/cli@latest"
+    "spartan-update": "pnpm add @spartan-ng/brain@latest @spartan-ng/cli@latest",
+    "list-skills": "pnpm dlx skills list && pnpm dlx skills list -g"
   },
   "browserslist": [
     "defaults"
