@@ -32,7 +32,7 @@
     </div>
   </div>
   <button hlmBtn variant="outline" align="end" [hlmDropdownMenuTrigger]="menu">
-    Columns
+    columns
     <ng-icon hlm name="lucideChevronDown" class="ml-2" size="sm" />
   </button>
   <ng-template #menu>
@@ -51,6 +51,7 @@
     </hlm-dropdown-menu>
   </ng-template>
 </div>
+<ngx-loading-bar ref="staleProgress"></ngx-loading-bar>
 <div class="overflow-hidden rounded-md border">
   <!-- we defer the loading of the table, because tanstack manipulates the DOM with flexRender which can cause errors during SSR -->
   @defer {

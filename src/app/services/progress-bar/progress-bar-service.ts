@@ -7,23 +7,23 @@ import { LoadingBarService } from '@ngx-loading-bar/core'
 export class ProgressBarService {
   #loadingBarService = inject(LoadingBarService)
 
-  start(initialNumber?: number): void {
-    this.#loadingBarService.useRef().start(initialNumber)
+  start(id: string, initialNumber?: number): void {
+    this.#loadingBarService.useRef(id).start(initialNumber)
   }
 
-  stop(): void {
-    this.#loadingBarService.useRef().stop()
+  stop(id: string): void {
+    this.#loadingBarService.useRef(id).stop()
   }
 
-  complete(): void {
-    this.#loadingBarService.useRef().complete()
+  complete(id: string): void {
+    this.#loadingBarService.useRef(id).complete()
   }
 
-  disable(): void {
-    this.#loadingBarService.useRef().disable()
+  disable(id: string): void {
+    this.#loadingBarService.useRef(id).disable()
   }
 
-  increment(value?: number): void {
-    this.#loadingBarService.useRef().increment(value)
+  increment(id: string, value?: number): void {
+    this.#loadingBarService.useRef(id).increment(value)
   }
 }

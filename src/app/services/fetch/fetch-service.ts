@@ -15,17 +15,17 @@ export class FetchService {
    */
   fetch = (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
     return new Promise((resolve, reject) => {
-      this.#progressBarService.start()
+      this.#progressBarService.start('topProgress')
       fetch(input, init)
         .then((response) => {
-          this.#progressBarService.complete()
+          this.#progressBarService.complete('topProgress')
           return response
         })
         .then((response) => {
           resolve(response)
         })
         .catch((err) => {
-          this.#progressBarService.stop()
+          this.#progressBarService.stop('topProgress')
           reject(err)
         })
     })

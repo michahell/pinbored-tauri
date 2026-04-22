@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { fetch } from '@tauri-apps/plugin-http'
 import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { ProgressBarService } from '../progress-bar/progress-bar-service'
 
 export type PinboardStaleCheckStartHandler = (item: PinboardItemVM) => void
 export type PinboardStaleCheckCompleteHandler = (item: PinboardItemVM, result: Response | null) => void
@@ -11,6 +12,8 @@ export type PinboardStaleCheckCompleteHandler = (item: PinboardItemVM, result: R
   providedIn: 'root',
 })
 export class StaleCheckerService {
+  readonly #progressBarService = inject(ProgressBarService)
+
   newQueue(pQueueOptions = { concurrency: 4 }): PQueue {
     return new PQueue(pQueueOptions)
   }
@@ -24,15 +27,22 @@ export class StaleCheckerService {
     queue.onEmpty().then(() => this.#queueEmpty())
     queue.onIdle().then(() => this.#queueIdle())
     queue.onError().then(() => this.#queueError())
+    // setup progress bar
+    this.#progressBarService.start('staleProgress', 0)
+    const incrementAmount = 1 / list.length
     // start queue
     for await (const [pinboardItem, response] of pMapIterable(list, (bookmark) =>
       queue.add(() => {
+        // console.log('adding to queue: ', bookmark.hash)
         startHandler(bookmark)
+        this.#progressBarService.increment('staleProgress', incrementAmount)
         return this.#fetchBookmark(bookmark)
       })
     )) {
       completeHandler(pinboardItem, response)
     }
+    // when done
+    this.#progressBarService.stop('staleProgress')
   }
 
   async #fetchBookmark(pinboardItem: PinboardItemVM): Promise<[PinboardItemVM, Response | null]> {

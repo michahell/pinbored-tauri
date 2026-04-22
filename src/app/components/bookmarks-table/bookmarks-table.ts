@@ -9,7 +9,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  GlobalFilterTableState,
   RowSelectionState,
   SortingState,
   VisibilityState,
@@ -18,7 +17,6 @@ import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmTableImports } from '@spartan-ng/helm/table'
-import { HlmInputImports } from '@spartan-ng/helm/input'
 import { NgIcon } from '@ng-icons/core'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
@@ -27,6 +25,7 @@ import { CellTagRenderer } from '../table/cell-tag-renderer.component'
 import { ActionDropdown } from '../table/action-dropdown'
 import { CellBookmark } from '../table/cell-bookmark.component'
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
+import { NgxLoadingBar } from '@ngx-loading-bar/core'
 
 @Component({
   selector: 'app-bookmarks-table',
@@ -38,8 +37,8 @@ import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
     HlmButtonImports,
     HlmIconImports,
     HlmTableImports,
-    HlmInputImports,
     HlmInputGroupImports,
+    NgxLoadingBar,
   ],
   templateUrl: './bookmarks-table.html',
 })
