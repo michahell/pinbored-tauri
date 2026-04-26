@@ -3,8 +3,8 @@ import { provideRouter } from '@angular/router'
 import { signal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { App } from './app'
-import { AuthenticationService } from './services/authentication/authentication-service'
-import { provideAllIcons } from './utils/provide-all-icons'
+import { AuthenticationService } from './shared/services/authentication/authentication-service'
+import { provideAllIcons } from './shared/utils/provide-all-icons'
 
 vi.mock('@tauri-apps/api/core', () => ({
   invoke: vi.fn().mockResolvedValue(''),

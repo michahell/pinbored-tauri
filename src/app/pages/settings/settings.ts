@@ -3,9 +3,9 @@ import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { hlmH4 } from '@spartan-ng/helm/typography'
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
-import { MainLayout } from '../../layouts/main-layout/main-layout'
-import { SettingsService } from '../../services/settings/settings-service'
-import { Theme } from '../../services/settings/settings-model'
+import { MainLayout } from '../../shared/layouts/main-layout/main-layout'
+import { SettingsService } from './settings-service'
+import { Theme } from './settings-model'
 
 @Component({
   selector: 'app-settings',

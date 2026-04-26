@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksService } from './bookmarks-service'
-import { PinboardFacade } from '../pinboard/pinboard-facade'
-import { StaleCheckerService } from '../stale-checker/stale-checker-service'
-import { LocalStoreService } from '../store/local-store-service'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { PinboardFacade } from '../../shared/services/pinboard/pinboard-facade'
+import { StaleCheckerService } from '../../shared/services/stale-checker/stale-checker-service'
+import { LocalStoreService } from '../../shared/services/store/local-store-service'
+import { PinboardItemVM } from '../../shared/models/pinboard-view.model'
 
 vi.mock('@signality/core', () => ({
   interval: vi.fn(() => null),
@@ -300,7 +300,10 @@ describe('BookmarksService', () => {
     it('is true while stale checking is in progress', async () => {
       let resolveStartWith!: () => void
       mockStaleChecker.startWith.mockImplementation(
-        () => new Promise<void>((resolve) => { resolveStartWith = resolve })
+        () =>
+          new Promise<void>((resolve) => {
+            resolveStartWith = resolve
+          })
       )
 
       mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
@@ -321,11 +324,9 @@ describe('BookmarksService', () => {
       await service.getAllBookmarks()
 
       let startHandler!: (b: PinboardItemVM) => void
-      mockStaleChecker.startWith.mockImplementation(
-        async (_q: unknown, _l: unknown, handler: typeof startHandler) => {
-          startHandler = handler
-        }
-      )
+      mockStaleChecker.startWith.mockImplementation(async (_q: unknown, _l: unknown, handler: typeof startHandler) => {
+        startHandler = handler
+      })
       await service.startStaleCheck()
       startHandler(bookmark)
 

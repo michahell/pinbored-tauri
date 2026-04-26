@@ -2,7 +2,7 @@ import { Component, effect, inject } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { storage } from '@signality/core'
 import { invoke } from '@tauri-apps/api/core'
-import { SettingsService } from './services/settings/settings-service'
+import { SettingsService } from './pages/settings/settings-service'
 import { NgxLoadingBar } from '@ngx-loading-bar/core'
 
 @Component({

@@ -7,7 +7,7 @@ import { HlmAlertDialogImports } from '@spartan-ng/helm/alert-dialog'
 import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { TagVM } from '../../models/tag-view.model'
-import { TagsService } from '../../services/tags/tags-service'
+import { TagsService } from '../../../pages/tags/tags-service'
 import { TagEditStateService } from './tag-edit-state.service'
 import { TagEditModal } from './tag-edit-modal/tag-edit-modal'
 
@@ -32,9 +32,7 @@ import { TagEditModal } from './tag-edit-modal/tag-edit-modal'
         <hlm-alert-dialog-content>
           <div hlmAlertDialogHeader>
             <h3 hlmAlertDialogTitle>Delete "{{ _tag.name }}"</h3>
-            <p hlmAlertDialogDescription>
-              This will remove the tag from all bookmarks. This action cannot be undone.
-            </p>
+            <p hlmAlertDialogDescription>This will remove the tag from all bookmarks. This action cannot be undone.</p>
           </div>
           <div hlmAlertDialogFooter>
             <button hlmAlertDialogCancel>Cancel</button>

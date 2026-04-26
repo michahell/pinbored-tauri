@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Settings from './settings'
-import { provideAllIcons } from '../../utils/provide-all-icons'
+import { provideAllIcons } from '../../shared/utils/provide-all-icons'
 
 vi.mock('@signality/core', async (importOriginal) => {
   const actual = await importOriginal()

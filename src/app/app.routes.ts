@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router'
-import { isAuthenticatedGuard } from './functions/is-authenticated-guard'
+import { isAuthenticatedGuard } from './shared/functions/is-authenticated-guard'
 
 export const routes: Routes = [
   {

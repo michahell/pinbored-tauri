@@ -110,10 +110,7 @@ describe('PinboardFacade', () => {
 
     it('sets status to "unchecked" for all fetched bookmarks', async () => {
       mockLocalStore.get.mockResolvedValue(undefined)
-      mockPinboard.getAllBookmarks.mockResolvedValue([
-        makeRawBookmark({ hash: 'a' }),
-        makeRawBookmark({ hash: 'b' }),
-      ])
+      mockPinboard.getAllBookmarks.mockResolvedValue([makeRawBookmark({ hash: 'a' }), makeRawBookmark({ hash: 'b' })])
 
       const result = await facade.getAllBookmarks()
 

@@ -3,9 +3,9 @@ import { HlmDialogImports } from '@spartan-ng/helm/dialog'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmInputImports } from '@spartan-ng/helm/input'
 import { hlmMuted } from '@spartan-ng/helm/typography'
-import { TagsService } from '../../../services/tags/tags-service'
+import { TagsService } from '../../../../pages/tags/tags-service'
 import { TagEditStateService } from '../tag-edit-state.service'
-import { BookmarksService } from '../../../services/bookmarks/bookmarks-service'
+import { BookmarksService } from '../../../../pages/bookmarks/bookmarks-service'
 
 @Component({
   selector: 'app-tag-edit-modal',

@@ -3,8 +3,8 @@ import { signal } from '@angular/core'
 import { Router } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Login from './login'
-import { AuthenticationService } from '../../services/authentication/authentication-service'
-import { provideAllIcons } from '../../utils/provide-all-icons'
+import { AuthenticationService } from '../../shared/services/authentication/authentication-service'
+import { provideAllIcons } from '../../shared/utils/provide-all-icons'
 
 describe('Login', () => {
   let component: Login

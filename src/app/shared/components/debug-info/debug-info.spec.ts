@@ -3,7 +3,7 @@ import { signal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { DebugInfo } from './debug-info'
 import { AuthenticationService } from '../../services/authentication/authentication-service'
-import { BookmarksService } from '../../services/bookmarks/bookmarks-service'
+import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
 import { provideAllIcons } from '../../utils/provide-all-icons'
 
 describe('DebugInfo', () => {

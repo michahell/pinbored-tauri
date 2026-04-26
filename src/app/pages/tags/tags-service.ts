@@ -1,8 +1,8 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
-import { PinboardFacade } from '../pinboard/pinboard-facade'
-import { LocalStoreService } from '../store/local-store-service'
-import { PinboardTagsMap } from '../../models/pinboard.model'
-import { TagVM } from '../../models/tag-view.model'
+import { PinboardFacade } from '../../shared/services/pinboard/pinboard-facade'
+import { LocalStoreService } from '../../shared/services/store/local-store-service'
+import { PinboardTagsMap } from '../../shared/models/pinboard.model'
+import { TagVM } from '../../shared/models/tag-view.model'
 
 @Injectable({
   providedIn: 'root',

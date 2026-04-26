@@ -1,10 +1,10 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core'
 import { provideRouter } from '@angular/router'
 import { routes } from './app.routes'
-import { provideAllIcons } from './utils/provide-all-icons'
+import { provideAllIcons } from './shared/utils/provide-all-icons'
 import { provideLoadingBar } from '@ngx-loading-bar/core'
 import { provideLoadingBarRouter } from '@ngx-loading-bar/router'
-import { LocalStoreService } from './services/store/local-store-service'
+import { LocalStoreService } from './shared/services/store/local-store-service'
 
 export const appConfig: ApplicationConfig = {
   providers: [
