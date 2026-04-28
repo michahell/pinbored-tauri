@@ -4,14 +4,11 @@ import { greenBadge, redBadge, skyBadge } from '../../constants/tailwind-styles'
 import { AuthenticationService } from '../../services/authentication/authentication-service'
 import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
 import { HlmAccordionImports } from '@spartan-ng/helm/accordion'
-import { HlmButtonImports } from '@spartan-ng/helm/button'
-import { HlmIconImports } from '@spartan-ng/helm/icon'
 
 @Component({
   selector: 'app-debug-info',
-  imports: [HlmBadge, HlmAccordionImports, HlmButtonImports, HlmIconImports],
+  imports: [HlmBadge, HlmAccordionImports],
   templateUrl: './debug-info.html',
-  styleUrl: './debug-info.css',
 })
 export class DebugInfo {
   readonly redBadge = redBadge

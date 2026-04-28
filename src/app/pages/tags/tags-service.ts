@@ -3,6 +3,9 @@ import { PinboardFacade } from '../../shared/services/pinboard/pinboard-facade'
 import { LocalStoreService } from '../../shared/services/store/local-store-service'
 import { PinboardTagsMap } from '../../shared/models/pinboard.model'
 import { TagVM } from '../../shared/models/tag-view.model'
+import { TagEditModal } from '../../shared/components/table/tag-edit-modal/tag-edit-modal'
+import { HlmDialogService } from '@spartan-ng/helm/dialog'
+import { BrnDialogRef } from '@spartan-ng/brain/dialog'
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +13,13 @@ import { TagVM } from '../../shared/models/tag-view.model'
 export class TagsService {
   readonly #facade = inject(PinboardFacade)
   readonly #localStore = inject(LocalStoreService)
+  readonly #dialogService = inject(HlmDialogService)
 
   readonly tags = signal<TagVM[]>([])
   readonly tagsFetching = signal(false)
   readonly hasTags = computed(() => this.tags().length > 0)
+
+  #tagEditModalRef: BrnDialogRef<any> | null = null
 
   async getAllTags(): Promise<void> {
     this.tagsFetching.set(true)
@@ -43,12 +49,26 @@ export class TagsService {
     await this.#updateTagsInLocalStore()
   }
 
-  #mapToTagVMs(tagsMap: PinboardTagsMap): TagVM[] {
-    return Object.entries(tagsMap).map(([name, count]) => ({ name, count: Number(count) }))
+  openTagEditModal(tag: TagVM): void {
+    const context = {
+      selectedTag: tag,
+    }
+    if (this.#tagEditModalRef == null) {
+      this.#tagEditModalRef = this.#dialogService.open(TagEditModal, { context, contentClass: 'sm:max-w-2xl' })
+    }
+  }
+
+  closeTagEditModal(): void {
+    this.#tagEditModalRef?.close()
+    console.log('closed tag edit modal, what is tagEditModalRef set to now? ', this.#tagEditModalRef)
   }
 
   async #updateTagsInLocalStore(): Promise<void> {
     const tagsMap: PinboardTagsMap = Object.fromEntries(this.tags().map((t) => [t.name, String(t.count)]))
     await this.#localStore.set('tags', tagsMap)
+  }
+
+  #mapToTagVMs(tagsMap: PinboardTagsMap): TagVM[] {
+    return Object.entries(tagsMap).map(([name, count]) => ({ name, count: Number(count) }))
   }
 }

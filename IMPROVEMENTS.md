@@ -148,7 +148,7 @@ The following small components have no spec files:
 - `TableHeadSortButton`
 - `TableHeadSelection`
 - `TableRowSelection`
-- `TagActionCell`
+- `CellTagActionRenderer`
 
 Even basic render tests (does it mount, does it show the right text) provide a safety net for future refactors.
 

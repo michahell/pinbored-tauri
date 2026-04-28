@@ -8,7 +8,6 @@ import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { TagVM } from '../../models/tag-view.model'
 import { TagsService } from '../../../pages/tags/tags-service'
-import { TagEditStateService } from './tag-edit-state.service'
 import { TagEditModal } from './tag-edit-modal/tag-edit-modal'
 
 @Component({
@@ -31,7 +30,7 @@ import { TagEditModal } from './tag-edit-modal/tag-edit-modal'
       <div hlmAlertDialogPortal>
         <hlm-alert-dialog-content>
           <div hlmAlertDialogHeader>
-            <h3 hlmAlertDialogTitle>Delete "{{ _tag.name }}"</h3>
+            <h3 hlmAlertDialogTitle>Delete "{{ tag.name }}"</h3>
             <p hlmAlertDialogDescription>This will remove the tag from all bookmarks. This action cannot be undone.</p>
           </div>
           <div hlmAlertDialogFooter>
@@ -43,23 +42,19 @@ import { TagEditModal } from './tag-edit-modal/tag-edit-modal'
     </hlm-alert-dialog>
   `,
 })
-export class TagActionCell {
+export class CellTagActionRenderer {
   readonly #context = injectFlexRenderContext<CellContext<TagVM, unknown>>()
   readonly #tagsService = inject(TagsService)
-  readonly #tagEditState = inject(TagEditStateService)
-  readonly #dialogService = inject(HlmDialogService)
 
-  protected get _tag(): TagVM {
+  get tag(): TagVM {
     return this.#context.row.original
   }
 
   openEditModal(): void {
-    this.#tagEditState.selectedTag.set(this._tag)
-    const ref = this.#dialogService.open(TagEditModal, { contentClass: 'sm:max-w-2xl' })
-    this.#tagEditState.close = () => ref.close()
+    this.#tagsService.openTagEditModal(this.tag)
   }
 
   async deleteTag(): Promise<void> {
-    await this.#tagsService.deleteTag(this._tag.name)
+    await this.#tagsService.deleteTag(this.tag.name)
   }
 }

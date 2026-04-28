@@ -40,9 +40,9 @@
       "@spartan-ng/helm/dialog": ["./libs/ui/dialog/src/index.ts"],
       "@spartan-ng/helm/alert-dialog": ["./libs/ui/alert-dialog/src/index.ts"],
       "@spartan-ng/helm/alert": ["./libs/ui/alert/src/index.ts"],
-      "@spartan-ng/helm/accordion": ["./libs/ui/accordion/src/index.ts"],
       "@spartan-ng/helm/input-group": ["./libs/ui/input-group/src/index.ts"],
-      "@spartan-ng/helm/textarea": ["./libs/ui/textarea/src/index.ts"]
+      "@spartan-ng/helm/textarea": ["./libs/ui/textarea/src/index.ts"],
+      "@spartan-ng/helm/accordion": ["./libs/ui/accordion/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

@@ -16,9 +16,8 @@ import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { TagVM } from '../../models/tag-view.model'
 import { TableHeadSortButton } from '../table/sort-header-button'
-import { TagActionCell } from './tag-action-cell'
-import { TagEditModal } from './tag-edit-modal/tag-edit-modal'
-import { TagEditStateService } from './tag-edit-state.service'
+import { CellTagActionRenderer } from '../table/cell-tag-action-renderer'
+import { TagEditModal } from '../table/tag-edit-modal/tag-edit-modal'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { HlmIcon } from '@spartan-ng/helm/icon'
 import {
@@ -28,6 +27,7 @@ import {
   HlmInputGroupInput,
 } from '@spartan-ng/helm/input-group'
 import { NgIcon } from '@ng-icons/core'
+import { TagsService } from '../../../pages/tags/tags-service'
 
 @Component({
   selector: 'app-tags-table',
@@ -46,10 +46,9 @@ import { NgIcon } from '@ng-icons/core'
   templateUrl: './tags-table.html',
 })
 export class TagsTable {
-  readonly tags = input<TagVM[]>([])
+  readonly #tagsService = inject(TagsService)
 
-  readonly #tagEditState = inject(TagEditStateService)
-  readonly #dialogService = inject(HlmDialogService)
+  readonly tags = input<TagVM[]>([])
 
   readonly #sorting = signal<SortingState>([])
   readonly #columnFilters = signal<ColumnFiltersState>([])
@@ -73,7 +72,7 @@ export class TagsTable {
       header: 'actions',
       enableSorting: false,
       cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
-      // cell: () => flexRenderComponent(TagActionCell),
+      // cell: () => flexRenderComponent(CellTagActionRenderer),
     },
   ]
 
@@ -102,9 +101,7 @@ export class TagsTable {
   }))
 
   openEditModal(tag: TagVM): void {
-    this.#tagEditState.selectedTag.set(tag)
-    const ref = this.#dialogService.open(TagEditModal, { contentClass: 'sm:max-w-2xl' })
-    this.#tagEditState.close = () => ref.close()
+    this.#tagsService.openTagEditModal(tag)
   }
 
   filterTextChanged(event: Event) {
