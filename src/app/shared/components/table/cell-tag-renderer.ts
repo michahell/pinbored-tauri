@@ -7,7 +7,7 @@ import { greenBadge, redBadge, skyBadge, yellowBadge } from '../../constants/tai
 @Component({
   imports: [HlmBadge],
   providers: [],
-  templateUrl: './cell-tag-renderer.component.html',
+  templateUrl: './cell-tag-renderer.html',
 })
 export class CellTagRenderer {
   readonly context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()

@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router'
 @Component({
   imports: [HlmBadge, RouterLink],
   providers: [],
-  templateUrl: './cell-bookmark.component.html',
+  templateUrl: './cell-bookmark.html',
 })
 export class CellBookmark {
   readonly context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()

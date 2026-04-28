@@ -71,8 +71,8 @@ export class TagsTable {
       accessorKey: 'actions',
       header: 'actions',
       enableSorting: false,
-      cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
-      // cell: () => flexRenderComponent(CellTagActionRenderer),
+      // cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
+      cell: () => flexRenderComponent(CellTagActionRenderer),
     },
   ]
 

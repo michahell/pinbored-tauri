@@ -53,14 +53,13 @@ export class TagsService {
     const context = {
       selectedTag: tag,
     }
-    if (this.#tagEditModalRef == null) {
+    if (this.#tagEditModalRef == null || this.#tagEditModalRef.state() === 'closed') {
       this.#tagEditModalRef = this.#dialogService.open(TagEditModal, { context, contentClass: 'sm:max-w-2xl' })
     }
   }
 
   closeTagEditModal(): void {
     this.#tagEditModalRef?.close()
-    console.log('closed tag edit modal, what is tagEditModalRef set to now? ', this.#tagEditModalRef)
   }
 
   async #updateTagsInLocalStore(): Promise<void> {

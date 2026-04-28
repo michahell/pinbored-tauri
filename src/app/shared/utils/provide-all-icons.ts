@@ -7,6 +7,7 @@ import {
   lucideChevronRight,
   lucideEdit2,
   lucideEllipsis,
+  lucidePencil,
   lucideTrash2,
 } from '@ng-icons/lucide'
 
@@ -19,4 +20,5 @@ export const provideAllIcons = provideIcons({
   lucideArrowUpDown,
   lucideTrash2,
   lucideEdit2,
+  lucidePencil,
 })

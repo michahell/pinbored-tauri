@@ -24,13 +24,19 @@ export class TagEditModal {
 
   protected readonly taggedBookmarks = computed(() => {
     if (!this.tag) return []
-    return this.#bookmarksService.bookmarks().filter((b) => b.tagsList.includes(this.tag.name))
+    return this.#bookmarksService.bookmarks().filter((b) => {
+      return b.tagsList.includes(this.tag.name)
+    })
   })
 
   constructor() {
     if (this.tag) {
       this.newName.set(this.tag.name)
     }
+  }
+
+  close(): void {
+    this.#tagsService.closeTagEditModal()
   }
 
   async save(): Promise<void> {

@@ -1,0 +1,42 @@
+<!-- edit button -->
+<div>
+  <button hlmBtn variant="ghost" size="icon-sm" (click)="openEditModal()">
+    <ng-icon hlm size="sm" name="lucidePencil" />
+    <span class="sr-only">edit tag</span>
+  </button>
+
+  <!-- delete with confirmation -->
+  <hlm-alert-dialog>
+    <button hlmBtn variant="ghost" size="icon-sm" hlmAlertDialogTrigger>
+      <ng-icon hlm size="sm" name="lucideTrash2" />
+      <span class="sr-only">delete tag</span>
+    </button>
+    <hlm-alert-dialog-content *hlmAlertDialogPortal="let ctx">
+      <hlm-alert-dialog-header>
+        <h2 hlmAlertDialogTitle>Delete "{{ tag.name }}"</h2>
+        <p hlmAlertDialogDescription>This will remove the tag from all bookmarks. This action cannot be undone.</p>
+      </hlm-alert-dialog-header>
+      <hlm-alert-dialog-footer>
+        <button hlmAlertDialogCancel (click)="ctx.close()">Cancel</button>
+        <button hlmAlertDialogAction (click)="deleteTag(ctx)">Delete</button>
+      </hlm-alert-dialog-footer>
+    </hlm-alert-dialog-content>
+  </hlm-alert-dialog>
+
+  <!--  example -->
+  <!--  <hlm-alert-dialog>-->
+  <!--    <button id="edit-profile" hlmAlertDialogTrigger>Show Dialog</button>-->
+  <!--    <hlm-alert-dialog-content *hlmAlertDialogPortal="let ctx">-->
+  <!--      <hlm-alert-dialog-header>-->
+  <!--        <h2 hlmAlertDialogTitle>Are you absolutely sure?</h2>-->
+  <!--        <p hlmAlertDialogDescription>-->
+  <!--          This action cannot be undone. This will permanently delete your account and remove your data from our servers.-->
+  <!--        </p>-->
+  <!--      </hlm-alert-dialog-header>-->
+  <!--      <hlm-alert-dialog-footer>-->
+  <!--        <button hlmAlertDialogCancel (click)="ctx.close()">Cancel</button>-->
+  <!--        <button hlmAlertDialogAction (click)="ctx.close()">Continue</button>-->
+  <!--      </hlm-alert-dialog-footer>-->
+  <!--    </hlm-alert-dialog-content>-->
+  <!--  </hlm-alert-dialog>-->
+</div>
