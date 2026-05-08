@@ -6,18 +6,6 @@ import { App } from './app'
 import { AuthenticationService } from './shared/services/authentication/authentication-service'
 import { provideAllIcons } from './shared/utils/provide-all-icons'
 
-vi.mock('@tauri-apps/api/core', () => ({
-  invoke: vi.fn().mockResolvedValue(''),
-}))
-
-vi.mock('@tauri-apps/plugin-http', () => ({
-  fetch: vi.fn(),
-}))
-
-vi.mock('@tauri-apps/plugin-store', () => ({
-  load: vi.fn().mockResolvedValue({ get: vi.fn(), set: vi.fn(), save: vi.fn() }),
-}))
-
 vi.mock('@signality/core', () => ({
   storage: vi.fn().mockReturnValue(Object.assign(() => '', { set: vi.fn(), update: vi.fn() })),
   mediaQuery: vi.fn().mockReturnValue(() => false),

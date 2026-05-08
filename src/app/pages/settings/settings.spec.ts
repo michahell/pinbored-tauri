@@ -4,13 +4,11 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Settings from './settings'
 import { provideAllIcons } from '../../shared/utils/provide-all-icons'
 
-vi.mock('@signality/core', async (importOriginal) => {
-  const actual = await importOriginal()
-  return {
-    ...(actual as object),
-    mediaQuery: vi.fn().mockReturnValue(() => false),
-  }
-})
+vi.mock('@signality/core', () => ({
+  storage: vi.fn().mockReturnValue(Object.assign(() => '', { set: vi.fn(), update: vi.fn() })),
+  mediaQuery: vi.fn().mockReturnValue(() => false),
+  interval: vi.fn().mockReturnValue(null),
+}))
 
 describe('Settings', () => {
   let component: Settings
