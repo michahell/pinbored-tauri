@@ -1,23 +1,14 @@
-import { Component, inject } from '@angular/core'
-import { HlmCardImports } from '@spartan-ng/helm/card'
-import { HlmButtonImports } from '@spartan-ng/helm/button'
+import { Component } from '@angular/core'
+import { MainLayout } from '@layouts/main-layout/main-layout'
 import { hlmH4 } from '@spartan-ng/helm/typography'
-import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
-import { MainLayout } from '../../shared/layouts/main-layout/main-layout'
-import { SettingsService } from './settings-service'
-import { Theme } from './settings-model'
+import SettingsCaching from './caching/settings-caching/settings-caching'
+import SettingsTheme from './caching/settings-theme/settings-theme/settings-theme'
 
 @Component({
   selector: 'app-settings',
-  imports: [HlmCardImports, HlmButtonImports, HlmButtonGroupImports, MainLayout],
+  imports: [MainLayout, SettingsCaching, SettingsTheme],
   templateUrl: './settings.html',
 })
 export default class Settings {
   hlmH4 = hlmH4
-
-  #settings = inject(SettingsService)
-
-  setTheme(type: Theme): void {
-    this.#settings.setTheme(type)
-  }
 }

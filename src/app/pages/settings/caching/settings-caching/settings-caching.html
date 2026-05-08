@@ -1,0 +1,24 @@
+<section hlmCard>
+  <div hlmCardHeader>
+    <h3 hlmCardTitle>Store / Caching</h3>
+    <p hlmCardDescription>manage the Tauri Store cache</p>
+    <div hlmCardAction></div>
+  </div>
+  <hlm-card-footer>
+    <div class="flex flex-row justify-between w-full">
+      <div hlmButtonGroup>
+        <button hlmBtn variant="destructive" size="sm" (click)="clearStore()">
+          clear cache
+          @if (clearingStore()) {
+            <hlm-spinner data-icon="inline-start" />
+          }
+        </button>
+      </div>
+      <div>
+        @if (storeCleared()) {
+          test
+        }
+      </div>
+    </div>
+  </hlm-card-footer>
+</section>

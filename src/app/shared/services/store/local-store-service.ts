@@ -40,4 +40,10 @@ export class LocalStoreService {
       await this.#store.save()
     }
   }
+
+  async clear(): Promise<void> {
+    if (this.#store != null) {
+      await this.#store.clear()
+    }
+  }
 }

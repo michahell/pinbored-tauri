@@ -13,6 +13,13 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
+      "@components/*": ["./src/app/shared/components/*"],
+      "@constants/*": ["./src/app/shared/constants/*"],
+      "@functions/*": ["./src/app/shared/functions/*"],
+      "@layouts/*": ["./src/app/shared/layouts/*"],
+      "@models/*": ["./src/app/shared/models/*"],
+      "@services/*": ["./src/app/shared/services/*"],
+      "@utils/*": ["./src/app/shared/utils/*"],
       "@spartan-ng/helm/badge": ["./libs/ui/badge/src/index.ts"],
       "@spartan-ng/helm/button": ["./libs/ui/button/src/index.ts"],
       "@spartan-ng/helm/icon": ["./libs/ui/icon/src/index.ts"],
