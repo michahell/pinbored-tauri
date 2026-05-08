@@ -1,7 +1,6 @@
 import { Component, effect, inject } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { storage } from '@signality/core'
-import { invoke } from '@tauri-apps/api/core'
 import { SettingsService } from './pages/settings/settings-service'
 import { NgxLoadingBar } from '@ngx-loading-bar/core'
 
@@ -16,25 +15,10 @@ export class App {
 
   readonly value = storage('key', 'Hi, Angular!') // Web Storage API
 
-  constructor() {
-    // RUN ALWAYS
-    // effect(() => {})
-
-    // RUN ONCE
-    const effectRef = effect(() => {
-      // automatically change theme based on user's system theme
-      const preference = this.#settingsService.colorschemePreference()
-      this.#settingsService.setTheme(preference)
-      effectRef.destroy()
-    })
-  }
-
-  async greet(event: SubmitEvent, name: string): Promise<void> {
-    event.preventDefault()
-
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    invoke<string>('greet', { name }).then((text) => {
-      // this.greetingMessage = text
-    })
-  }
+  // Runs once. automatically change theme based on user's system theme.
+  #changeThemeOnceEffect = effect(() => {
+    const preference = this.#settingsService.colorschemePreference()
+    this.#settingsService.setTheme(preference)
+    this.#changeThemeOnceEffect.destroy()
+  })
 }
