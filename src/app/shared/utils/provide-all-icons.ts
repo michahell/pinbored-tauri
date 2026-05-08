@@ -3,6 +3,7 @@ import {
   lucideArrowDown,
   lucideArrowLeft,
   lucideArrowUpDown,
+  lucideCheck,
   lucideChevronDown,
   lucideChevronRight,
   lucideEdit2,
@@ -21,4 +22,5 @@ export const provideAllIcons = provideIcons({
   lucideTrash2,
   lucideEdit2,
   lucidePencil,
+  lucideCheck,
 })
