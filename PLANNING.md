@@ -1,6 +1,9 @@
 ## MVP planning
 - [ ] implement a basic tags page
 
+### needed optimizations
+- [ ] the route guard should not perform an actual auth check every time, only if a new const `PINBOARD_TOKEN_TTL` has expired. until that time, it should check for a stored entry in the Tauri `Store` (together with the actual `TTL` since authentication to compare against) indicating that the user has authenticated.
+
 ### single bookmark page
 - [ ] implement single bookmark page
 - [ ] editing a single bookmark works
@@ -19,8 +22,10 @@
 - [ ] the bookmarks page has a separate button-bar to show all, private, public, unread, untagged and starred bookmarks
 - [ ] the bookmarks page shows private and public tags differently
 - [ ] the bookmarks page renders private and public bookmarks with a different background color
+- [ ] the bookmarks page allows to filter by tag. this should be a specific tag selection filter input field.
 
 ### tags page
+- [ ] fix that the delete-tag button in the delete-tag-modal does not have variant `destructive`
 - [ ] the tags page has a separate button-bar to show all, used-once, common and selected tags
 - [ ] the tags page has a separate button-bar on the right to select all and select none
 - [ ] the tags page shows private and public tags differently
@@ -29,6 +34,21 @@
 - [ ] elaborate settings page
 
 ## when there is no more work
+
+### overview-page
+- [ ] the overview page shows how much tags I have
+- [ ] the overview page shows how much bookmarks I have
+- [ ] the overview page shows overlap between my tags and public tags
+- [ ] the overview page shows the percentage of private versus public bookmarks
+- [ ] the overview page shows the percentage of private versus public tags
+- [ ] the overview page shows _a local AI generated summary of my bookmark and tag collections
+
+### settings page
+- [ ] add settings for local AI via Ollama
+  - [ ] settings can be turned on- or off
+  - [ ] localhost URL can be filled in
+  - [ ] test connection button
+  - [ ] model selection dropdown
 
 - [ ] implement arch unit TS: https://github.com/LukasNiessen/ArchUnitTS
 - [ ] create GitHub actions pipeline
