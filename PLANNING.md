@@ -1,31 +1,34 @@
 ## MVP planning
+- [ ] implement a basic tags page
 
-### bookmarks page 
+### single bookmark page
+- [ ] implement single bookmark page
+- [ ] editing a single bookmark works
 
-- [ ] the bookmarks page has a separate button-bar to show all, private, public, unread, untagged, starred bookmarks
+### single tag page
+- [ ] implement single tag page
+- [ ] editing a single tag works
+
+### notes page
+- [ ] implement notes page
+- [ ] editing a single note works
+
+## Enhancements
+
+### bookmarks page
+- [ ] the bookmarks page has a separate button-bar to show all, private, public, unread, untagged and starred bookmarks
 - [ ] the bookmarks page shows private and public tags differently
 - [ ] the bookmarks page renders private and public bookmarks with a different background color
 
 ### tags page
-
-- [ ] implement a basic tags page
 - [ ] the tags page has a separate button-bar to show all, used-once, common and selected tags
 - [ ] the tags page has a separate button-bar on the right to select all and select none
 - [ ] the tags page shows private and public tags differently
 
-### single bookmark page
-- [ ] implement single bookmark page
-
-### single tag page
-- [ ] implement single tag page
-
-### notes page
-- [ ] implement notes page
-
 ### settings page
 - [ ] elaborate settings page
 
-## for when all basic functionality is done
+## when there is no more work
 
 - [ ] implement arch unit TS: https://github.com/LukasNiessen/ArchUnitTS
 - [ ] create GitHub actions pipeline
