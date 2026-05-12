@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router'
-import { isAuthenticatedGuard } from './shared/functions/is-authenticated-guard'
+import { isAuthenticatedGuard } from '@functions/is-authenticated-guard'
 
 export const routes: Routes = [
   {
@@ -32,7 +32,7 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/tags/tags'),
       },
       {
-        path: ':hash',
+        path: ':tag',
         pathMatch: 'full',
         loadComponent: () => import('./pages/tag/tag'),
       },

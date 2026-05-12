@@ -3,10 +3,10 @@ import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { hlmMuted } from '@spartan-ng/helm/typography'
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
-import { BookmarksTable } from '../../shared/components/bookmarks-table/bookmarks-table'
+import { BookmarksTable } from '@components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from './bookmarks-service'
 import { NgTemplateOutlet } from '@angular/common'
-import { MainLayout } from '../../shared/layouts/main-layout/main-layout'
+import { MainLayout } from '@layouts/main-layout/main-layout'
 
 @Component({
   selector: 'app-bookmarks',

@@ -2,27 +2,46 @@
   <hlm-accordion-item>
     <hlm-accordion-trigger>debug-info</hlm-accordion-trigger>
     <hlm-accordion-content>
-      <div class="w-full flex flex-row justify-end-safe dark:bg-blue-400/10 bg-primary/10 h[37px]">
-        <div class="text-sm p-2 gap-1">
-          <span> auth:&nbsp;&nbsp;</span>
-          <hlm-badge variant="secondary" [class]="`${isLoggedIn() ? greenBadge : redBadge}`">isLoggedIn</hlm-badge>
-        </div>
-        <div class="text-sm p-2 gap-1">
-          <span> bookmarks:&nbsp;&nbsp;</span>
-          <hlm-badge variant="secondary" [class]="`${bookmarksFetching() ? greenBadge : redBadge}`"
-            >bookmarksFetching</hlm-badge
-          >
-          <hlm-badge variant="secondary" [class]="`${staleChecking() ? greenBadge : redBadge}`"
-            >staleChecking</hlm-badge
-          >
-          <hlm-badge variant="secondary" [class]="`${hasBookmarks() ? greenBadge : redBadge}`">hasBookmarks</hlm-badge>
-        </div>
-        <div class="text-sm p-2 gap-1">
-          <span> queue:&nbsp;&nbsp;</span>
-          <hlm-badge variant="secondary" [class]="`${queueExists() ? greenBadge : redBadge}`">queue?</hlm-badge>
-          <hlm-badge variant="secondary" [class]="`${skyBadge}`">queued:&nbsp;{{ queueLength() }}</hlm-badge>
-        </div>
-      </div>
+      <div *ngTemplateOutlet="routeDebugTemplate"></div>
+      <div *ngTemplateOutlet="stateDebugTemplate"></div>
     </hlm-accordion-content>
   </hlm-accordion-item>
 </hlm-accordion>
+
+<!-- ROUTE -->
+<ng-template #routeDebugTemplate>
+  <div class="w-full flex flex-row justify-start dark:bg-blue-400/10 bg-primary/10 h[37px]">
+    <div class="text-sm p-2 gap-1">
+      route: <hlm-badge variant="default">{{ routeDebug()[0] }}</hlm-badge>
+    </div>
+    <div class="text-sm p-2 gap-1">
+      query params: <hlm-badge variant="default">{{ routeDebug()[1] || 'nada' }}</hlm-badge>
+    </div>
+    <div class="text-sm p-2 gap-1">
+      params: <hlm-badge variant="default">{{ routeDebug()[2] || 'nada' }}</hlm-badge>
+    </div>
+  </div>
+</ng-template>
+
+<!-- VARIOUS STATE -->
+<ng-template #stateDebugTemplate>
+  <div class="w-full flex flex-row justify-end-safe dark:bg-blue-400/10 bg-primary/10 h[37px]">
+    <div class="text-sm p-2 gap-1">
+      <span> auth:&nbsp;&nbsp;</span>
+      <hlm-badge variant="secondary" [class]="`${isLoggedIn() ? greenBadge : redBadge}`">isLoggedIn</hlm-badge>
+    </div>
+    <div class="text-sm p-2 gap-1">
+      <span> bookmarks:&nbsp;&nbsp;</span>
+      <hlm-badge variant="secondary" [class]="`${bookmarksFetching() ? greenBadge : redBadge}`"
+        >bookmarksFetching</hlm-badge
+      >
+      <hlm-badge variant="secondary" [class]="`${staleChecking() ? greenBadge : redBadge}`">staleChecking</hlm-badge>
+      <hlm-badge variant="secondary" [class]="`${hasBookmarks() ? greenBadge : redBadge}`">hasBookmarks</hlm-badge>
+    </div>
+    <div class="text-sm p-2 gap-1">
+      <span> queue:&nbsp;&nbsp;</span>
+      <hlm-badge variant="secondary" [class]="`${queueExists() ? greenBadge : redBadge}`">queue?</hlm-badge>
+      <hlm-badge variant="secondary" [class]="`${skyBadge}`">queued:&nbsp;{{ queueLength() }}</hlm-badge>
+    </div>
+  </div>
+</ng-template>

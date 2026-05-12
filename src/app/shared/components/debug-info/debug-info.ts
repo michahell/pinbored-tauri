@@ -1,13 +1,15 @@
 import { Component, computed, inject } from '@angular/core'
 import { HlmBadge } from '@spartan-ng/helm/badge'
-import { greenBadge, redBadge, skyBadge } from '../../constants/tailwind-styles'
-import { AuthenticationService } from '../../services/authentication/authentication-service'
+import { greenBadge, redBadge, skyBadge } from '@constants/tailwind-styles'
+import { AuthenticationService } from '@services/authentication/authentication-service'
 import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
 import { HlmAccordionImports } from '@spartan-ng/helm/accordion'
+import { ActivatedRoute } from '@angular/router'
+import { NgTemplateOutlet } from '@angular/common'
 
 @Component({
   selector: 'app-debug-info',
-  imports: [HlmBadge, HlmAccordionImports],
+  imports: [NgTemplateOutlet, HlmBadge, HlmAccordionImports],
   templateUrl: './debug-info.html',
 })
 export class DebugInfo {
@@ -17,8 +19,19 @@ export class DebugInfo {
 
   readonly #authentication = inject(AuthenticationService)
   readonly #bookmarks = inject(BookmarksService)
+  readonly #activatedRoute = inject(ActivatedRoute)
 
   isLoggedIn = computed(() => this.#authentication.authStatus() === 'authenticated')
+  routeDebug = computed<string[]>(() => {
+    const route = this.#activatedRoute.snapshot.pathFromRoot.map((s) => s.url).join(' > ')
+    const queryParams = Object.entries(this.#activatedRoute.snapshot.queryParams)
+      .map(([key, value]) => `${key}:${value}`)
+      .join(', ')
+    const params = Object.entries(this.#activatedRoute.snapshot.params)
+      .map(([key, value]) => `${key}:${value}`)
+      .join(', ')
+    return [route, queryParams, params]
+  })
 
   readonly bookmarksFetching = computed(() => this.#bookmarks.bookmarksFetching())
   readonly staleChecking = computed(() => this.#bookmarks.staleChecking())
