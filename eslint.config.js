@@ -1,9 +1,10 @@
 // @ts-check
-const eslint = require('@eslint/js')
 const { defineConfig } = require('eslint/config')
+const eslint = require('@eslint/js')
 const tseslint = require('typescript-eslint')
 const angular = require('angular-eslint')
 const eslintConfigPrettier = require('eslint-config-prettier/flat')
+const sheriff = require('@softarc/eslint-plugin-sheriff')
 
 module.exports = defineConfig([
   {
@@ -39,5 +40,9 @@ module.exports = defineConfig([
     files: ['**/*.html'],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
     rules: {},
+  },
+  {
+    files: ['**/*.ts'],
+    extends: [sheriff.configs.all],
   },
 ])

@@ -1,6 +1,6 @@
 import { computed, Injectable, Signal } from '@angular/core'
 import { mediaQuery } from '@signality/core'
-import { Theme } from '../../shared/models/settings-model'
+import { Theme } from './settings-model'
 
 @Injectable({
   providedIn: 'root',

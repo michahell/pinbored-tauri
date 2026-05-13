@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core'
 import { PinboardService } from './pinboard-service'
 import { LocalStoreService } from '../store/local-store-service'
-import { PinboardItemVM, PinboardItemVMStatus } from '../../models/pinboard-view.model'
-import { PinboardTagResult, PinboardTagsMap } from '../../models/pinboard.model'
+import { PinboardItemVM, PinboardItemVMStatus } from '@models/pinboard-view.model'
+import { PinboardTagResult, PinboardTagsMap } from '@models/pinboard.model'
 
 @Injectable({
   providedIn: 'root',

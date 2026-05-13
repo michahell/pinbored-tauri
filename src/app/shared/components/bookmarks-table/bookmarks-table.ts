@@ -1,4 +1,5 @@
 import { Component, input, OnInit, signal } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -18,9 +19,8 @@ import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmTableImports } from '@spartan-ng/helm/table'
 import { NgIcon } from '@ng-icons/core'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { PinboardItemVM } from '@models/pinboard-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
-import { FormsModule } from '@angular/forms'
 import { CellTagRenderer } from '../table/cell-tag-renderer'
 import { ActionDropdown } from '../table/action-dropdown'
 import { CellBookmark } from '../table/cell-bookmark'

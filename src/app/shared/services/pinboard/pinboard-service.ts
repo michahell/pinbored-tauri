@@ -13,8 +13,7 @@ import {
   PinboardUpdateResult,
   PinboardUserApiToken,
   PinboardUserSecret,
-} from '../../models/pinboard.model'
-import { fetch } from '@tauri-apps/plugin-http'
+} from '@models/pinboard.model'
 
 const PINBOARD_BASE_URL = 'https://api.pinboard.in/v1'
 
