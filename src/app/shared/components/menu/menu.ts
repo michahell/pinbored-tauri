@@ -2,11 +2,12 @@ import { Component, computed, inject } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { HlmNavigationMenuImports } from '@spartan-ng/helm/navigation-menu'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
-import { AuthenticationService } from '../../services/authentication/authentication-service'
+import { AuthenticationService } from '@services/authentication/authentication-service'
+import { DebugInfo } from '@components/debug-info/debug-info'
 
 @Component({
   selector: 'app-menu',
-  imports: [HlmNavigationMenuImports, HlmButtonImports, RouterLink, RouterLinkActive],
+  imports: [HlmNavigationMenuImports, HlmButtonImports, RouterLink, RouterLinkActive, DebugInfo],
   templateUrl: './menu.html',
 })
 export class Menu {

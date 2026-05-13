@@ -1,12 +1,10 @@
-<hlm-accordion>
-  <hlm-accordion-item>
-    <hlm-accordion-trigger>debug-info</hlm-accordion-trigger>
-    <hlm-accordion-content>
-      <div *ngTemplateOutlet="routeDebugTemplate"></div>
-      <div *ngTemplateOutlet="stateDebugTemplate"></div>
-    </hlm-accordion-content>
-  </hlm-accordion-item>
-</hlm-accordion>
+<hlm-popover>
+  <button hlmPopoverTrigger hlmBtn variant="outline">debug info</button>
+  <hlm-popover-content *hlmPopoverPortal="let ctx">
+    <div *ngTemplateOutlet="routeDebugTemplate"></div>
+    <div *ngTemplateOutlet="stateDebugTemplate"></div>
+  </hlm-popover-content>
+</hlm-popover>
 
 <!-- ROUTE -->
 <ng-template #routeDebugTemplate>

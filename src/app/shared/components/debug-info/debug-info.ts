@@ -1,15 +1,16 @@
 import { Component, computed, inject } from '@angular/core'
-import { HlmBadge } from '@spartan-ng/helm/badge'
-import { greenBadge, redBadge, skyBadge } from '@constants/tailwind-styles'
-import { AuthenticationService } from '@services/authentication/authentication-service'
-import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
-import { HlmAccordionImports } from '@spartan-ng/helm/accordion'
 import { ActivatedRoute } from '@angular/router'
 import { NgTemplateOutlet } from '@angular/common'
+import { HlmPopoverImports } from '@spartan-ng/helm/popover'
+import { HlmButtonImports } from '@spartan-ng/helm/button'
+import { HlmBadge } from '@spartan-ng/helm/badge'
+import { greenBadge, redBadge, skyBadge } from '../../../styles/tailwind-styles'
+import { AuthenticationService } from '@services/authentication/authentication-service'
+import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
 
 @Component({
   selector: 'app-debug-info',
-  imports: [NgTemplateOutlet, HlmBadge, HlmAccordionImports],
+  imports: [NgTemplateOutlet, HlmBadge, HlmPopoverImports, HlmButtonImports],
   templateUrl: './debug-info.html',
 })
 export class DebugInfo {

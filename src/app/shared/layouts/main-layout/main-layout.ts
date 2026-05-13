@@ -1,11 +1,9 @@
 import { Component } from '@angular/core'
-// import { Breadcrumbs } from '../../components/breadcrumbs/breadcrumbs'
-import { Menu } from '../../components/menu/menu'
-import { DebugInfo } from '../../components/debug-info/debug-info'
+import { Menu } from '@components/menu/menu'
 
 @Component({
   selector: 'app-main-layout',
-  imports: [Menu, DebugInfo], // Breadcrumbs,
+  imports: [Menu],
   templateUrl: './main-layout.html',
 })
 export class MainLayout {}
