@@ -1,5 +1,8 @@
 ## MVP planning
+
+### tags page
 - [ ] implement a basic tags page
+- [ ] search for tags, private/public
 
 ### needed optimizations
 - [ ] the route guard should not perform an actual auth check every time, only if a new const `PINBOARD_TOKEN_TTL` has expired. until that time, it should check for a stored entry in the Tauri `Store` (together with the actual `TTL` since authentication to compare against) indicating that the user has authenticated.
@@ -17,6 +20,11 @@
 - [ ] editing a single note works
 
 ## Enhancements
+
+### create footer
+- [ ] the footer has a lighter background in dark mode, and darker in light mode
+- [ ] the footer contains some creator info, links to pinboard.in
+- [ ] the footer can be hidden via settings
 
 ### bookmarks page
 - [ ] the bookmarks page has a separate button-bar to show all, private, public, unread, untagged and starred bookmarks
