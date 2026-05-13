@@ -1,14 +1,20 @@
-<hlm-popover>
-  <button hlmPopoverTrigger hlmBtn variant="outline">debug info</button>
-  <hlm-popover-content *hlmPopoverPortal="let ctx">
-    <div *ngTemplateOutlet="routeDebugTemplate"></div>
-    <div *ngTemplateOutlet="stateDebugTemplate"></div>
-  </hlm-popover-content>
-</hlm-popover>
+<hlm-sheet>
+  <button hlmSheetTrigger side="bottom" hlmBtn variant="outline">debug info</button>
+  <hlm-sheet-content *hlmSheetPortal="let ctx">
+    <hlm-sheet-header>
+      <h3 hlmSheetTitle>debug information</h3>
+    </hlm-sheet-header>
+    <div class="min-w-fit flex flex-col flex-auto">
+      <div *ngTemplateOutlet="routeDebugTemplate"></div>
+      <div *ngTemplateOutlet="stateDebugTemplate"></div>
+    </div>
+    <hlm-sheet-footer></hlm-sheet-footer>
+  </hlm-sheet-content>
+</hlm-sheet>
 
 <!-- ROUTE -->
 <ng-template #routeDebugTemplate>
-  <div class="w-full flex flex-row justify-start dark:bg-blue-400/10 bg-primary/10 h[37px]">
+  <div class="w-full flex flex-row justify-start h[37px]">
     <div class="text-sm p-2 gap-1">
       route: <hlm-badge variant="default">{{ routeDebug()[0] }}</hlm-badge>
     </div>
@@ -23,7 +29,7 @@
 
 <!-- VARIOUS STATE -->
 <ng-template #stateDebugTemplate>
-  <div class="w-full flex flex-row justify-end-safe dark:bg-blue-400/10 bg-primary/10 h[37px]">
+  <div class="w-full flex flex-row justify-start h[37px]">
     <div class="text-sm p-2 gap-1">
       <span> auth:&nbsp;&nbsp;</span>
       <hlm-badge variant="secondary" [class]="`${isLoggedIn() ? greenBadge : redBadge}`">isLoggedIn</hlm-badge>

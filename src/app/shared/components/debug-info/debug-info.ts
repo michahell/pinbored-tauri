@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { NgTemplateOutlet } from '@angular/common'
-import { HlmPopoverImports } from '@spartan-ng/helm/popover'
+import { HlmSheetImports } from '@spartan-ng/helm/sheet'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { greenBadge, redBadge, skyBadge } from '../../../styles/tailwind-styles'
@@ -10,7 +10,7 @@ import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
 
 @Component({
   selector: 'app-debug-info',
-  imports: [NgTemplateOutlet, HlmBadge, HlmPopoverImports, HlmButtonImports],
+  imports: [NgTemplateOutlet, HlmBadge, HlmButtonImports, HlmSheetImports],
   templateUrl: './debug-info.html',
 })
 export class DebugInfo {
