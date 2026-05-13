@@ -38,13 +38,12 @@
   <ng-template #filterActions>
     <p [class]="`${hlmMuted} p-2 ml-5`">quick filter</p>
     <div hlmButtonGroup>
-      <!-- 'all' | 'private' | 'public' | 'read' | 'unread' -->
       @for (filterType of ['all', 'private', 'public', 'read', 'unread']; track $index) {
         <button
           hlmBtn
-          variant="secondary"
           size="sm"
           (click)="filter(filterType)"
+          [variant]="currentFilter() === filterType ? 'default' : 'secondary'"
           [attr.disabled]="currentFilter() === filterType ? 'disabled' : null"
         >
           {{ filterType }}

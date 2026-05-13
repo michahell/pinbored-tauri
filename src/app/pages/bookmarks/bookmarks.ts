@@ -17,7 +17,6 @@ type BookmarkQuickFilter = 'all' | 'private' | 'public' | 'read' | 'unread'
 })
 export default class Bookmarks implements OnInit {
   readonly hlmMuted = hlmMuted
-
   readonly #bookmarks = inject(BookmarksService)
 
   // data signals
@@ -41,27 +40,22 @@ export default class Bookmarks implements OnInit {
   }
 
   async getBookmarks(): Promise<void> {
-    console.info('getting all bookmarks...')
     await this.#bookmarks.getAllBookmarks()
   }
 
   async startStaleCheck(): Promise<void> {
-    console.info('starting stale checking...')
     await this.#bookmarks.startStaleCheck()
   }
 
   async toggleStaleCheck(): Promise<void> {
     if (this.#bookmarks.queue?.isPaused) {
       await this.#bookmarks.resumeStaleCheck()
-      console.info('restarting stale checking...')
     } else {
       await this.#bookmarks.pauseStaleCheck()
-      console.info('pausing stale checking...')
     }
   }
 
   async stopStaleCheck(): Promise<void> {
-    console.info('stopping stale checking...')
     await this.#bookmarks.stopStaleCheck()
   }
 
