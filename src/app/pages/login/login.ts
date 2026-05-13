@@ -6,7 +6,7 @@ import { HlmFieldImports } from '@spartan-ng/helm/field'
 import { HlmInputImports } from '@spartan-ng/helm/input'
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner'
 import { Router } from '@angular/router'
-import { AuthenticationService } from '../../shared/services/authentication/authentication-service'
+import { AuthenticationService } from '../../shared/auth/authentication-service'
 
 interface PinboardLoginForm {
   username: FormControl<string | null>

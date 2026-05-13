@@ -12,13 +12,11 @@ import {
   SortingState,
 } from '@tanstack/angular-table'
 import { HlmTableImports } from '@spartan-ng/helm/table'
-import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
-import { TagVM } from '../../models/tag-view.model'
-import { TableHeadSortButton } from '../table/sort-header-button'
-import { CellTagActionRenderer } from '../table/cell-tag-action-renderer'
-import { TagEditModal } from '../table/tag-edit-modal/tag-edit-modal'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
+import { TagVM } from '@models/tag-view.model'
+import { TableHeadSortButton } from '../table/sort-header-button'
+import { CellTagActionRenderer } from './cell-tag-action-renderer'
 import { HlmIcon } from '@spartan-ng/helm/icon'
 import {
   HlmInputGroup,

@@ -1,8 +1,8 @@
 import { Component, computed, inject, OnInit } from '@angular/core'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
-import { MainLayout } from '../../shared/layouts/main-layout/main-layout'
-import { TagsTable } from '../../shared/components/tags-table/tags-table'
+import { MainLayout } from '@components/layouts/main-layout/main-layout'
+import { TagsTable } from '@components/tags-table/tags-table'
 import { TagsService } from './tags-service'
 import { HlmButtonGroup, HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
 

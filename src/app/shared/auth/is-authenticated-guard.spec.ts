@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing'
 import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { isAuthenticatedGuard } from './is-authenticated-guard'
-import { AuthenticationService } from '../services/authentication/authentication-service'
+import { AuthenticationService } from './authentication-service'
 
 describe('isAuthenticatedGuard', () => {
   let mockAuthService: { authenticate: ReturnType<typeof vi.fn> }

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksTable } from './bookmarks-table'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
-import { provideAllIcons } from '../../utils/provide-all-icons'
+import { provideAllIcons } from '../../core/provide-all-icons'
 
 function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
   return {
@@ -47,10 +47,7 @@ describe('BookmarksTable', () => {
   })
 
   it('renders with a populated bookmarks input', () => {
-    const bookmarks = [
-      makeBookmark(),
-      makeBookmark({ hash: 'def456', description: 'Another bookmark' }),
-    ]
+    const bookmarks = [makeBookmark(), makeBookmark({ hash: 'def456', description: 'Another bookmark' })]
     fixture.componentRef.setInput('bookmarks', bookmarks)
     fixture.detectChanges()
     expect(component).toBeTruthy()

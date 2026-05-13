@@ -3,8 +3,8 @@ import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmButtonGroup } from '@spartan-ng/helm/button-group'
 import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
-import { ACTION_DEBOUNCE_TIME } from '@constants/app-constants'
-import { LocalStoreService } from '@services/store/local-store-service'
+import { ACTION_DEBOUNCE_TIME } from '../../../../shared/core/app-constants'
+import { LocalStoreService } from '../../../../shared/core/store/local-store-service'
 import { NgIcon } from '@ng-icons/core'
 
 @Component({

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core'
-import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
 import { HlmBadge } from '@spartan-ng/helm/badge'
-import { skyBadge } from '../../../styles/tailwind-styles'
+import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
+import { skyBadge } from '../../../../styles/tailwind-styles'
 import { RouterLink } from '@angular/router'
+import { PinboardItemVM } from '@models/pinboard-view.model'
 
 @Component({
   imports: [HlmBadge, RouterLink],

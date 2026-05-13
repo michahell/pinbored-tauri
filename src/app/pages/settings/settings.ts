@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { MainLayout } from '@layouts/main-layout/main-layout'
+import { MainLayout } from '../../shared/components/layouts/main-layout/main-layout'
 import { hlmH4 } from '@spartan-ng/helm/typography'
 import SettingsCaching from './caching/settings-caching/settings-caching'
 import SettingsTheme from './caching/settings-theme/settings-theme/settings-theme'

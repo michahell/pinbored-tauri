@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing'
 import { signal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { AuthenticationService } from './authentication-service'
-import { LocalStoreService } from '../store/local-store-service'
-import { PinboardService } from '../pinboard/pinboard-service'
+import { LocalStoreService } from '../core/store/local-store-service'
+import { PinboardService } from '../core/pinboard/pinboard-service'
 
 describe('AuthenticationService', () => {
   let service: AuthenticationService

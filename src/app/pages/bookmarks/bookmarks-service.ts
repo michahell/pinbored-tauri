@@ -3,8 +3,8 @@ import { interval, IntervalRef } from '@signality/core'
 import PQueue from 'p-queue'
 import { PinboardItemVM, PinboardItemVMStatus } from '../../shared/models/pinboard-view.model'
 import { StaleCheckerService } from '../../shared/services/stale-checker/stale-checker-service'
-import { PinboardFacade } from '../../shared/services/pinboard/pinboard-facade'
-import { LocalStoreService } from '../../shared/services/store/local-store-service'
+import { PinboardFacade } from '../../shared/core/pinboard/pinboard-facade'
+import { LocalStoreService } from '../../shared/core/store/local-store-service'
 
 @Injectable({
   providedIn: 'root',

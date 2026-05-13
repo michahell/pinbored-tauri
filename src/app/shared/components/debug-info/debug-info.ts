@@ -5,7 +5,7 @@ import { HlmSheetImports } from '@spartan-ng/helm/sheet'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { greenBadge, redBadge, skyBadge } from '../../../styles/tailwind-styles'
-import { AuthenticationService } from '@services/authentication/authentication-service'
+import { AuthenticationService } from '@auth/authentication-service'
 import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
 
 @Component({

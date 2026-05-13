@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core'
-import { NgIcon, provideIcons } from '@ng-icons/core'
-import { lucideEllipsis } from '@ng-icons/lucide'
-import { HlmButtonImports } from '@spartan-ng/helm/button'
-import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
-import { HlmIconImports } from '@spartan-ng/helm/icon'
-import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
-import { PinboardFacade } from '../../services/pinboard/pinboard-facade'
 import { Router } from '@angular/router'
+import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
+import { NgIcon, provideIcons } from '@ng-icons/core'
+import { HlmButtonImports } from '@spartan-ng/helm/button'
+import { HlmIconImports } from '@spartan-ng/helm/icon'
+import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
+import { lucideEllipsis } from '@ng-icons/lucide'
+import { PinboardItemVM } from '@models/pinboard-view.model'
+import { PinboardFacade } from '@core/pinboard/pinboard-facade'
 
 @Component({
   selector: 'spartan-action-dropdown',

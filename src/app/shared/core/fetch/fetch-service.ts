@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core'
 import { fetch } from '@tauri-apps/plugin-http'
-import { ProgressBarService } from '../progress-bar/progress-bar-service'
+import { ProgressBarService } from '../../services/progress-bar/progress-bar-service'
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +8,7 @@ import { ProgressBarService } from '../progress-bar/progress-bar-service'
 export class FetchService {
   #progressBarService = inject(ProgressBarService)
   /**
-   * this only exists to wrap around tauri's fetch() to always do certain things.
+   * this only exists to wrap around Tauri's fetch() to always do certain things.
    * basically, a fetch interceptor... that we can't build because angular/http is not used :(
    * @param input
    * @param init

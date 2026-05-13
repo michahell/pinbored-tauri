@@ -1,8 +1,8 @@
 import { Component, computed, input } from '@angular/core'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
-import { greenBadge, redBadge, skyBadge, yellowBadge } from '../../../styles/tailwind-styles'
+import { greenBadge, redBadge, skyBadge, yellowBadge } from '../../../../styles/tailwind-styles'
+import { PinboardItemVM } from '@models/pinboard-view.model'
 
 @Component({
   imports: [HlmBadge],

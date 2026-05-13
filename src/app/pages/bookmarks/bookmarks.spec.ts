@@ -5,7 +5,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Bookmarks from './bookmarks'
 import { BookmarksService } from './bookmarks-service'
 import { PinboardItemVM } from '../../shared/models/pinboard-view.model'
-import { provideAllIcons } from '../../shared/utils/provide-all-icons'
+import { provideAllIcons } from '../../shared/core/provide-all-icons'
 
 function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
   return {

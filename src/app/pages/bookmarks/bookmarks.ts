@@ -4,7 +4,7 @@ import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
 import { hlmMuted } from '@spartan-ng/helm/typography'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
-import { MainLayout } from '@layouts/main-layout/main-layout'
+import { MainLayout } from '../../shared/components/layouts/main-layout/main-layout'
 import { BookmarksTable } from '@components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from './bookmarks-service'
 

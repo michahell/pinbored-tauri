@@ -3,8 +3,8 @@ import { provideRouter } from '@angular/router'
 import { signal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { App } from './app'
-import { AuthenticationService } from './shared/services/authentication/authentication-service'
-import { provideAllIcons } from './shared/utils/provide-all-icons'
+import { AuthenticationService } from './shared/auth/authentication-service'
+import { provideAllIcons } from './shared/core/provide-all-icons'
 
 vi.mock('@signality/core', () => ({
   storage: vi.fn().mockReturnValue(Object.assign(() => '', { set: vi.fn(), update: vi.fn() })),

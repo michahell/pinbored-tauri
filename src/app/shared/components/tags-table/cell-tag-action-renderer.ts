@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core'
 import { NgIcon } from '@ng-icons/core'
+import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
+import { TagsService } from '../../../pages/tags/tags-service'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmAlertDialogImports } from '@spartan-ng/helm/alert-dialog'
-import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
-import { TagVM } from '../../models/tag-view.model'
-import { TagsService } from '../../../pages/tags/tags-service'
+import { TagVM } from '@models/tag-view.model'
 
 @Component({
   imports: [NgIcon, HlmButtonImports, HlmIconImports, HlmAlertDialogImports],

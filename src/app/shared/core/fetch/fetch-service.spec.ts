@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { FetchService } from './fetch-service'
-import { ProgressBarService } from '../progress-bar/progress-bar-service'
+import { ProgressBarService } from '../../services/progress-bar/progress-bar-service'
 
 const mockTauriFetch = vi.hoisted(() => vi.fn())
 
@@ -29,10 +29,7 @@ describe('FetchService', () => {
     }
 
     TestBed.configureTestingModule({
-      providers: [
-        FetchService,
-        { provide: ProgressBarService, useValue: mockProgressBar },
-      ],
+      providers: [FetchService, { provide: ProgressBarService, useValue: mockProgressBar }],
     })
     service = TestBed.inject(FetchService)
     mockTauriFetch.mockReset()
