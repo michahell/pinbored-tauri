@@ -1,12 +1,14 @@
-import { Component, computed, inject, OnInit } from '@angular/core'
+import { Component, signal, computed, inject, OnInit } from '@angular/core'
+import { NgTemplateOutlet } from '@angular/common'
+import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
+import { hlmMuted } from '@spartan-ng/helm/typography'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
-import { hlmMuted } from '@spartan-ng/helm/typography'
-import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
+import { MainLayout } from '@layouts/main-layout/main-layout'
 import { BookmarksTable } from '@components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from './bookmarks-service'
-import { NgTemplateOutlet } from '@angular/common'
-import { MainLayout } from '@layouts/main-layout/main-layout'
+
+type BookmarkQuickFilter = 'all' | 'private' | 'public' | 'read' | 'unread'
 
 @Component({
   selector: 'app-bookmarks',
@@ -32,6 +34,7 @@ export default class Bookmarks implements OnInit {
   )
   readonly pauseStaleCheckDisabled = computed(() => !this.queueExists())
   readonly stopStaleCheckDisabled = computed(() => !this.queueExists())
+  readonly currentFilter = signal<BookmarkQuickFilter>('all')
 
   async ngOnInit(): Promise<void> {
     await this.getBookmarks()
@@ -60,5 +63,9 @@ export default class Bookmarks implements OnInit {
   async stopStaleCheck(): Promise<void> {
     console.info('stopping stale checking...')
     await this.#bookmarks.stopStaleCheck()
+  }
+
+  filter(filterType: string): void {
+    this.currentFilter.set(filterType as BookmarkQuickFilter)
   }
 }

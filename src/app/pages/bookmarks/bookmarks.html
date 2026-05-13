@@ -1,10 +1,9 @@
 <app-main-layout animate.enter="fade-slide-in" animate.leave="fade-slide-out">
   <div class="pt-0">
     <!-- actions -->
-    <div
-      class="flex flex-row align-middle place-items-center place-content-center justify-center justify-items-center dark:bg-blue-100/20 bg-primary/10"
-    >
+    <div class="flex flex-row place-items-center pl-2 dark:bg-blue-100/20 bg-primary/10">
       <div *ngTemplateOutlet="fetchActions"></div>
+      <div *ngTemplateOutlet="filterActions"></div>
       <div *ngTemplateOutlet="staleActions"></div>
     </div>
     <!-- bookmarks table -->
@@ -15,6 +14,7 @@
 
   <!-- FETCH ACTIONS -->
   <ng-template #fetchActions>
+    <p [class]="`${hlmMuted} p-2 ml-5`">data</p>
     <div hlmButtonGroup>
       <!-- fetch all -->
       <button
@@ -31,6 +31,25 @@
       </button>
       <!-- fetch most recent bookmarks -->
       <button hlmBtn variant="secondary" size="sm" [disabled]="'disabled'">fetch most recent</button>
+    </div>
+  </ng-template>
+
+  <!-- QUICK FILTER ACTIONS -->
+  <ng-template #filterActions>
+    <p [class]="`${hlmMuted} p-2 ml-5`">quick filter</p>
+    <div hlmButtonGroup>
+      <!-- 'all' | 'private' | 'public' | 'read' | 'unread' -->
+      @for (filterType of ['all', 'private', 'public', 'read', 'unread']; track $index) {
+        <button
+          hlmBtn
+          variant="secondary"
+          size="sm"
+          (click)="filter(filterType)"
+          [attr.disabled]="currentFilter() === filterType ? 'disabled' : null"
+        >
+          {{ filterType }}
+        </button>
+      }
     </div>
   </ng-template>
 
