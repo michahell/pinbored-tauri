@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core'
 import { fetch } from '@tauri-apps/plugin-http'
 import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { STALE_CHECKER_DEFAULT_CONCURRENCY } from '@core/app-constants'
+import { PinboardItemVM } from '@models/pinboard-view.model'
 import { ProgressBarService } from '../progress-bar/progress-bar-service'
 
 export type PinboardStaleCheckStartHandler = (item: PinboardItemVM) => void
@@ -14,7 +15,7 @@ export type PinboardStaleCheckCompleteHandler = (item: PinboardItemVM, result: R
 export class StaleCheckerService {
   readonly #progressBarService = inject(ProgressBarService)
 
-  newQueue(pQueueOptions = { concurrency: 4 }): PQueue {
+  newQueue(pQueueOptions = { concurrency: STALE_CHECKER_DEFAULT_CONCURRENCY }): PQueue {
     return new PQueue(pQueueOptions)
   }
 

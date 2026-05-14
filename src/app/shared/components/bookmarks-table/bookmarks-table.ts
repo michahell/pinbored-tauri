@@ -26,6 +26,7 @@ import { ActionDropdown } from './action-dropdown'
 import { CellBookmark } from './cell-bookmark/cell-bookmark'
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { NgxLoadingBar } from '@ngx-loading-bar/core'
+import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/app-constants'
 
 @Component({
   selector: 'app-bookmarks-table',
@@ -108,7 +109,7 @@ export class BookmarksTable implements OnInit {
     data: this.bookmarks() ?? [],
     initialState: {
       pagination: {
-        pageSize: 9,
+        pageSize: BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE,
       },
     },
     columns: this.columns,

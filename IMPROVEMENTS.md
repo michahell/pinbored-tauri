@@ -8,20 +8,6 @@ This document lists concrete improvement areas for the pinbored-tauri project, b
 
 ## Critical — Architecture & Performance
 
-### 1. Remove `standalone: true` from all component decorators
-Angular 20+ makes standalone the default. Explicitly setting `standalone: true` is redundant and clutters decorators.
-
----
-
-### 2. Move constructor side effects to `ngOnInit`
-Two components run initialization logic in the constructor:
-- `app.ts` — creates an `effect()` in the constructor for theme initialization
-- `tag-edit-modal.ts` — calls `signal.set()` in the constructor
-
-Side effects belong in `ngOnInit`, not constructors.
-
----
-
 ### 3. Fix mutable state update in `BookmarksService`
 `bookmarks-service.ts` directly mutates an array element:
 ```ts
@@ -85,16 +71,6 @@ All `store.get()` and `store.set()` calls are awaited without try/catch. A corru
 
 ---
 
-## Medium — Code Quality
-
-### 12. Remove unused code from `app.ts`
-- `greet()` method is never called
-- `value` signal is never read
-
-Both are dead code left over from the Tauri scaffold. Remove them.
-
----
-
 ### 13. Add form validators to the login form
 `login.ts` creates a `FormGroup` with no validators. Both `username` and `password` fields should have `Validators.required` at minimum. The submit button should be disabled while the form is invalid.
 
@@ -107,24 +83,6 @@ Per Angular 21 best practices, `ngClass` should be replaced with direct `class` 
 
 ### 15. Do not use `@HostBinding` / `@HostListener`
 Per Angular 21 best practices, these decorators should be replaced with the `host` object in `@Component`/`@Directive`. Check all components and directives.
-
----
-
-### 16. Extract magic numbers to constants
-- `StaleCheckerService` — concurrency hardcoded to `4`
-- `BookmarksTable` — default page size hardcoded to `9`
-
-Move these to named constants so they're easy to find and change.
-
----
-
-### 17. Complete or remove stub pages
-Three pages are empty stubs with no functionality:
-- `pages/bookmark/bookmark.ts` — bookmark detail view
-- `pages/tag/tag.ts` — tag detail view
-- `pages/notes/notes.ts` — notes page
-
-Either implement them or remove the route and component until ready.
 
 ---
 
