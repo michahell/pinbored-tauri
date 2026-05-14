@@ -1,5 +1,12 @@
 <app-main-layout>
   <div class="p-5">
-    <p>tag works!</p>
+    <div class="flex flex-row justify-between">
+      <div class="flex flex-row items-center content-center">
+        <app-big-tag></app-big-tag>
+        <span class="ml-5 font-bold accent-green-300">some tag name</span>
+      </div>
+      test
+    </div>
+    <div>number of bookmarks with this tag: {{ numTagged() }}</div>
   </div>
 </app-main-layout>

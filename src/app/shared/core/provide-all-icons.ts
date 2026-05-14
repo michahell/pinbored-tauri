@@ -9,6 +9,7 @@ import {
   lucideEdit2,
   lucideEllipsis,
   lucidePencil,
+  lucideTag,
   lucideTrash2,
 } from '@ng-icons/lucide'
 
@@ -23,4 +24,5 @@ export const provideAllIcons = provideIcons({
   lucideEdit2,
   lucidePencil,
   lucideCheck,
+  lucideTag,
 })

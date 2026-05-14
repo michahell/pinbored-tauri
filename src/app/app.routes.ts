@@ -35,6 +35,9 @@ export const routes: Routes = [
         path: ':tag',
         pathMatch: 'full',
         loadComponent: () => import('./pages/tag/tag'),
+        data: {
+          tag: null,
+        },
       },
     ],
   },

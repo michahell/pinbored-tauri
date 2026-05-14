@@ -4,20 +4,20 @@
 - [ ] implement a basic tags page
 - [ ] search for tags, private/public
 
-### needed optimizations
-- [ ] the route guard should not perform an actual auth check every time, only if a new const `PINBOARD_TOKEN_TTL` has expired. until that time, it should check for a stored entry in the Tauri `Store` (together with the actual `TTL` since authentication to compare against) indicating that the user has authenticated.
-
 ### single bookmark page
 - [ ] implement single bookmark page
 - [ ] editing a single bookmark works
 
 ### single tag page
 - [ ] implement single tag page
-- [ ] editing a single tag works
+- [ ] show a large green/yellow tag, with a tag name, and if it is a private or public tag
+- [ ] add button rename tag
+- [ ] editing a single tag works (open edit tag modal again)
+- [ ] add button with title: 'show bookmarks with tag' -> filters bookmarks page
+- [ ] add button delete tag
 
-### notes page
-- [ ] implement notes page
-- [ ] editing a single note works
+### needed optimizations
+- [ ] the route guard should not perform an actual auth check every time, only if a new const `PINBOARD_TOKEN_TTL` has expired. until that time, it should check for a stored entry in the Tauri `Store` (together with the actual `TTL` since authentication to compare against) indicating that the user has authenticated.
 
 ## Enhancements
 
@@ -40,6 +40,10 @@
 
 ### settings page
 - [ ] elaborate settings page
+
+### notes page
+- [ ] implement notes page
+- [ ] editing a single note works
 
 ## when there is no more work
 
