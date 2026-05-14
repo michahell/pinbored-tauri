@@ -9,7 +9,8 @@
       "WebFetch(domain:www.pinboard.in)",
       "mcp__webstorm__get_all_open_file_paths",
       "Bash(npx ng:*)",
-      "mcp__angular-cli__get_best_practices"
+      "mcp__angular-cli__get_best_practices",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('properties', {}\\), indent=2\\)\\)\")"
     ]
   },
   "enableAllProjectMcpServers": true,

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { signal } from '@angular/core'
+import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { DebugInfo } from './debug-info'
 import { AuthenticationService } from '../../auth/authentication-service'
@@ -28,6 +29,7 @@ describe('DebugInfo', () => {
       imports: [DebugInfo],
       providers: [
         provideAllIcons,
+        provideRouter([]),
         {
           provide: AuthenticationService,
           useValue: { authStatus: authStatusSignal },

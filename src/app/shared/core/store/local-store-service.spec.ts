@@ -2,12 +2,12 @@ import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { LocalStoreService } from './local-store-service'
 
-const mockStoreInstance = {
+const mockStoreInstance = vi.hoisted(() => ({
   get: vi.fn(),
   set: vi.fn(),
   save: vi.fn(),
-}
-const mockLoad = vi.fn()
+}))
+const mockLoad = vi.hoisted(() => vi.fn())
 
 vi.mock('@tauri-apps/plugin-store', () => ({
   load: (...args: unknown[]) => mockLoad(...args),

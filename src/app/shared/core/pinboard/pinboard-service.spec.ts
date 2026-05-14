@@ -1,12 +1,9 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { PinboardService } from './pinboard-service'
+import { FetchService } from '../fetch/fetch-service'
 
-const mockFetch = vi.hoisted(() => vi.fn())
-
-vi.mock('@tauri-apps/plugin-http', () => ({
-  fetch: mockFetch,
-}))
+const mockFetch = vi.fn()
 
 function mockResponse(data: unknown) {
   return Promise.resolve({ json: () => Promise.resolve(data) })
@@ -16,7 +13,9 @@ describe('Pinboard', () => {
   let service: PinboardService
 
   beforeEach(() => {
-    TestBed.configureTestingModule({})
+    TestBed.configureTestingModule({
+      providers: [{ provide: FetchService, useValue: { fetch: mockFetch } }],
+    })
     service = TestBed.inject(PinboardService)
     service.storedUsername = 'testuser'
     service.storedToken = 'testtoken'
