@@ -1,12 +1,13 @@
 import { Component } from '@angular/core'
-import { MainLayout } from '../../shared/components/layouts/main-layout/main-layout'
+import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { hlmH4 } from '@spartan-ng/helm/typography'
-import SettingsCaching from './caching/settings-caching/settings-caching'
-import SettingsTheme from './caching/settings-theme/settings-theme/settings-theme'
+import SettingsCaching from './settings-caching/settings-caching'
+import SettingsTheme from './settings-theme/settings-theme'
+import SettingsSqlite from './settings-sqlite/settings-sqlite'
 
 @Component({
   selector: 'app-settings',
-  imports: [MainLayout, SettingsCaching, SettingsTheme],
+  imports: [MainLayout, SettingsCaching, SettingsTheme, SettingsSqlite],
   templateUrl: './settings.html',
 })
 export default class Settings {

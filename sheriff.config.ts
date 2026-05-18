@@ -24,6 +24,7 @@ export const sheriffConfig: SheriffConfig = {
         services: {
           'progress-bar': ['type:ui'],
           'stale-checker': ['domain:pinbored'],
+          sqlite: ['domain:core'],
         },
       },
       styles: ['type:ui'],

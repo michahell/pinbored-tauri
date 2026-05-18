@@ -1,0 +1,36 @@
+<section hlmCard>
+  <div hlmCardHeader class="flex flex-row justify-between">
+    <h3 hlmCardTitle>SQLite</h3>
+    <p hlmCardDescription>select SQLite db</p>
+  </div>
+  <div hlmCardContent>
+    <div class="flex flex-col">
+      <div class="flex flex-row justify-between w-full my-5">
+        <hlm-input-group>
+          <input hlmInputGroupInput placeholder="Refreshing data..." />
+          <hlm-input-group-addon>
+            <ng-icon name="lucideLoader" class="motion-safe:animate-spin" />
+          </hlm-input-group-addon>
+
+          <hlm-input-group-addon align="inline-end">
+            <!--          <hlm-input-group-text>Please wait...</hlm-input-group-text>-->
+            Please wait...
+          </hlm-input-group-addon>
+        </hlm-input-group>
+      </div>
+      <div class="flex flex-row justify-between w-full">
+        <div hlmButtonGroup>
+          <button hlmBtn variant="default" size="sm" (click)="createDb()">create new db</button>
+          <button hlmBtn variant="secondary" size="sm" (click)="selectDb()">select existing db</button>
+          <button hlmBtn variant="destructive" size="sm" (click)="clearSelectedDb()">clear selected db path</button>
+        </div>
+        <div>
+          @if (dbPathCleared()) {
+            <ng-icon name="lucideCheck" /> store cleared!
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <hlm-card-footer></hlm-card-footer>
+</section>
