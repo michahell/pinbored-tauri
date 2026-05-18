@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, input } from '@angular/core'
 import { HlmIcon } from '@spartan-ng/helm/icon'
 import { NgIcon } from '@ng-icons/core'
 
@@ -8,4 +8,6 @@ import { NgIcon } from '@ng-icons/core'
   templateUrl: './big-tag.html',
   styleUrl: './big-tag.css',
 })
-export class BigTag {}
+export class BigTag {
+  name = input.required<string>()
+}

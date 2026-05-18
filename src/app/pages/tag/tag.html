@@ -1,12 +1,17 @@
 <app-main-layout>
-  <div class="p-5">
+  <div class="py-5 px-5">
     <div class="flex flex-row justify-between">
-      <div class="flex flex-row items-center content-center">
-        <app-big-tag></app-big-tag>
-        <span class="ml-5 font-bold accent-green-300">some tag name</span>
+      <app-big-tag [name]="tag()?.name ?? ''"></app-big-tag>
+      <div class="flex flex-row content-center items-center">
+        <p class="text-sm">bookmarks with this tag:&nbsp;</p>
+        <hlm-badge variant="default">{{ tag()?.count }}</hlm-badge>
       </div>
-      test
     </div>
-    <div>number of bookmarks with this tag: {{ numTagged() }}</div>
+  </div>
+  <!-- AI summary of tag, suggested rename of tag based on tag collection -->
+  <div class="py-2 px-5 dark:bg-accent">[todo: AI summary of tag + suggested rename of tag]</div>
+  <!-- bookmarks table -->
+  <div class="p-5">
+    <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
   </div>
 </app-main-layout>

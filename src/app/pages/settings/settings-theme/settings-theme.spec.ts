@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import SettingsTheme from './settings-theme'
-import { SettingsService } from '../../../settings-service'
+import { SettingsService } from '../settings-service'
 
 describe('SettingsTheme', () => {
   let component: SettingsTheme

@@ -2,7 +2,6 @@
   <span class="w-full">
     {{ context.row.original.description }} - <small>{{ context.row.original.href }}</small></span
   >
-  <span class="w-full"> </span>
   <div class="w-full -ml-1 pt-1">
     @for (tag of context.row.original.tagsList; track $index) {
       <a hlmBadge variant="secondary" [class]="`${skyBadge} select-none cursor-pointer`" [routerLink]="`/tags/${tag}`"
