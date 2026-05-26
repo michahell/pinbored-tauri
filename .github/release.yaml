@@ -1,0 +1,67 @@
+name: release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['release']
+
+permissions:
+  contents: write
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.14.0'
+      - run: pnpm install
+        continue-on-error: false
+      - run: pnpm run test
+        continue-on-error: true
+      - run: pnpm run build
+        continue-on-error: false
+      - name: install zip
+        uses: montudor/action-zip@v1
+      - name: create zip file
+        run: zip -qq -r dist.zip dist
+      - name: store build output
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: 'dist.zip'
+          retention-days: 1
+
+  create-release:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.14.0'
+      - name: create new tag
+        id: version
+        run: |
+          # setup local git config user and e-mail
+          git config --local user.email "action@github.com"
+          git config --local user.name "release workflow action"
+
+          # use pnpm version to update version in package.json
+          pnpm version minor -m "create tagged release %s" --force
+
+          # store that tag in github output for later use
+          echo "TAG_NAME=v$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+          # push created release version commit and tags
+          git push --tags --force
+      - name: download dist
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+      - name: create release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.version.outputs.TAG_NAME }}
+          files: 'dist.zip'
