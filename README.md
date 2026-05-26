@@ -1,7 +1,38 @@
-# Tauri + Angular
+# Pinbored
 
-This template should help get you started developing with Tauri and Angular.
+Pinbored is a _desktop_ tool built to administer pinboard.in _bookmarks_, _tags_ and _note_ collections.
+See below [screenshots](#screenshots) for an impression.
+
+Future plans include ways to administer locally by moving collections into a single-file SQLite DB that is easily shared using local (NAS) or cloud-storage (sovereign or not).
+
+## Project history
+
+Please be seated, for the fourth iteration of Pinbored:
+
+* [iteration one](https://github.com/michahell/pinbored-AS3) ([Adobe Air](https://airsdk.harman.com/) / [AS3](https://airsdk.dev/reference/actionscript/3.0/) / [Starling](https://gamua.com/starling/) / self-built UI)
+* [iteration two](https://github.com/michahell/pinbored-nwjs) ([nwjs](https://nwjs.io/) / [angular.js](https://angularjs.org/) / self-built UI)
+* [iteration three](https://github.com/michahell/pinbored-tauri-svelte) ([Tauri v1](https://v1.tauri.app/) / [Svelte](https://svelte.dev/) / [carbon-design-system](https://carbondesignsystem.com/))
+* [this iteration four](https://github.com/michahell/pinbored-tauri) ([Tauri v2](https://tauri.app/) / [Angular 21](https://angular.dev/) / [spartan-ng](https://spartan.ng/))
 
 ## Recommended IDE Setup
 
+By Tauri:
+
 [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer) + [Angular Language Service](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template).
+
+By me:
+
+[IntelliJ](https://www.jetbrains.com/idea/) + [Rust plugin](https://plugins.jetbrains.com/plugin/22407-rust)
+
+## [Screenshots](#screenshots)
+
+last update: 26-05-2026
+
+#### login
+![pinbored-v0-login.png](resources/pinbored-v0-login.png)
+
+#### bookmarks
+![pinbored-v0-bookmarks.png](resources/pinbored-v0-bookmarks.png)
+
+#### tags
+![pinbored-v0-tags.png](resources/pinbored-v0-tags.png)
