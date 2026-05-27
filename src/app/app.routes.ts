@@ -16,7 +16,7 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/bookmarks/bookmarks'),
       },
       {
-        path: ':hash',
+        path: ':bookmark',
         pathMatch: 'full',
         loadComponent: () => import('./pages/bookmark/bookmark'),
       },

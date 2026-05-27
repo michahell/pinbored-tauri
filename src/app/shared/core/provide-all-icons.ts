@@ -8,6 +8,8 @@ import {
   lucideChevronRight,
   lucideEdit2,
   lucideEllipsis,
+  lucideLoader,
+  lucideLoader2,
   lucidePencil,
   lucideTag,
   lucideTrash2,
@@ -25,4 +27,6 @@ export const provideAllIcons = provideIcons({
   lucidePencil,
   lucideCheck,
   lucideTag,
+  lucideLoader,
+  lucideLoader2,
 })

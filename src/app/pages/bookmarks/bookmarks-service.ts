@@ -1,10 +1,10 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
 import { interval, IntervalRef } from '@signality/core'
 import PQueue from 'p-queue'
-import { PinboardItemVM, PinboardItemVMStatus } from '../../shared/models/pinboard-view.model'
-import { StaleCheckerService } from '../../shared/services/stale-checker/stale-checker-service'
-import { PinboardFacade } from '../../shared/core/pinboard/pinboard-facade'
-import { LocalStoreService } from '../../shared/core/store/local-store-service'
+import { PinboardItemVM, PinboardItemVMStatus } from '@models/pinboard-view.model'
+import { StaleCheckerService } from '@services/stale-checker/stale-checker-service'
+import { PinboardFacade } from '@core/pinboard/pinboard-facade'
+import { LocalStoreService } from '@core/store/local-store-service'
 
 @Injectable({
   providedIn: 'root',
@@ -36,12 +36,12 @@ export class BookmarksService {
   readonly hasQueue = signal(false)
   readonly queueLength = signal(0)
   readonly queueTasks = signal<
-    | ReadonlyArray<{
+    | readonly {
         readonly id?: string
         readonly priority: number
         readonly startTime: number
         readonly timeout?: number
-      }>
+      }[]
     | undefined
   >(undefined)
 

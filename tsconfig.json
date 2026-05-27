@@ -18,6 +18,7 @@
       "@core/*": ["./src/app/shared/core/*"],
       "@models/*": ["./src/app/shared/models/*"],
       "@services/*": ["./src/app/shared/services/*"],
+      "@styles/*": ["./src/app/styles/*"],
       "@spartan-ng/helm/badge": ["./libs/ui/badge/src/index.ts"],
       "@spartan-ng/helm/button": ["./libs/ui/button/src/index.ts"],
       "@spartan-ng/helm/icon": ["./libs/ui/icon/src/index.ts"],

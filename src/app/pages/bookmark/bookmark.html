@@ -1,5 +1,54 @@
 <app-main-layout>
-  <div class="p-5">
-    <p>bookmark works!</p>
+  <div class="py-5 px-5">
+    <!-- title and others having the same bookmark -->
+    <div class="flex flex-row justify-between mb-2">
+      <h1>{{ bookmark()?.description }}</h1>
+      <div class="flex flex-row content-center items-center">
+        <p class="text-sm">others having this bookmark:&nbsp;</p>
+        <hlm-badge variant="default">0</hlm-badge>
+      </div>
+    </div>
+    <div class="flex flex-row mb-2 align-middle items-center">
+      <!-- tags -->
+      <p>tags:</p>
+      &nbsp;
+      @for (tag of bookmark()?.tagsList; track $index) {
+        <hlm-badge
+          variant="default"
+          [class]="`${skyBadge} select-none cursor-pointer mr-1`"
+          [routerLink]="`/tags/${tag}`"
+          >{{ tag }}</hlm-badge
+        >
+      }
+    </div>
+    <!-- actual link -->
+    <div class="flex flex-row mb-2 align-middle items-center">
+      <small>{{ bookmark()?.href }}</small>
+    </div>
+  </div>
+
+  <!-- extended OR AI summary of bookmark -->
+  <div class="py-2 px-5 flex flex-row mb-2 align-middle items-center bg-accent">
+    <p>{{ bookmark()?.extended }}</p>
+  </div>
+
+  <!-- status -->
+  <div class="py-2 px-5 flex flex-row justify-between mb-2">
+    <small>stale-check status:</small>
+    <hlm-badge variant="default">{{ bookmark()?.status }}</hlm-badge>
+  </div>
+
+  <!-- options -->
+  <div class="py-2 px-5 flex flex-row mb-2 align-middle items-center justify-between bg-slate-700">
+    <div class="flex flex-row">
+      <!-- open -->
+      <button hlmBtn variant="default" class="select-none cursor-pointer mr-1">open bookmark</button>
+      <!-- edit -->
+      <button hlmBtn variant="secondary" size="lg" class="select-none cursor-pointer mr-1">edit</button>
+      <!-- stale-check -->
+      <button hlmBtn variant="secondary" size="lg" class="select-none cursor-pointer mr-1">stale-check</button>
+    </div>
+    <!-- delete -->
+    <button hlmBtn variant="destructive" size="lg" class="select-none cursor-pointer mr-1">delete</button>
   </div>
 </app-main-layout>

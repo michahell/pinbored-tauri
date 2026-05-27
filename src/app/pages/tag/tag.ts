@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit } from '@angular/core'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
-import { BigTag } from '@components/big-tag/big-tag/big-tag'
+import { BigTag } from '../../shared/components/big-tag/big-tag'
 import { ActivatedRoute, Params } from '@angular/router'
 import { TagsService } from '../tags/tags-service'
 import { TagVM } from '@models/tag-view.model'

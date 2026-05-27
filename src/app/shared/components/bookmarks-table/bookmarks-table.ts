@@ -1,4 +1,5 @@
-import { Component, input, OnInit, signal } from '@angular/core'
+import { Component, inject, input, OnInit, signal } from '@angular/core'
+import { Router } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import {
   ColumnDef,
@@ -44,6 +45,7 @@ import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/app-constants'
   templateUrl: './bookmarks-table.html',
 })
 export class BookmarksTable implements OnInit {
+  readonly #router = inject(Router)
   readonly bookmarks = input<PinboardItemVM[]>()
 
   readonly #columnFilters = signal<ColumnFiltersState>([])
@@ -114,9 +116,11 @@ export class BookmarksTable implements OnInit {
     },
     columns: this.columns,
     onSortingChange: (updater) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       updater instanceof Function ? this.#sorting.update(updater) : this.#sorting.set(updater)
     },
     onColumnFiltersChange: (updater) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       updater instanceof Function ? this.#columnFilters.update(updater) : this.#columnFilters.set(updater)
     },
     getCoreRowModel: getCoreRowModel(),
@@ -125,9 +129,11 @@ export class BookmarksTable implements OnInit {
     getFilteredRowModel: getFilteredRowModel(), // needed for client-side global filtering
     globalFilterFn: 'includesString',
     onColumnVisibilityChange: (updater) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       updater instanceof Function ? this.#columnVisibility.update(updater) : this.#columnVisibility.set(updater)
     },
     onRowSelectionChange: (updater) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       updater instanceof Function ? this.#rowSelection.update(updater) : this.#rowSelection.set(updater)
     },
     state: {
@@ -165,5 +171,18 @@ export class BookmarksTable implements OnInit {
   protected clearFilterText(element: HTMLInputElement): void {
     element.value = ''
     this.table.setGlobalFilter('')
+  }
+
+  protected goToBookmark(event: MouseEvent, bookmark: PinboardItemVM): void {
+    if (event.target instanceof HTMLAnchorElement || event.target instanceof HTMLButtonElement) {
+      return
+    }
+    if (
+      event.target instanceof HTMLTableElement ||
+      event.target instanceof HTMLDivElement ||
+      event.target instanceof HTMLSpanElement
+    ) {
+      this.#router.navigate(['bookmarks', bookmark.hash])
+    }
   }
 }
