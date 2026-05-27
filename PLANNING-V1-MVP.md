@@ -1,8 +1,5 @@
 ## V1 - MVP
 
-### use SQLite(3) as self-hosted data-store
-- [ ] test using plugin-sqlite and plugin-dialog if it's possible to store and open sqlite files from iCloud storage.
-
 ### tags page
 - [ ] implement a basic tags page
 - [ ] search for tags, private/public

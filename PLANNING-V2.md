@@ -1,5 +1,8 @@
 ## V2
 
+### add support for using SQLite(3) as self-hosted data-store
+- [ ] test using plugin-sqlite and plugin-dialog if it's possible to store and open sqlite files from iCloud storage.
+
 ### main UI
 - [ ] add back and next buttons (with hotkeys shown)
 
