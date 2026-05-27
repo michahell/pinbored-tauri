@@ -5,6 +5,13 @@ See below [screenshots](#screenshots) for an impression.
 
 Future plans include ways to administer locally by moving collections into a single-file SQLite DB that is easily shared using local (NAS) or cloud-storage (sovereign or not).
 
+Built with Tauri, Angular, Spartan-NG and Signality.
+
+<img src="resources/tauri.svg" alt="Alt Text" width="80" height="80">
+<img src="resources/angular.svg" alt="Alt Text" width="100" height="100">
+<img src="resources/spartan.svg" alt="Alt Text" width="200" height="80">
+<img src="resources/signality.svg" alt="Alt Text" width="85" height="85">
+
 ## Project history
 
 Please be seated, for the fourth iteration of Pinbored:
