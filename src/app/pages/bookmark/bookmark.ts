@@ -7,14 +7,11 @@ import { PinboardItemVM } from '@models/pinboard-view.model'
 import { ActivatedRoute, Params, RouterLink } from '@angular/router'
 import { skyBadge } from '@styles/badge-colors'
 import { HlmButton } from '@spartan-ng/helm/button'
-import { HlmButtonGroup } from '@spartan-ng/helm/button-group'
-import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { hlmMuted } from '@spartan-ng/helm/typography'
-import { NgTemplateOutlet } from '@angular/common'
 
 @Component({
   selector: 'app-bookmark',
-  imports: [MainLayout, HlmBadge, HlmButton, HlmButtonGroup, HlmSpinner, NgTemplateOutlet, RouterLink],
+  imports: [MainLayout, HlmBadge, HlmButton, RouterLink],
   templateUrl: './bookmark.html',
 })
 export default class Bookmark implements OnInit {
@@ -36,7 +33,6 @@ export default class Bookmark implements OnInit {
   }
 
   async getBookmarks(): Promise<void> {
-    console.info('getting all bookmarks...')
     await this.#bookmarksService.getAllBookmarks()
   }
 

@@ -1,7 +1,11 @@
 <div class="flex flex-col w-full">
   <span class="w-full">
-    {{ context.row.original.description }} - <small>{{ context.row.original.href }}</small></span
-  >
+    {{ context.row.original.description }}
+    @if (!isDesktop()) {
+      <br />
+    }
+    - <small>{{ context.row.original.href }}</small>
+  </span>
   <div class="w-full -ml-1 pt-1">
     @for (tag of context.row.original.tagsList; track $index) {
       <a hlmBadge variant="secondary" [class]="`${skyBadge} select-none cursor-pointer`" [routerLink]="`/tags/${tag}`"
