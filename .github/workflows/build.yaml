@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   build:
+    if: '!cancelled()'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -43,4 +44,15 @@ jobs:
           version: 11.3.0
           cache: true
       - run: pnpm run lint
+
+  sheriff:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.0.8
+        with:
+          version: 11.3.0
+          cache: true
       - run: pnpm run sheriff
