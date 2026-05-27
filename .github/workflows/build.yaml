@@ -22,7 +22,6 @@ jobs:
       - run: pnpm run build
 
   test:
-    if: '!cancelled()'
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +34,6 @@ jobs:
       - run: pnpm run test
 
   lint:
-    if: '!cancelled()'
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +46,6 @@ jobs:
       - run: pnpm run lint
 
   sheriff:
-    if: '!cancelled()'
     needs: build
     runs-on: ubuntu-latest
     steps:
