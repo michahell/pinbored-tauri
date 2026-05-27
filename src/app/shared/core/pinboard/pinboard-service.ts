@@ -27,8 +27,8 @@ export class PinboardService {
   // for debug issues, re-alias back to tauri fetch!
   // #fetch = fetch
 
-  #user: string = ''
-  #token: string = ''
+  #user = ''
+  #token = ''
 
   get storedUsername(): string {
     return this.#user

@@ -47,8 +47,8 @@ export class AuthenticationService {
   #setAuthenticated(
     username: string | null = null,
     token: string | null = null,
-    saveToStore: boolean = false,
-    saveToPinboardService: boolean = false
+    saveToStore = false,
+    saveToPinboardService = false
   ): boolean {
     if (username == null || token == null) {
       throw new Error('username or token is null')
