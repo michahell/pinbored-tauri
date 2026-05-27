@@ -29,6 +29,9 @@ importers:
       '@angular/router':
         specifier: ^21.2.12
         version: 21.2.12(@angular/common@21.2.12(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.12(@angular/common@21.2.12(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
+      '@ng-icons/boxicons':
+        specifier: ^33.2.2
+        version: 33.2.2
       '@ng-icons/core':
         specifier: ^33.2.2
         version: 33.2.2(@angular-devkit/schematics@21.2.11(chokidar@5.0.0))(@angular/common@21.2.12(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1))(@schematics/angular@21.2.11(chokidar@5.0.0))(rxjs@7.8.2)
@@ -1904,6 +1907,9 @@ packages:
     peerDependencies:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
+
+  '@ng-icons/boxicons@33.2.2':
+    resolution: {integrity: sha512-Kkz2gs8BGR9ft7tJgeo2zz5UJHon2dK/FzbkbGWNYrxwVwOq1TvX1YOvO+ANjqu7LDQUHRRh+S3kpbZsIL12Pg==}
 
   '@ng-icons/core@33.2.2':
     resolution: {integrity: sha512-MwxREFbCx5p+x+Lx26V1FkHFpqHR/6g1TmBG7aYx+FFe1DIfrxUVXM+LW/Mviv3dN5sLE/Fi0ULP79Gz9uG0SQ==}
@@ -8910,6 +8916,10 @@ snapshots:
       '@emnapi/runtime': 1.10.0
       '@tybys/wasm-util': 0.10.2
     optional: true
+
+  '@ng-icons/boxicons@33.2.2':
+    dependencies:
+      tslib: 2.8.1
 
   '@ng-icons/core@33.2.2(@angular-devkit/schematics@21.2.11(chokidar@5.0.0))(@angular/common@21.2.12(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1))(@schematics/angular@21.2.11(chokidar@5.0.0))(rxjs@7.8.2)':
     dependencies:

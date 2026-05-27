@@ -1,12 +1,12 @@
 ## V1 - MVP
 
 ### tags page
-- [ ] implement a basic tags page
+- [x] implement a basic tags page
 - [ ] search for tags, private/public
 
 ### single tag page
 - [x] implement single tag page
-- [ ] show a large green/yellow tag, with a tag name, and if it is a private or public tag
+- [ ] show a large tag, with a tag name, and if it is a private or public tag
 - [ ] add button rename tag
 - [ ] editing a single tag works (open edit tag modal again)
 - [ ] add button with title: 'show bookmarks with tag' -> filters bookmarks page

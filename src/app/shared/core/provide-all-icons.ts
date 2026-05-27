@@ -1,4 +1,5 @@
 import { provideIcons } from '@ng-icons/core'
+import { boxHideSolid } from '@ng-icons/boxicons/solid'
 import {
   lucideArrowDown,
   lucideArrowLeft,
@@ -29,4 +30,5 @@ export const provideAllIcons = provideIcons({
   lucideTag,
   lucideLoader,
   lucideLoader2,
+  boxHideSolid,
 })

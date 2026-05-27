@@ -3,4 +3,7 @@
 >
   <ng-icon hlm size="lg" name="lucideTag" class="w-10 h-10" />
   <span class="ml-2 font-bold">{{ name() }}</span>
+  @if (isPrivate()) {
+    <ng-icon hlm size="lg" name="boxHideSolid" class="w-10 h-10" />
+  }
 </div>
