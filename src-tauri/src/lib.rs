@@ -17,8 +17,20 @@ pub fn run() {
         // Define your migrations here
         Migration {
             version: 1,
-            description: "create_initial_tables",
-            sql: "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT);",
+            description: "0001_create_pinboard_tables",
+            sql: include_str!("../migrations/0001_create_pinboard_tables.sql"),
+            kind: MigrationKind::Up,
+        },
+        Migration {
+            version: 2,
+            description: "0002_alter_pinboard_tables",
+            sql: include_str!("../migrations/0002_alter_pinboard_tables.sql"),
+            kind: MigrationKind::Up,
+        },
+        Migration {
+            version: 3,
+            description: "0003_add_dummy_data",
+            sql: include_str!("../migrations/0003_add_dummy_data.sql"),
             kind: MigrationKind::Up,
         },
     ];
@@ -27,7 +39,7 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())
         .plugin(
             tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:mydatabase.db", migrations)
+                .add_migrations("sqlite:pinbored.db", migrations)
                 .build(),
         )
         .plugin(tauri_plugin_dialog::init())

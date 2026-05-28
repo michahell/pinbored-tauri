@@ -1,4 +1,4 @@
-<section hlmCard>
+<section hlmCard class="gap-0">
   <div hlmCardHeader class="flex flex-row justify-between">
     <h3 hlmCardTitle>SQLite</h3>
     <p hlmCardDescription>select SQLite db</p>
@@ -13,17 +13,28 @@
           </hlm-input-group-addon>
 
           <hlm-input-group-addon align="inline-end">
-            <!--          <hlm-input-group-text>Please wait...</hlm-input-group-text>-->
-            Please wait...
+            <button
+              hlmInputGroupButton
+              [variant]="'destructive'"
+              aria-label="Copy"
+              title="Copy"
+              size="icon-xs"
+              (click)="clearSelectedDb()"
+            >
+              <ng-icon [name]="dbPathCleared() ? 'lucideCheck' : ''" />
+            </button>
           </hlm-input-group-addon>
         </hlm-input-group>
       </div>
-      <div class="flex flex-row justify-between w-full">
-        <div hlmButtonGroup>
-          <button hlmBtn variant="default" size="sm" (click)="createDb()">create new db</button>
-          <button hlmBtn variant="secondary" size="sm" (click)="selectDb()">select existing db</button>
-          <button hlmBtn variant="destructive" size="sm" (click)="clearSelectedDb()">clear selected db path</button>
-        </div>
+      <div class="flex flex-row w-full gap-2 justify-evenly">
+        <button hlmBtn variant="default" size="sm" (click)="createDb()">create new db</button>
+        <button hlmBtn variant="secondary" size="sm" (click)="selectDb()">select existing db</button>
+        <button hlmBtn variant="destructive" size="sm" (click)="clearSelectedDb()">clear selected db path</button>
+      </div>
+      <div class="flex flex-row w-full gap-2 justify-evenly">
+        <button hlmBtn variant="outline" size="sm" (click)="testDb()">test connection</button>
+        <button hlmBtn variant="outline" size="sm" (click)="importPinboard()">import Pinboard account</button>
+
         <div>
           @if (dbPathCleared()) {
             <ng-icon name="lucideCheck" /> store cleared!

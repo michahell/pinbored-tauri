@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core'
 import { open, save } from '@tauri-apps/plugin-dialog'
 import { homeDir } from '@tauri-apps/api/path'
 import { create, BaseDirectory } from '@tauri-apps/plugin-fs'
-import Database from '@tauri-apps/plugin-sql'
-import { ICLOUD_DEFAULT_DIRECTORY_NAME } from '../../core/constants/app-constants'
+import Database, { QueryResult } from '@tauri-apps/plugin-sql'
+import { ICLOUD_DEFAULT_DIRECTORY_NAME } from '@core/constants/app-constants'
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class SqliteService {
   async openAndLoadDatabase(): Promise<void> {
     const file = await this.selectFile()
     console.log('opening database: ', file)
-    this.#database = await Database.load(`sqlite:${file}`)
+    this.#database = await Database.load(`sqlite:pinbored.db`) // ${file}
     console.log('opened database with path:', this.#database.path)
   }
 
@@ -45,12 +45,28 @@ export class SqliteService {
     console.log(path)
     if (path) {
       const file = await create(path, { baseDir: BaseDirectory.Home })
-      await file.write(new TextEncoder().encode('Hello world'))
       await file.close()
       return path
     } else {
       return null
     }
+  }
+
+  async getTags(): Promise<any> {
+    if (!this.#database) {
+      return null
+    }
+    const result = await this.#database.select('SELECT * from tags')
+    console.log('db result: ', result)
+  }
+
+  async execute(query: string, bindValues: unknown[]): Promise<QueryResult | null> {
+    if (!this.#database) {
+      return null
+    }
+    const result = await this.#database.execute(query, bindValues)
+    console.log('db result: ', result)
+    return result
   }
 
   async close(): Promise<boolean> {
