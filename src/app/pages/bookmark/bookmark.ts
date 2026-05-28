@@ -6,6 +6,7 @@ import { HlmBadge } from '@spartan-ng/helm/badge'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 import { PinboardItemVM } from '@models/pinboard-view.model'
+import { PinboardSuggestResult } from '@models/pinboard.model'
 import { skyBadge } from '@styles/badge-colors'
 import { TagsService } from '@services/tags/tags-service'
 
@@ -31,8 +32,9 @@ export default class Bookmark implements OnInit {
   readonly suggestedTags = signal<string[]>([])
 
   readonly getSuggestedTags = effect(() => {
-    if (this.bookmark().tags.length === 0) {
-      this.#getTagSuggestionsForBookmark(this.bookmark())
+    const bm = this.bookmark()
+    if (bm && bm.tags.length === 0) {
+      this.#getTagSuggestionsForBookmark(bm)
     }
   })
 
@@ -44,7 +46,7 @@ export default class Bookmark implements OnInit {
     await this.#bookmarksService.getAllBookmarks()
   }
 
-  #getTagSuggestionsForBookmark(pinboardItemVM: PinboardItemVM): Promise<any> {
-    return new Promise((resolve, reject) => {})
+  #getTagSuggestionsForBookmark(pinboardItemVM: PinboardItemVM): Promise<PinboardSuggestResult> {
+    return this.#tagsService.suggestTagsForUrl(pinboardItemVM.href)
   }
 }

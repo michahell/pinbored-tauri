@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core'
-import { ACTION_DEBOUNCE_TIME } from '@core/app-constants'
-import { LocalStoreService } from '@core/store/local-store-service'
 import { NgIcon } from '@ng-icons/core'
 import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmButtonGroup } from '@spartan-ng/helm/button-group'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
+import { ACTION_DEBOUNCE_TIME } from '../../../shared/core/constants/app-constants'
+import { LocalStoreService } from '@core/store/local-store-service'
 
 @Component({
   selector: 'app-settings-caching',

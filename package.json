@@ -9,7 +9,7 @@
     "tauri": "tauri",
     "test": "ng test",
     "lint": "ng lint",
-    "sheriff": "sheriff verify src/main.ts",
+    "sheriff": "sheriff verify",
     "slopcheck": "slop lint",
     "spartan-health": "ng g @spartan-ng/cli:healthcheck",
     "spartan-update": "pnpm add @spartan-ng/brain@latest @spartan-ng/cli@latest",

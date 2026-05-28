@@ -3,7 +3,7 @@ import { open, save } from '@tauri-apps/plugin-dialog'
 import { homeDir } from '@tauri-apps/api/path'
 import { create, BaseDirectory } from '@tauri-apps/plugin-fs'
 import Database from '@tauri-apps/plugin-sql'
-import { ICLOUD_DEFAULT_DIRECTORY_NAME } from '@core/app-constants'
+import { ICLOUD_DEFAULT_DIRECTORY_NAME } from '../../core/constants/app-constants'
 
 @Injectable({
   providedIn: 'root',

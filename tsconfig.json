@@ -43,7 +43,6 @@
       "@spartan-ng/helm/button-group": ["./libs/ui/button-group/src/index.ts"],
       "@spartan-ng/helm/typography": ["./libs/ui/typography/src/index.ts"],
       "@spartan-ng/helm/breadcrumb": ["./libs/ui/breadcrumb/src/index.ts"],
-      "@spartan-ng/helm/alert": ["./libs/ui/alert/src/index.ts"],
       "@spartan-ng/helm/textarea": ["./libs/ui/textarea/src/index.ts"],
       "@spartan-ng/helm/accordion": ["./libs/ui/accordion/src/index.ts"],
       "@spartan-ng/helm/autocomplete": ["./libs/ui/autocomplete/src/index.ts"],

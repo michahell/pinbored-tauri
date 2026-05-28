@@ -27,6 +27,7 @@ export class PinboardService {
   // for debug issues, re-alias back to tauri fetch!
   // #fetch = fetch
 
+  // TODO this should definitely be done in a different way...
   #user = ''
   #token = ''
 

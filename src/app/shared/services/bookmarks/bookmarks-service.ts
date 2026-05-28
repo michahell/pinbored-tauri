@@ -3,7 +3,7 @@ import { interval, IntervalRef } from '@signality/core'
 import PQueue from 'p-queue'
 import { PinboardItemVM, PinboardItemVMStatus } from '@models/pinboard-view.model'
 import { StaleCheckerService } from '@services/stale-checker/stale-checker-service'
-import { PinboardFacade } from '@core/pinboard/pinboard-facade'
+import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
 import { LocalStoreService } from '@core/store/local-store-service'
 
 @Injectable({
@@ -11,7 +11,7 @@ import { LocalStoreService } from '@core/store/local-store-service'
 })
 export class BookmarksService {
   readonly #staleChecker = inject(StaleCheckerService)
-  readonly #pinboardFacade = inject(PinboardFacade)
+  readonly facade = inject(PinboardFacade)
   readonly #localStore = inject(LocalStoreService)
 
   // queue
@@ -47,7 +47,7 @@ export class BookmarksService {
 
   async getAllBookmarks(via: 'cache' | 'server' = 'cache'): Promise<void> {
     this.bookmarksFetching.set(true)
-    await this.#pinboardFacade
+    await this.facade
       .getAllBookmarks(via)
       .then((bookmarks) => {
         if (bookmarks && bookmarks.length > 0) {

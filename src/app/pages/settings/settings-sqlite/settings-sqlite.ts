@@ -5,7 +5,7 @@ import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmButtonGroup } from '@spartan-ng/helm/button-group'
 import { NgIcon } from '@ng-icons/core'
 import { SqliteService } from '@services/sqlite/sqlite-service'
-import { ACTION_DEBOUNCE_TIME } from '@core/app-constants'
+import { ACTION_DEBOUNCE_TIME } from '../../../shared/core/constants/app-constants'
 
 @Component({
   selector: 'app-settings-sqlite',

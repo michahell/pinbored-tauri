@@ -24,10 +24,10 @@ import { NgIcon } from '@ng-icons/core'
 import { PinboardItemVM } from '@models/pinboard-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { CellTagRenderer } from './cell-tag-renderer/cell-tag-renderer'
-import { ActionDropdown } from './action-dropdown'
+import { ActionDropdown } from './action-dropdown/action-dropdown'
 import { CellBookmark } from './cell-bookmark/cell-bookmark'
 import { NgxLoadingBar } from '@ngx-loading-bar/core'
-import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/app-constants'
+import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '../../core/constants/app-constants'
 
 @Component({
   selector: 'app-bookmarks-table',

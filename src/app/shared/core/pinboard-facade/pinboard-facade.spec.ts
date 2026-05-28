@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { PinboardFacade } from './pinboard-facade'
-import { PinboardService } from './pinboard-service'
+import { PinboardService } from '../pinboard-service/pinboard-service'
 import { LocalStoreService } from '../store/local-store-service'
 import { PinboardItemVM } from '../../models/pinboard-view.model'
 import { PinboardItem } from '../../models/pinboard.model'
@@ -84,7 +84,7 @@ describe('PinboardFacade', () => {
       const cached = [makeStoredBookmark()]
       mockLocalStore.get.mockResolvedValue(cached)
 
-      const result = await facade.getAllBookmarks()
+      const result = await facade.getAllBookmarks('cache')
 
       expect(result).toBe(cached)
       expect(mockPinboard.getAllBookmarks).not.toHaveBeenCalled()
@@ -94,7 +94,7 @@ describe('PinboardFacade', () => {
       mockLocalStore.get.mockResolvedValue(undefined)
       mockPinboard.getAllBookmarks.mockResolvedValue([makeRawBookmark()])
 
-      await facade.getAllBookmarks()
+      await facade.getAllBookmarks('server')
 
       expect(mockPinboard.getAllBookmarks).toHaveBeenCalled()
     })
@@ -103,7 +103,7 @@ describe('PinboardFacade', () => {
       mockLocalStore.get.mockResolvedValue(undefined)
       mockPinboard.getAllBookmarks.mockResolvedValue([makeRawBookmark({ tags: 'dev tools react' })])
 
-      const result = await facade.getAllBookmarks()
+      const result = await facade.getAllBookmarks('server')
 
       expect(result[0].tagsList).toEqual(['dev', 'tools', 'react'])
     })
@@ -112,7 +112,7 @@ describe('PinboardFacade', () => {
       mockLocalStore.get.mockResolvedValue(undefined)
       mockPinboard.getAllBookmarks.mockResolvedValue([makeRawBookmark({ hash: 'a' }), makeRawBookmark({ hash: 'b' })])
 
-      const result = await facade.getAllBookmarks()
+      const result = await facade.getAllBookmarks('server')
 
       expect(result.every((b) => b.status === 'unchecked')).toBe(true)
     })
@@ -121,7 +121,7 @@ describe('PinboardFacade', () => {
       mockLocalStore.get.mockResolvedValue(undefined)
       mockPinboard.getAllBookmarks.mockResolvedValue([makeRawBookmark()])
 
-      await facade.getAllBookmarks()
+      await facade.getAllBookmarks('server')
 
       expect(mockLocalStore.set).toHaveBeenCalledWith('bookmarks', expect.any(Array))
     })
@@ -131,7 +131,7 @@ describe('PinboardFacade', () => {
       mockLocalStore.get.mockResolvedValue(undefined)
       mockPinboard.getAllBookmarks.mockResolvedValue([raw])
 
-      const result = await facade.getAllBookmarks()
+      const result = await facade.getAllBookmarks('server')
 
       expect(result[0].hash).toBe('xyz')
       expect(result[0].href).toBe('https://test.com')

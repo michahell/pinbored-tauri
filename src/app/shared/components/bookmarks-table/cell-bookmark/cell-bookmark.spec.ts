@@ -1,14 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { provideRouter } from '@angular/router'
+import { signal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { CellBookmark } from './cell-bookmark'
 import { provideAllIcons } from '../../../core/utils/provide-all-icons'
+import { CommonSignalsService } from '../../../core/common-signals/common-signals-service'
 
 const mockContext = vi.hoisted(() => ({
   row: {
     original: {
       description: 'Test Bookmark',
       href: 'https://example.com',
+      tags: 'dev tools',
       tagsList: ['dev', 'tools'],
     },
   },
@@ -23,9 +26,17 @@ describe('CellBookmark', () => {
   let fixture: ComponentFixture<CellBookmark>
 
   beforeEach(async () => {
+    const mockCommonSignalsService = {
+      breakpoints: { desktop: signal(false) },
+    }
+
     await TestBed.configureTestingModule({
       imports: [CellBookmark],
-      providers: [provideRouter([]), provideAllIcons],
+      providers: [
+        provideRouter([]),
+        provideAllIcons,
+        { provide: CommonSignalsService, useValue: mockCommonSignalsService },
+      ],
     }).compileComponents()
 
     fixture = TestBed.createComponent(CellBookmark)

@@ -13,6 +13,7 @@ describe('BigTag', () => {
 
     fixture = TestBed.createComponent(BigTag)
     component = fixture.componentInstance
+    fixture.componentRef.setInput('name', 'test-tag')
     await fixture.whenStable()
   })
 

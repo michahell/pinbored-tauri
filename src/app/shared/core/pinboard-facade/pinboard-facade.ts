@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core'
-import { PinboardService } from './pinboard-service'
-import { LocalStoreService } from '../store/local-store-service'
 import { PinboardItemVM, PinboardItemVMStatus } from '@models/pinboard-view.model'
-import { PinboardTagResult, PinboardTagsMap } from '@models/pinboard.model'
+import { PinboardSuggestResult, PinboardTagResult, PinboardTagsMap, PinboardUserApiToken } from '@models/pinboard.model'
+import { PinboardService } from '@core/pinboard-service/pinboard-service'
+import { LocalStoreService } from '@core/store/local-store-service'
 
 @Injectable({
   providedIn: 'root',
@@ -48,5 +48,13 @@ export class PinboardFacade {
 
   async deleteBookmark(url: string): Promise<void> {
     await this.#pinboard.deleteBookmark(url)
+  }
+
+  async suggestTagsForUrl(bookmarkUrl: string): Promise<PinboardSuggestResult> {
+    return this.#pinboard.suggestTagsForUrl(bookmarkUrl)
+  }
+
+  async getUserApiToken(username: string, token: string): Promise<PinboardUserApiToken> {
+    return this.#pinboard.getUserApiToken(username, token)
   }
 }

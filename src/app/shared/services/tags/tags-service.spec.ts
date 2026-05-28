@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagsService } from './tags-service'
-import { PinboardFacade } from '../../core/pinboard/pinboard-facade'
+import { PinboardFacade } from '../../core/pinboard-facade/pinboard-facade'
 import { LocalStoreService } from '../../core/store/local-store-service'
-import { HlmDialogService } from 'libs/ui/dialog/src'
+import { HlmDialogService } from '@spartan-ng/helm/dialog'
 
 describe('TagsService', () => {
   let service: TagsService

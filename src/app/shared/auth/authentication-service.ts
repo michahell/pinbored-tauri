@@ -1,11 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { LocalStoreService } from '@core/store/local-store-service'
-import { PinboardService } from '@core/pinboard/pinboard-service'
+import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
+import { PinboardService } from '@core/pinboard-service/pinboard-service'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
+  readonly #facade = inject(PinboardFacade)
   readonly #pinboard = inject(PinboardService)
   readonly #localStore = inject(LocalStoreService)
 
@@ -36,7 +38,7 @@ export class AuthenticationService {
   }
 
   async #doAuthenticate(username: string, token: string): Promise<boolean> {
-    const apiToken = await this.#pinboard.getUserApiToken(username, token)
+    const apiToken = await this.#facade.getUserApiToken(username, token)
     if (apiToken != null) {
       return this.#setAuthenticated(username, token, true, true)
     } else {
