@@ -5,7 +5,7 @@
         <li hlmNavigationMenuItem>
           <button hlmNavigationMenuTrigger [routerLink]="`/${menuItem.route}`" [routerLinkActive]="'active'">
             @if (highlightHotkeys()) {
-              <span class="absolute bg-sky-300 rounded-2xl z-0 left-2.5 w-5 h-5">_</span>
+              <span class="absolute bg-sky-300 dark:bg-sky-800 rounded-2xl z-0 left-2.5 w-5 h-5">_</span>
             }
             <span class="z-1">{{ menuItem.text }}</span>
           </button>

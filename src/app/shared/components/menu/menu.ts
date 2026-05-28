@@ -82,6 +82,7 @@ export class Menu implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.#hotkeyService.removeShortcuts(this.menuItems.map((menuItem) => menuItem.keys))
+    this.#hotkeyService.removeShortcuts(['meta'])
   }
 
   async logout(): Promise<void> {
