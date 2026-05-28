@@ -1,0 +1,8 @@
+# Secrets
+.env*
+# do commit:
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
