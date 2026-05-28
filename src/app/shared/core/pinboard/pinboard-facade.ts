@@ -11,9 +11,9 @@ export class PinboardFacade {
   #pinboard = inject(PinboardService)
   #localStore = inject(LocalStoreService)
 
-  async getAllBookmarks(): Promise<PinboardItemVM[]> {
+  async getAllBookmarks(via: 'cache' | 'server'): Promise<PinboardItemVM[]> {
     const storedBookmarks = await this.#localStore.get<PinboardItemVM[]>('bookmarks')
-    if (storedBookmarks != null) {
+    if (via === 'cache' && storedBookmarks != null) {
       return Promise.resolve(storedBookmarks)
     } else {
       const bookmarks = await this.#pinboard.getAllBookmarks()

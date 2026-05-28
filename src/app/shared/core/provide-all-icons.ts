@@ -7,11 +7,13 @@ import {
   lucideCheck,
   lucideChevronDown,
   lucideChevronRight,
+  lucideDatabaseZap,
   lucideEdit2,
   lucideEllipsis,
   lucideLoader,
   lucideLoader2,
   lucidePencil,
+  lucideServer,
   lucideTag,
   lucideTrash2,
 } from '@ng-icons/lucide'
@@ -30,5 +32,7 @@ export const provideAllIcons = provideIcons({
   lucideTag,
   lucideLoader,
   lucideLoader2,
+  lucideServer,
+  lucideDatabaseZap,
   boxHideSolid,
 })

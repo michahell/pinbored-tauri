@@ -15,6 +15,7 @@
   <!-- FETCH ACTIONS -->
   <ng-template #fetchActions>
     <p [class]="`${hlmMuted} p-2 ml-5`">data</p>
+
     <div hlmButtonGroup>
       <!-- fetch all -->
       <button
@@ -24,11 +25,36 @@
         (click)="getBookmarks()"
         [attr.disabled]="bookmarksFetching() ? 'disabled' : null"
       >
-        fetch all
+        @if (fetchAllType() === 'cache') {
+          <ng-icon name="lucideDatabaseZap" />
+        } @else if (fetchAllType() === 'server') {
+          <ng-icon name="lucideServer" />
+        }
+        &nbsp; fetch all
         @if (bookmarksFetching()) {
           <hlm-spinner data-icon="inline-start" />
         }
       </button>
+      <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu" align="end">
+        <ng-icon hlm name="lucideChevronDown" size="sm" />
+      </button>
+      <ng-template #menu>
+        <hlm-dropdown-menu class="w-[49] [--radius:1rem]">
+          <hlm-dropdown-menu-group>
+            <!-- fetch all from cache -->
+            <button hlmDropdownMenuItem (click)="changeFetchAllType('cache')">
+              <ng-icon hlm name="lucideDatabaseZap" size="sm" />
+              <span>from cache</span>
+            </button>
+            <!-- fetch all from server -->
+            <button hlmDropdownMenuItem (click)="changeFetchAllType('server')">
+              <ng-icon hlm name="lucideServer" size="sm" />
+              <span>from server</span>
+            </button>
+          </hlm-dropdown-menu-group>
+        </hlm-dropdown-menu>
+      </ng-template>
+
       <!-- fetch most recent bookmarks -->
       <button hlmBtn variant="secondary" size="sm" [disabled]="'disabled'">fetch most recent</button>
     </div>

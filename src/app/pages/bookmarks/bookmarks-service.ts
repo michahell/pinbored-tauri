@@ -45,10 +45,10 @@ export class BookmarksService {
     | undefined
   >(undefined)
 
-  async getAllBookmarks(): Promise<void> {
+  async getAllBookmarks(via: 'cache' | 'server' = 'cache'): Promise<void> {
     this.bookmarksFetching.set(true)
     await this.#pinboardFacade
-      .getAllBookmarks()
+      .getAllBookmarks(via)
       .then((bookmarks) => {
         if (bookmarks && bookmarks.length > 0) {
           this.bookmarks.set(bookmarks)
