@@ -61,7 +61,6 @@ export class TagsTable {
       accessorKey: 'actions',
       header: 'actions',
       enableSorting: false,
-      // cell: (info) => `<div class="">${info.getValue<string>()}</div>`,
       cell: () => flexRenderComponent(CellTagActionRenderer),
     },
   ]
@@ -75,9 +74,11 @@ export class TagsTable {
     },
     columns: this.columns,
     onSortingChange: (updater) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       updater instanceof Function ? this.#sorting.update(updater) : this.#sorting.set(updater)
     },
     onColumnFiltersChange: (updater) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       updater instanceof Function ? this.#columnFilters.update(updater) : this.#columnFilters.set(updater)
     },
     getCoreRowModel: getCoreRowModel(),

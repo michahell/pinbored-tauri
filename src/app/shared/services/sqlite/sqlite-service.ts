@@ -4,6 +4,7 @@ import { homeDir } from '@tauri-apps/api/path'
 import { create, BaseDirectory } from '@tauri-apps/plugin-fs'
 import Database, { QueryResult } from '@tauri-apps/plugin-sql'
 import { ICLOUD_DEFAULT_DIRECTORY_NAME } from '@core/constants/app-constants'
+import { PinboardTagsMap } from '@models/pinboard.model'
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class SqliteService {
   #database: Database | null = null
 
   async #getDefaultDir(): Promise<string> {
+    // eslint-disable-next-line no-useless-escape
     return `${await homeDir()}/Library/Mobile\ Documents/com\~apple\~CloudDocs/${ICLOUD_DEFAULT_DIRECTORY_NAME}`
   }
 
@@ -52,12 +54,13 @@ export class SqliteService {
     }
   }
 
-  async getTags(): Promise<any> {
+  async getTags(): Promise<PinboardTagsMap | null> {
     if (!this.#database) {
       return null
     }
-    const result = await this.#database.select('SELECT * from tags')
+    const result = await this.#database.select<PinboardTagsMap>('SELECT * from tags')
     console.log('db result: ', result)
+    return result
   }
 
   async execute(query: string, bindValues: unknown[]): Promise<QueryResult | null> {

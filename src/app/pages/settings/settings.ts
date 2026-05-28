@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
-import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { hlmH4 } from '@spartan-ng/helm/typography'
+import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import SettingsCaching from './settings-caching/settings-caching'
 import SettingsTheme from './settings-theme/settings-theme'
 import SettingsSqlite from './settings-sqlite/settings-sqlite'

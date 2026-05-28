@@ -4,5 +4,4 @@ export interface LocalStoreModel {
   username: string
   token: string
   bookmarks: PinboardItemVM[]
-  [key: string]: any
 }

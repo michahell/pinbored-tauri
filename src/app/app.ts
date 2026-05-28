@@ -17,7 +17,7 @@ export class App {
 
   // Runs once. automatically change theme based on user's system theme.
   #changeThemeOnceEffect = effect(() => {
-    const preference = this.#settingsService.colorschemePreference()
+    const preference = this.#settingsService.systemColorschemePreference()
     this.#settingsService.setTheme(preference)
     this.#changeThemeOnceEffect.destroy()
   })

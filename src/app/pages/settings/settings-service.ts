@@ -8,7 +8,7 @@ import { Theme } from './settings-model'
 export class SettingsService {
   readonly prefersDark = mediaQuery('(prefers-color-scheme: dark)')
   readonly prefersLight = mediaQuery('(prefers-color-scheme: light)')
-  readonly colorschemePreference: Signal<Theme> = computed(() =>
+  readonly systemColorschemePreference: Signal<Theme> = computed(() =>
     this.prefersDark() ? 'dark' : this.prefersLight() ? 'light' : 'system'
   )
 
@@ -18,7 +18,11 @@ export class SettingsService {
     } else if (theme === 'light') {
       this.#setLightTheme()
     } else if (theme === 'system') {
-      this.colorschemePreference() === 'dark' ? this.#setDarkTheme() : this.#setLightTheme()
+      if (this.systemColorschemePreference() === 'dark') {
+        this.#setDarkTheme()
+      } else {
+        this.#setLightTheme()
+      }
     }
   }
 

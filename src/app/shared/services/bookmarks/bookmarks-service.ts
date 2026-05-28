@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
-import { interval, IntervalRef } from '@signality/core'
+// import { interval, IntervalRef } from '@signality/core'
 import PQueue from 'p-queue'
 import { PinboardItemVM, PinboardItemVMStatus } from '@models/pinboard-view.model'
 import { StaleCheckerService } from '@services/stale-checker/stale-checker-service'
@@ -25,14 +25,14 @@ export class BookmarksService {
   readonly hasBookmarks = computed(() => this.bookmarks().length > 0)
 
   // for queue
-  #pollQueue = signal<boolean>(false)
-  #poller: IntervalRef = interval(() => {
-    if (!this.queue?.isPaused && this.queue ? this.queue.size > 0 : false) {
-      this.hasQueue.update(() => !!this.queue)
-      this.queueLength.update(() => this.queue?.size ?? 0)
-      this.queueTasks.update(() => this.queue?.runningTasks ?? undefined)
-    }
-  }, 100)
+  // #pollQueue = signal<boolean>(false)
+  // #poller: IntervalRef = interval(() => {
+  //   if (!this.queue?.isPaused && this.queue ? this.queue.size > 0 : false) {
+  //     this.hasQueue.update(() => !!this.queue)
+  //     this.queueLength.update(() => this.queue?.size ?? 0)
+  //     this.queueTasks.update(() => this.queue?.runningTasks ?? undefined)
+  //   }
+  // }, 100)
   readonly hasQueue = signal(false)
   readonly queueLength = signal(0)
   readonly queueTasks = signal<

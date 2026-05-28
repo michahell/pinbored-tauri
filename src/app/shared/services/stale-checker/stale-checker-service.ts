@@ -53,6 +53,7 @@ export class StaleCheckerService {
         method: 'GET',
       }).then((response) => [pinboardItem, response])
     } catch (error) {
+      console.error(error)
       result = [pinboardItem, null]
     }
     return result

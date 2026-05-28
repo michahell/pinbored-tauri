@@ -14,10 +14,7 @@ export const sheriffConfig: SheriffConfig = {
       },
       shared: {
         auth: ['domain:auth'],
-        components: {
-          '<component>': ['type:ui'],
-          'bookmarks-table/action-dropdown': ['type:ui', 'pinboard-facade'], // REMOVE EXCEPTION WITH PROPER STATE MGMT!
-        },
+        components: ['type:ui'],
         core: {
           'pinboard-facade': ['pinboard-facade'],
           'pinboard-service': ['pinboard-service'],
@@ -27,9 +24,10 @@ export const sheriffConfig: SheriffConfig = {
         services: {
           bookmarks: ['domain:pinbored'],
           tags: ['domain:pinbored'],
+          sqlite: ['domain:core'],
           'stale-checker': ['domain:pinbored', 'type:ui'],
           'progress-bar': ['type:ui'],
-          sqlite: ['domain:core'],
+          'pinboard-importer': ['domain:core'],
         },
       },
       styles: ['type:ui'],
@@ -39,10 +37,18 @@ export const sheriffConfig: SheriffConfig = {
     root: ['domain:*', 'type:*', 'noTag'],
     noTag: ['noTag'],
     'domain:pinbored': [sameTag, 'domain:core', 'type:ui', 'type:external-ui', 'type:data', 'pinboard-facade'],
-    'domain:login': [sameTag, 'domain:auth', 'type:ui', 'type:external-ui', 'type:data'],
+    'domain:login': [sameTag, 'domain:core', 'domain:auth', 'type:ui', 'type:external-ui', 'type:data'],
     'domain:auth': [sameTag, 'domain:core', 'pinboard-facade', 'pinboard-service'],
     'domain:core': [sameTag, 'type:data', 'type:ui', 'pinboard-facade'],
-    'type:ui': [sameTag, 'domain:pinbored', 'domain:core', 'domain:auth', 'type:data', 'type:external-ui'],
+    'type:ui': [
+      sameTag,
+      'domain:pinbored',
+      'domain:core',
+      'domain:auth',
+      'type:data',
+      'type:external-ui',
+      'pinboard-facade', // REMOVE THIS TEMP WORKAROUND FOR CELL-ACTION-DROPDOWN BY USING STATE MGMT: UI->ACTION->FACADE
+    ],
     'type:external-ui': [sameTag],
     'type:data': [sameTag],
     'pinboard-facade': ['domain:core', 'type:data', 'pinboard-service'],

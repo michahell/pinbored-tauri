@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core'
 import { NgIcon } from '@ng-icons/core'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
-import { TagsService } from '../../services/tags/tags-service'
+import { TagsService } from '@services/tags/tags-service'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmAlertDialogImports } from '@spartan-ng/helm/alert-dialog'
@@ -24,7 +24,7 @@ export class CellTagActionRenderer {
     this.#tagsService.openTagEditModal(this.tag)
   }
 
-  async deleteTag(ctx: any): Promise<void> {
+  async deleteTag(ctx: { close: () => void }): Promise<void> {
     await this.#tagsService.deleteTag(this.tag.name)
     ctx.close()
   }

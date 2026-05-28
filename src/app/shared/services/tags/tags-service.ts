@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
 import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { BrnDialogRef } from '@spartan-ng/brain/dialog'
-import { PinboardFacade } from '../../core/pinboard-facade/pinboard-facade'
+import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
 import { LocalStoreService } from '@core/store/local-store-service'
 import { TagVM } from '@models/tag-view.model'
 import { TagEditModal } from '@components/tags-table/tag-edit-modal/tag-edit-modal'
@@ -19,7 +19,7 @@ export class TagsService {
   readonly tagsFetching = signal(false)
   readonly hasTags = computed(() => this.tags().length > 0)
 
-  #tagEditModalRef: BrnDialogRef<any> | null = null
+  #tagEditModalRef: BrnDialogRef | null = null
 
   async getAllTags(): Promise<void> {
     this.tagsFetching.set(true)

@@ -24,7 +24,7 @@ export class LocalStoreService {
     return undefined
   }
 
-  async set(key: string, value: any): Promise<void> {
+  async set(key: string, value: unknown): Promise<void> {
     // Set a value.
     if (this.#store != null) {
       return await this.#store.set(key, value)

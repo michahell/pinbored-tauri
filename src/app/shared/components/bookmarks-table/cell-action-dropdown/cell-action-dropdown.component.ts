@@ -9,7 +9,7 @@ import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
 import { PinboardItemVM } from '@models/pinboard-view.model'
 
 @Component({
-  selector: 'spartan-action-dropdown',
+  selector: 'hlm-action-dropdown',
   imports: [NgIcon, HlmButtonImports, HlmIconImports, HlmDropdownMenuImports],
   providers: [],
   template: `

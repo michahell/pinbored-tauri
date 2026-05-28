@@ -3,26 +3,9 @@ import { signal } from '@angular/core'
 import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Bookmarks from './bookmarks'
-import { BookmarksService } from '../../shared/services/bookmarks/bookmarks-service'
-import { PinboardItemVM } from '../../shared/models/pinboard-view.model'
-import { provideAllIcons } from '../../shared/core/utils/provide-all-icons'
-
-function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
-  return {
-    hash: 'abc123',
-    href: 'https://example.com',
-    description: 'Example',
-    extended: '',
-    meta: '',
-    shared: 'no',
-    tags: '',
-    time: '2024-01-01',
-    toread: 'no',
-    tagsList: [],
-    status: 'unchecked',
-    ...overrides,
-  }
-}
+import { BookmarksService } from '@services/bookmarks/bookmarks-service'
+import { PinboardItemVM } from '@models/pinboard-view.model'
+import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 describe('Bookmarks', () => {
   let component: Bookmarks
@@ -167,12 +150,14 @@ describe('Bookmarks', () => {
 
   describe('toggleStaleCheck()', () => {
     it('calls resumeStaleCheck() when queue is paused', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mockBookmarksService.queue = { isPaused: true } as any
       await component.toggleStaleCheck()
       expect(mockBookmarksService.resumeStaleCheck).toHaveBeenCalled()
     })
 
     it('calls pauseStaleCheck() when queue is not paused', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mockBookmarksService.queue = { isPaused: false } as any
       await component.toggleStaleCheck()
       expect(mockBookmarksService.pauseStaleCheck).toHaveBeenCalled()

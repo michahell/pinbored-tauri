@@ -43,12 +43,14 @@ describe('SettingsService', () => {
     })
 
     it('"system" applies dark theme when colorschemePreference is "dark"', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ;(service as any).colorschemePreference = () => 'dark'
       service.setTheme('system')
       expect(document.documentElement.classList.contains('dark')).toBe(true)
     })
 
     it('"system" applies light theme when colorschemePreference is "light"', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ;(service as any).colorschemePreference = () => 'light'
       service.setTheme('system')
       expect(document.documentElement.classList.contains('light')).toBe(true)

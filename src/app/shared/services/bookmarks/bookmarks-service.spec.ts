@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksService } from './bookmarks-service'
-import { PinboardFacade } from '../../core/pinboard-facade/pinboard-facade'
+import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
 import { StaleCheckerService } from '../stale-checker/stale-checker-service'
-import { LocalStoreService } from '../../core/store/local-store-service'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { LocalStoreService } from '@core/store/local-store-service'
+import { PinboardItemVM } from '@models/pinboard-view.model'
 
 vi.mock('@signality/core', () => ({
   interval: vi.fn(() => null),
@@ -158,12 +158,14 @@ describe('BookmarksService', () => {
 
   describe('pauseStaleCheck()', () => {
     it('calls pause on the queue', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
       await service.pauseStaleCheck()
       expect(mockQueue.pause).toHaveBeenCalled()
     })
 
     it('sets staleChecking to false', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
       await service.pauseStaleCheck()
       expect(service.staleChecking()).toBe(false)
@@ -173,6 +175,7 @@ describe('BookmarksService', () => {
   describe('resumeStaleCheck()', () => {
     it('calls start on the queue when paused', async () => {
       mockQueue.isPaused = true
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
 
       await service.resumeStaleCheck()
@@ -182,6 +185,7 @@ describe('BookmarksService', () => {
 
     it('sets staleChecking to true when resuming a paused queue', async () => {
       mockQueue.isPaused = true
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
 
       await service.resumeStaleCheck()
@@ -191,6 +195,7 @@ describe('BookmarksService', () => {
 
     it('does nothing when the queue is not paused', async () => {
       mockQueue.isPaused = false
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
 
       await service.resumeStaleCheck()
@@ -201,12 +206,14 @@ describe('BookmarksService', () => {
 
   describe('stopStaleCheck()', () => {
     it('clears the queue', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
       await service.stopStaleCheck()
       expect(mockQueue.clear).toHaveBeenCalled()
     })
 
     it('sets staleChecking to false', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
       await service.stopStaleCheck()
       expect(service.staleChecking()).toBe(false)
@@ -338,6 +345,7 @@ describe('BookmarksService', () => {
     it('persists current bookmarks to local store', async () => {
       mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
       await service.getAllBookmarks()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
 
       await service.pauseStaleCheck()
@@ -348,6 +356,7 @@ describe('BookmarksService', () => {
 
   describe('stopStaleCheck()', () => {
     it('sets queue to null after stopping', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
       await service.stopStaleCheck()
       expect(service.queue).toBeNull()
@@ -356,6 +365,7 @@ describe('BookmarksService', () => {
     it('persists current bookmarks to local store', async () => {
       mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
       await service.getAllBookmarks()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       service.queue = mockQueue as any
 
       await service.stopStaleCheck()

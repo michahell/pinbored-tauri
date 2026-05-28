@@ -35,13 +35,13 @@ export class PinboardImporterService {
     },
   }
 
-  #importTagQuery: string =
+  #importTagQuery =
     'INSERT INTO tags (id, name, count) VALUES ($1, $2, $3) ON CONFLICT(name) DO UPDATE SET name  = excluded.name, count=excluded.count;'
 
   async import(): Promise<void> {
     await this.#importTags()
-    await this.#importNotes()
-    await this.#importBookmarks()
+    // await this.#importNotes()
+    // await this.#importBookmarks()
   }
 
   async #importTags(): Promise<void> {
@@ -54,7 +54,7 @@ export class PinboardImporterService {
     }
   }
 
-  async #importNotes(): Promise<void> {}
+  // async #importNotes(): Promise<void> {}
 
-  async #importBookmarks(): Promise<void> {}
+  // async #importBookmarks(): Promise<void> {}
 }

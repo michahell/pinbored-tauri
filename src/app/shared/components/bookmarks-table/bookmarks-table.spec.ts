@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksTable } from './bookmarks-table'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
-import { provideAllIcons } from '../../core/utils/provide-all-icons'
+import { PinboardItemVM } from '@models/pinboard-view.model'
+import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
   return {
