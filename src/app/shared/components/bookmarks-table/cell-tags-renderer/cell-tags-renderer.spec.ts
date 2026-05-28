@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { CellTagsRenderer } from './cell-tags-renderer'
-import { provideAllIcons } from '../../core/utils/provide-all-icons'
+import { provideAllIcons } from '../../../core/utils/provide-all-icons'
 
 const mockContext = vi.hoisted(() => ({
   cell: { getValue: vi.fn().mockReturnValue(['alpha', 'beta', 'gamma']) },

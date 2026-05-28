@@ -24,7 +24,7 @@ import { NgIcon } from '@ng-icons/core'
 import { PinboardItemVM } from '@models/pinboard-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { CellTagRenderer } from './cell-tag-renderer/cell-tag-renderer'
-import { ActionDropdown } from './action-dropdown/action-dropdown'
+import { CellActionDropdown } from './cell-action-dropdown/cell-action-dropdown.component'
 import { CellBookmark } from './cell-bookmark/cell-bookmark'
 import { NgxLoadingBar } from '@ngx-loading-bar/core'
 import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '../../core/constants/app-constants'
@@ -95,7 +95,7 @@ export class BookmarksTable implements OnInit {
       enableSorting: false,
       enableHiding: false,
       enableGlobalFilter: false,
-      cell: () => flexRenderComponent(ActionDropdown),
+      cell: () => flexRenderComponent(CellActionDropdown),
     },
     {
       id: 'href',

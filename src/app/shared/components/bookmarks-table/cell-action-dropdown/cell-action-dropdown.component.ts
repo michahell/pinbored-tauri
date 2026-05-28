@@ -30,7 +30,7 @@ import { PinboardItemVM } from '@models/pinboard-view.model'
     </ng-template>
   `,
 })
-export class ActionDropdown {
+export class CellActionDropdown {
   readonly #router = inject(Router)
   readonly #facade = inject(PinboardFacade)
   readonly #context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()
