@@ -21,7 +21,7 @@
           </hlm-badge>
         }
       } @else {
-        <hlm-badge variant="outline">no tags</hlm-badge>
+        <hlm-badge variant="default">no tags</hlm-badge>
         <small>&nbsp;suggested tags:&nbsp;</small>
         @if (suggestedTags().length) {
           <!--          @for {-->
@@ -32,7 +32,7 @@
     <!-- visibility -->
     <div class="flex flex-row mb-2 align-middle items-center">
       <small
-        >visibility:&nbsp;<hlm-badge variant="outline">{{
+        >visibility:&nbsp;<hlm-badge variant="default">{{
           bookmark().shared === 'no' ? 'public' : 'private'
         }}</hlm-badge></small
       >

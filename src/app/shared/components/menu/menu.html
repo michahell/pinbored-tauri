@@ -1,21 +1,18 @@
 <div class="w-full flex flex-row justify-between dark:bg-blue-400/15 bg-primary/10">
   <nav hlmNavigationMenu class="p-3">
     <ul hlmNavigationMenuList class="gap-2">
-      <li hlmNavigationMenuItem>
-        <button hlmNavigationMenuTrigger routerLink="/bookmarks" [routerLinkActive]="'active'">bookmarks</button>
-      </li>
-      <li hlmNavigationMenuItem>
-        <button hlmNavigationMenuTrigger routerLink="/tags">tags</button>
-      </li>
-      <li hlmNavigationMenuItem>
-        <button hlmNavigationMenuTrigger routerLink="/notes">notes</button>
-      </li>
-      <li hlmNavigationMenuItem>
-        <button hlmNavigationMenuTrigger routerLink="/settings">settings</button>
-      </li>
+      @for (menuItem of menuItems; track menuItem.text) {
+        <li hlmNavigationMenuItem>
+          <button hlmNavigationMenuTrigger [routerLink]="`/${menuItem.route}`" [routerLinkActive]="'active'">
+            @if (highlightHotkeys()) {
+              <span class="absolute bg-sky-300 rounded-2xl z-0 left-2.5 w-5 h-5">_</span>
+            }
+            <span class="z-1">{{ menuItem.text }}</span>
+          </button>
+        </li>
+      }
     </ul>
   </nav>
-  <div>test</div>
   <div class="flex flex-row p-3 gap-2">
     <app-debug-info></app-debug-info>
     @if (isLoggedIn()) {

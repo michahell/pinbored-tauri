@@ -1,0 +1,35 @@
+<section hlmCard>
+  <div hlmCardHeader>
+    <h3 hlmCardTitle>Keyboard shortcuts</h3>
+    <p hlmCardDescription>for power users</p>
+    <div hlmCardAction></div>
+  </div>
+  <hlm-card-footer>
+    <div class="w-full columns-2 gap-2">
+      @if (hotkeys()) {
+        <p class="text-muted-foreground text-sm">
+          @for (hotkey of hotkeys(); track hotkey.keys) {
+            use
+            <kbd hlmKbd [innerHTML]="hotkey.keys | hotkeysShortcut"></kbd>
+            {{ hotkey.description }}<br />
+          }
+        </p>
+      }
+      <!--      <p class="text-muted-foreground text-sm">-->
+      <!--        Use-->
+      <!--        <kbd hlmKbdGroup>-->
+      <!--          <kbd hlmKbd>Ctrl + B</kbd>-->
+      <!--          <kbd hlmKbd>Ctrl + K</kbd>-->
+      <!--        </kbd>-->
+      <!--        to open the command palette-->
+      <!--      </p>-->
+
+      <!--      <kbd hlmKbdGroup>-->
+      <!--        <kbd hlmKbd>⌘</kbd>-->
+      <!--        <kbd hlmKbd>⇧</kbd>-->
+      <!--        <kbd hlmKbd>⌥</kbd>-->
+      <!--        <kbd hlmKbd>⌃</kbd>-->
+      <!--      </kbd>-->
+    </div>
+  </hlm-card-footer>
+</section>

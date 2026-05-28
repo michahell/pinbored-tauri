@@ -8,6 +8,7 @@ vi.mock('@signality/core', () => ({
   storage: vi.fn().mockReturnValue(Object.assign(() => '', { set: vi.fn(), update: vi.fn() })),
   mediaQuery: vi.fn().mockReturnValue(() => false),
   interval: vi.fn().mockReturnValue(null),
+  debounceCallback: vi.fn().mockReturnValue(vi.fn()),
 }))
 
 describe('Settings', () => {

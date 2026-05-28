@@ -30,6 +30,7 @@
     "@ng-icons/boxicons": "^33.2.2",
     "@ng-icons/core": "^33.2.2",
     "@ng-icons/lucide": "^33.2.2",
+    "@ngneat/hotkeys": "^4.1.0",
     "@ngx-loading-bar/core": "^7.0.1",
     "@ngx-loading-bar/http-client": "^7.0.1",
     "@ngx-loading-bar/router": "^7.0.1",

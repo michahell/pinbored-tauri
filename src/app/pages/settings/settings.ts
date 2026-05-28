@@ -4,10 +4,11 @@ import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import SettingsCaching from './settings-caching/settings-caching'
 import SettingsTheme from './settings-theme/settings-theme'
 import SettingsSqlite from './settings-sqlite/settings-sqlite'
+import SettingsShortcuts from './settings-shortcuts/settings-shortcuts'
 
 @Component({
   selector: 'app-settings',
-  imports: [MainLayout, SettingsCaching, SettingsTheme, SettingsSqlite],
+  imports: [MainLayout, SettingsCaching, SettingsTheme, SettingsSqlite, SettingsShortcuts],
   templateUrl: './settings.html',
 })
 export default class Settings {

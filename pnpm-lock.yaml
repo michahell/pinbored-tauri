@@ -38,6 +38,9 @@ importers:
       '@ng-icons/lucide':
         specifier: ^33.2.2
         version: 33.2.2
+      '@ngneat/hotkeys':
+        specifier: ^4.1.0
+        version: 4.1.0
       '@ngx-loading-bar/core':
         specifier: ^7.0.1
         version: 7.0.1(@angular/common@21.2.12(@angular/core@21.2.12(@angular/compiler@21.2.12)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(rxjs@7.8.2)
@@ -1922,6 +1925,9 @@ packages:
 
   '@ng-icons/lucide@33.2.2':
     resolution: {integrity: sha512-/jse2Z6fnk4WbW3HDH+jSfE/ihBskVr+RHltk5KfxohgQRhqqQ2FOxTP0IhU3xYV1pMwpziH3WpIR+gKkGcryg==}
+
+  '@ngneat/hotkeys@4.1.0':
+    resolution: {integrity: sha512-bqtmK0wMGQOFtNnxmklnbhVbiUoOIp5rXY4UeWGRoMgf7RGvW6dO5moZSPzenJwp8pgi2EmSyo+xpQ8R512hIw==}
 
   '@ngx-loading-bar/core@7.0.1':
     resolution: {integrity: sha512-myVfxA+BI9lXtNMNcM3uYCS8jVg9aAc37CY77f0W31p/skY9Js254fARB0UtI8PWv4YTFI/NANShK5/tlZPqNg==}
@@ -8931,6 +8937,10 @@ snapshots:
       tslib: 2.8.1
 
   '@ng-icons/lucide@33.2.2':
+    dependencies:
+      tslib: 2.8.1
+
+  '@ngneat/hotkeys@4.1.0':
     dependencies:
       tslib: 2.8.1
 
