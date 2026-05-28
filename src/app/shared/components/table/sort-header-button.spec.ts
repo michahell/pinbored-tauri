@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TableHeadSortButton } from './sort-header-button'
-import { provideAllIcons } from '../../core/provide-all-icons'
+import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 const mockColumn = vi.hoisted(() => ({
   id: 'name',

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksService } from './bookmarks-service'
-import { PinboardFacade } from '../../shared/core/pinboard/pinboard-facade'
-import { StaleCheckerService } from '../../shared/services/stale-checker/stale-checker-service'
-import { LocalStoreService } from '../../shared/core/store/local-store-service'
-import { PinboardItemVM } from '../../shared/models/pinboard-view.model'
+import { PinboardFacade } from '../../core/pinboard/pinboard-facade'
+import { StaleCheckerService } from '../stale-checker/stale-checker-service'
+import { LocalStoreService } from '../../core/store/local-store-service'
+import { PinboardItemVM } from '../../models/pinboard-view.model'
 
 vi.mock('@signality/core', () => ({
   interval: vi.fn(() => null),

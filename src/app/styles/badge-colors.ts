@@ -1,4 +1,3 @@
-// shorthand signals
 import { signal } from '@angular/core'
 
 export const greenBadge = signal('bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300')

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagsService } from './tags-service'
-import { PinboardFacade } from '../../shared/core/pinboard/pinboard-facade'
-import { LocalStoreService } from '../../shared/core/store/local-store-service'
-import { HlmDialogService } from '@spartan-ng/helm/dialog'
+import { PinboardFacade } from '../../core/pinboard/pinboard-facade'
+import { LocalStoreService } from '../../core/store/local-store-service'
+import { HlmDialogService } from 'libs/ui/dialog/src'
 
 describe('TagsService', () => {
   let service: TagsService
@@ -106,7 +106,10 @@ describe('TagsService', () => {
     })
 
     it('removes the tag from the tags signal', async () => {
-      service.tags.set([{ name: 'obsolete', count: 3 }, { name: 'keep', count: 7 }])
+      service.tags.set([
+        { name: 'obsolete', count: 3 },
+        { name: 'keep', count: 7 },
+      ])
       await service.deleteTag('obsolete')
       expect(service.tags().map((t) => t.name)).toEqual(['keep'])
     })

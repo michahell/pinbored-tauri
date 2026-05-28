@@ -3,8 +3,8 @@ import { signal } from '@angular/core'
 import { Router, provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { Menu } from './menu'
-import { AuthenticationService } from '../../auth/authentication-service'
-import { provideAllIcons } from '../../core/provide-all-icons'
+import { AuthenticationService } from '@auth/authentication-service'
+import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 describe('Menu', () => {
   let component: Menu

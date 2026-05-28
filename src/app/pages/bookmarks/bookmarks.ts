@@ -8,10 +8,17 @@ import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { BookmarksTable } from '@components/bookmarks-table/bookmarks-table'
-import { BookmarksService } from './bookmarks-service'
+import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 import { NgIcon } from '@ng-icons/core'
+import { matchBookmarkReadStatus, matchBookmarkTaggedStatus, matchBookmarkVisibility } from '@core/utils/bookmark-utils'
 
-type BookmarkQuickFilter = 'all' | 'private' | 'public' | 'read' | 'unread'
+interface BookmarkFilters {
+  visibility: string
+  read: string
+  tagged: string
+}
+
+type BookmarkQuickFilters = Record<string, string[]>
 
 @Component({
   selector: 'app-bookmarks',
@@ -32,10 +39,28 @@ export default class Bookmarks implements OnInit {
   readonly hlmMuted = hlmMuted
   readonly #bookmarks = inject(BookmarksService)
 
+  // bookmark quick filter related
+  readonly #quickFilters: BookmarkQuickFilters = {
+    visibility: ['all', 'private', 'public'],
+    read: ['all', 'read', 'unread'],
+    tagged: ['all', 'yes', 'no'],
+  }
+  readonly quickFilters = Object.entries(this.#quickFilters)
+
   // fetch-all type (cache/server)
   readonly fetchAllType = signal<'cache' | 'server'>('cache')
   // data signals
-  readonly bookmarks = computed(() => this.#bookmarks.bookmarks())
+  readonly bookmarks = computed(() => {
+    const filters = this.currentFilters()
+    return this.#bookmarks
+      .bookmarks()
+      .filter(
+        (bookmark) =>
+          matchBookmarkVisibility(filters.visibility, bookmark) &&
+          matchBookmarkReadStatus(filters.read, bookmark) &&
+          matchBookmarkTaggedStatus(filters.tagged, bookmark)
+      )
+  })
   // status signals
   readonly bookmarksFetching = computed(() => this.#bookmarks.bookmarksFetching())
   readonly staleChecking = computed(() => this.#bookmarks.staleChecking())
@@ -48,7 +73,7 @@ export default class Bookmarks implements OnInit {
   )
   readonly pauseStaleCheckDisabled = computed(() => !this.queueExists())
   readonly stopStaleCheckDisabled = computed(() => !this.queueExists())
-  readonly currentFilter = signal<BookmarkQuickFilter>('all')
+  readonly currentFilters = signal<BookmarkFilters>({ visibility: 'all', read: 'all', tagged: 'all' })
 
   async ngOnInit(): Promise<void> {
     await this.getBookmarks()
@@ -78,7 +103,10 @@ export default class Bookmarks implements OnInit {
     await this.#bookmarks.stopStaleCheck()
   }
 
-  filter(filterType: string): void {
-    this.currentFilter.set(filterType as BookmarkQuickFilter)
+  setQuickFilter(filterName: string, filterType: string): void {
+    this.currentFilters.set({
+      ...this.currentFilters(),
+      [filterName]: filterType,
+    })
   }
 }

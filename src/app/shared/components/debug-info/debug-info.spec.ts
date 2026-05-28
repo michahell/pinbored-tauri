@@ -3,9 +3,9 @@ import { signal } from '@angular/core'
 import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { DebugInfo } from './debug-info'
-import { AuthenticationService } from '../../auth/authentication-service'
-import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
-import { provideAllIcons } from '../../core/provide-all-icons'
+import { AuthenticationService } from '@auth/authentication-service'
+import { BookmarksService } from '@services/bookmarks/bookmarks-service'
+import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 describe('DebugInfo', () => {
   let component: DebugInfo

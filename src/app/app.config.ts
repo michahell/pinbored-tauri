@@ -1,7 +1,7 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core'
 import { provideRouter } from '@angular/router'
 import { routes } from './app.routes'
-import { provideAllIcons } from '@core/provide-all-icons'
+import { provideAllIcons } from './shared/core/utils/provide-all-icons'
 import { provideLoadingBar } from '@ngx-loading-bar/core'
 import { provideLoadingBarRouter } from '@ngx-loading-bar/router'
 import { LocalStoreService } from '@core/store/local-store-service'

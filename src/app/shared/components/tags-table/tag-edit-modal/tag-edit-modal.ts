@@ -1,12 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core'
-import { TagsService } from '../../../../pages/tags/tags-service'
-import { BookmarksService } from '../../../../pages/bookmarks/bookmarks-service'
 import { injectBrnDialogContext } from '@spartan-ng/brain/dialog'
-import { TagVM } from '@models/tag-view.model'
 import { hlmMuted } from '@spartan-ng/helm/typography'
 import { HlmDialogImports } from '@spartan-ng/helm/dialog'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmInputImports } from '@spartan-ng/helm/input'
+import { TagsService } from '@services/tags/tags-service'
+import { BookmarksService } from '@services/bookmarks/bookmarks-service'
+import { TagVM } from '@models/tag-view.model'
 
 @Component({
   selector: 'app-tag-edit-modal',

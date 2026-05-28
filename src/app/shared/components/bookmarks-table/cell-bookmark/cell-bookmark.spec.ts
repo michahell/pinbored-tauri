@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { CellBookmark } from './cell-bookmark'
-import { provideAllIcons } from '../../../core/provide-all-icons'
+import { provideAllIcons } from '../../../core/utils/provide-all-icons'
 
 const mockContext = vi.hoisted(() => ({
   row: {

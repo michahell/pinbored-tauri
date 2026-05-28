@@ -4,9 +4,9 @@ import { NgTemplateOutlet } from '@angular/common'
 import { HlmSheetImports } from '@spartan-ng/helm/sheet'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmBadge } from '@spartan-ng/helm/badge'
-import { greenBadge, redBadge, skyBadge } from '../../../styles/badge-colors'
+import { greenBadge, redBadge, skyBadge } from '@styles/badge-colors'
 import { AuthenticationService } from '@auth/authentication-service'
-import { BookmarksService } from '../../../pages/bookmarks/bookmarks-service'
+import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 
 @Component({
   selector: 'app-debug-info',

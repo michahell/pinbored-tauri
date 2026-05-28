@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { CellTagActionRenderer } from './cell-tag-action-renderer'
-import { TagsService } from '../../../pages/tags/tags-service'
-import { provideAllIcons } from '../../core/provide-all-icons'
+import { TagsService } from '@services/tags/tags-service'
+import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 const mockContext = vi.hoisted(() => ({
   row: {

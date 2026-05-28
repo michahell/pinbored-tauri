@@ -7,10 +7,14 @@
     - <small>{{ context.row.original.href }}</small>
   </span>
   <div class="w-full -ml-1 pt-1">
-    @for (tag of context.row.original.tagsList; track $index) {
-      <a hlmBadge variant="secondary" [class]="`${skyBadge} select-none cursor-pointer`" [routerLink]="`/tags/${tag}`"
-        >{{ tag }}
-      </a>
+    @if (context.row.original.tags.length > 0) {
+      @for (tag of context.row.original.tagsList; track $index) {
+        <a hlmBadge variant="secondary" [class]="`${skyBadge} select-none cursor-pointer`" [routerLink]="`/tags/${tag}`"
+          >{{ tag }}
+        </a>
+      }
+    } @else {
+      <hlm-badge variant="outline">no tags</hlm-badge>
     }
   </div>
 </div>

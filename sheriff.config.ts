@@ -10,11 +10,11 @@ export const sheriffConfig: SheriffConfig = {
       pages: {
         bookmark: ['domain:pinbored'],
         bookmarks: ['domain:pinbored'],
-        login: ['domain:login'],
         notes: ['domain:pinbored'],
-        settings: [`domain:core`],
         tag: ['domain:pinbored'],
         tags: ['domain:pinbored'],
+        settings: [`domain:core`],
+        login: ['domain:login'],
       },
       shared: {
         auth: ['domain:auth'],
@@ -22,8 +22,10 @@ export const sheriffConfig: SheriffConfig = {
         core: ['domain:core'],
         models: ['type:data'],
         services: {
-          'progress-bar': ['type:ui'],
+          bookmarks: ['domain:pinbored'],
+          tags: ['domain:pinbored'],
           'stale-checker': ['domain:pinbored'],
+          'progress-bar': ['type:ui'],
           sqlite: ['domain:core'],
         },
       },

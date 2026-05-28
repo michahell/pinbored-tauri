@@ -14,31 +14,23 @@ import {
 import { HlmTableImports } from '@spartan-ng/helm/table'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
+import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { TagVM } from '@models/tag-view.model'
 import { TableHeadSortButton } from '../table/sort-header-button'
 import { CellTagActionRenderer } from './cell-tag-action-renderer'
 import { HlmIcon } from '@spartan-ng/helm/icon'
-import {
-  HlmInputGroup,
-  HlmInputGroupAddon,
-  HlmInputGroupButton,
-  HlmInputGroupInput,
-} from '@spartan-ng/helm/input-group'
 import { NgIcon } from '@ng-icons/core'
-import { TagsService } from '../../../pages/tags/tags-service'
+import { TagsService } from '@services/tags/tags-service'
 
 @Component({
   selector: 'app-tags-table',
   imports: [
-    FlexRenderDirective,
     HlmTableImports,
     HlmButtonImports,
     HlmDropdownMenuImports,
+    HlmInputGroupImports,
+    FlexRenderDirective,
     HlmIcon,
-    HlmInputGroup,
-    HlmInputGroupAddon,
-    HlmInputGroupButton,
-    HlmInputGroupInput,
     NgIcon,
   ],
   templateUrl: './tags-table.html',

@@ -1,11 +1,11 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
-import { PinboardFacade } from '@core/pinboard/pinboard-facade'
-import { LocalStoreService } from '@core/store/local-store-service'
-import { PinboardTagsMap } from '@models/pinboard.model'
-import { TagVM } from '@models/tag-view.model'
-import { TagEditModal } from '@components/tags-table/tag-edit-modal/tag-edit-modal'
 import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { BrnDialogRef } from '@spartan-ng/brain/dialog'
+import { PinboardFacade } from '@core/pinboard/pinboard-facade'
+import { LocalStoreService } from '@core/store/local-store-service'
+import { TagVM } from '@models/tag-view.model'
+import { TagEditModal } from '@components/tags-table/tag-edit-modal/tag-edit-modal'
+import { PinboardTagsMap } from '@models/pinboard.model'
 
 @Injectable({
   providedIn: 'root',

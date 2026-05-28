@@ -4,7 +4,7 @@ import { Router } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Login from './login'
 import { AuthenticationService } from '../../shared/auth/authentication-service'
-import { provideAllIcons } from '../../shared/core/provide-all-icons'
+import { provideAllIcons } from '../../shared/core/utils/provide-all-icons'
 
 describe('Login', () => {
   let component: Login

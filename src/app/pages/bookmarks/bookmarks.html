@@ -21,7 +21,7 @@
       <button
         hlmBtn
         variant="secondary"
-        size="sm"
+        size="xs"
         (click)="getBookmarks()"
         [attr.disabled]="bookmarksFetching() ? 'disabled' : null"
       >
@@ -35,8 +35,8 @@
           <hlm-spinner data-icon="inline-start" />
         }
       </button>
-      <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu" align="end">
-        <ng-icon hlm name="lucideChevronDown" size="sm" />
+      <button hlmBtn variant="outline" size="xs" [hlmDropdownMenuTrigger]="menu" align="end">
+        <ng-icon hlm name="lucideChevronDown" size="xs" />
       </button>
       <ng-template #menu>
         <hlm-dropdown-menu class="w-[49] [--radius:1rem]">
@@ -56,24 +56,34 @@
       </ng-template>
 
       <!-- fetch most recent bookmarks -->
-      <button hlmBtn variant="secondary" size="sm" [disabled]="'disabled'">fetch most recent</button>
+      <button hlmBtn variant="secondary" size="xs" [disabled]="'disabled'">fetch most recent</button>
     </div>
   </ng-template>
 
   <!-- QUICK FILTER ACTIONS -->
   <ng-template #filterActions>
-    <p [class]="`${hlmMuted} p-2 ml-5`">quick filter</p>
-    <div hlmButtonGroup>
-      @for (filterType of ['all', 'private', 'public', 'read', 'unread']; track $index) {
-        <button
-          hlmBtn
-          size="sm"
-          (click)="filter(filterType)"
-          [variant]="currentFilter() === filterType ? 'default' : 'secondary'"
-          [attr.disabled]="currentFilter() === filterType ? 'disabled' : null"
-        >
-          {{ filterType }}
-        </button>
+    <div class="flex flex-row place-items-center pl-2">
+      @for (filter of quickFilters; track $index) {
+        @let filterName = filter[0];
+        @let filterTypes = filter[1];
+        <p [class]="`${hlmMuted} p-2 ml-5`">{{ filterName }}</p>
+        <div hlmButtonGroup>
+          @for (filterType of filterTypes; track $index) {
+            @let thisFilter =
+              (filterName === 'visibility' && currentFilters().visibility === filterType) ||
+              (filterName === 'read' && currentFilters().read === filterType) ||
+              (filterName === 'tagged' && currentFilters().tagged === filterType);
+            <button
+              hlmBtn
+              size="xs"
+              (click)="setQuickFilter(filterName, filterType)"
+              [attr.disabled]="thisFilter ? 'disabled' : null"
+              [variant]="thisFilter ? 'default' : 'secondary'"
+            >
+              {{ filterType }}
+            </button>
+          }
+        </div>
       }
     </div>
   </ng-template>
@@ -85,7 +95,7 @@
       <!-- stale checker testing -->
       <button
         hlmBtn
-        size="sm"
+        size="xs"
         variant="secondary"
         (click)="startStaleCheck()"
         [disabled]="startStaleCheckDisabled() ? 'disabled' : null"
@@ -99,7 +109,7 @@
       </button>
       <button
         hlmBtn
-        size="sm"
+        size="xs"
         variant="secondary"
         (click)="toggleStaleCheck()"
         [disabled]="pauseStaleCheckDisabled() ? 'disabled' : null"
@@ -108,7 +118,7 @@
       </button>
       <button
         hlmBtn
-        size="sm"
+        size="xs"
         variant="secondary"
         (click)="stopStaleCheck()"
         [disabled]="stopStaleCheckDisabled() ? 'disabled' : null"

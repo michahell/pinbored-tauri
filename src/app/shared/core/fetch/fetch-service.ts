@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core'
 import { fetch } from '@tauri-apps/plugin-http'
-import { ProgressBarService } from '../../services/progress-bar/progress-bar-service'
+import { ProgressBarService } from '@services/progress-bar/progress-bar-service'
 
 @Injectable({
   providedIn: 'root',

@@ -4,9 +4,9 @@ import { DIALOG_DATA } from '@angular/cdk/dialog'
 import { BrnDialogRef } from '@spartan-ng/brain/dialog'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagEditModal } from './tag-edit-modal'
-import { TagsService } from '../../../../pages/tags/tags-service'
-import { BookmarksService } from '../../../../pages/bookmarks/bookmarks-service'
-import { PinboardItemVM } from '../../../models/pinboard-view.model'
+import { TagsService } from '@services/tags/tags-service'
+import { BookmarksService } from '@services/bookmarks/bookmarks-service'
+import { PinboardItemVM } from '@models/pinboard-view.model'
 
 function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
   return {

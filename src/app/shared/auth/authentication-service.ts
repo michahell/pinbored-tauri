@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core'
-import { LocalStoreService } from '../core/store/local-store-service'
-import { PinboardService } from '../core/pinboard/pinboard-service'
+import { LocalStoreService } from '@core/store/local-store-service'
+import { PinboardService } from '@core/pinboard/pinboard-service'
 
 @Injectable({
   providedIn: 'root',

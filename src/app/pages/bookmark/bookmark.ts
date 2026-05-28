@@ -1,13 +1,13 @@
-import { Component, computed, inject, OnInit } from '@angular/core'
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core'
+import { ActivatedRoute, Params, RouterLink } from '@angular/router'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { HlmBadge } from '@spartan-ng/helm/badge'
-import { BookmarksService } from '../bookmarks/bookmarks-service'
-import { PinboardItemVM } from '@models/pinboard-view.model'
-import { ActivatedRoute, Params, RouterLink } from '@angular/router'
-import { skyBadge } from '@styles/badge-colors'
 import { HlmButton } from '@spartan-ng/helm/button'
-import { hlmMuted } from '@spartan-ng/helm/typography'
+import { BookmarksService } from '@services/bookmarks/bookmarks-service'
+import { PinboardItemVM } from '@models/pinboard-view.model'
+import { skyBadge } from '@styles/badge-colors'
+import { TagsService } from '@services/tags/tags-service'
 
 @Component({
   selector: 'app-bookmark',
@@ -17,15 +17,23 @@ import { hlmMuted } from '@spartan-ng/helm/typography'
 export default class Bookmark implements OnInit {
   readonly #activatedRoute = inject(ActivatedRoute)
   readonly #bookmarksService = inject(BookmarksService)
+  readonly #tagsService = inject(TagsService)
 
   protected readonly skyBadge = skyBadge
 
-  readonly #params = toSignal<Params | undefined>(this.#activatedRoute.params)
-  readonly #requestedBookmark = computed<string | null>(() => this.#params()?.['bookmark'])
+  readonly #params = toSignal<Params>(this.#activatedRoute.params)
+  readonly #requestedBookmark = computed<string>(() => this.#params()!['bookmark'])
   readonly #bookmarks = computed<PinboardItemVM[]>(() => this.#bookmarksService.bookmarks())
+  readonly bookmark = computed<PinboardItemVM>(() => {
+    return this.#bookmarks().find((bookmark) => this.#requestedBookmark() == bookmark.hash)!
+  })
 
-  bookmark = computed<PinboardItemVM | null>(() => {
-    return this.#bookmarks().find((bookmark) => this.#requestedBookmark() == bookmark.hash) ?? null
+  readonly suggestedTags = signal<string[]>([])
+
+  readonly getSuggestedTags = effect(() => {
+    if (this.bookmark().tags.length === 0) {
+      this.#getTagSuggestionsForBookmark(this.bookmark())
+    }
   })
 
   async ngOnInit(): Promise<void> {
@@ -36,5 +44,7 @@ export default class Bookmark implements OnInit {
     await this.#bookmarksService.getAllBookmarks()
   }
 
-  protected readonly hlmMuted = hlmMuted
+  #getTagSuggestionsForBookmark(pinboardItemVM: PinboardItemVM): Promise<any> {
+    return new Promise((resolve, reject) => {})
+  }
 }

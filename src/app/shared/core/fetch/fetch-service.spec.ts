@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { FetchService } from './fetch-service'
-import { ProgressBarService } from '../../services/progress-bar/progress-bar-service'
+import { ProgressBarService } from '@services/progress-bar/progress-bar-service'
 
 const mockTauriFetch = vi.hoisted(() => vi.fn())
 

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TableHeadSelection, TableRowSelection } from './selection-column'
-import { provideAllIcons } from '../../core/provide-all-icons'
+import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 // A single mock context that satisfies both TableHeadSelection (needs .table)
 // and TableRowSelection (needs .row) since vi.mock applies to the whole file.

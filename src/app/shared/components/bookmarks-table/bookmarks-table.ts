@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core'
+import { Component, effect, inject, input, OnInit, signal } from '@angular/core'
 import { Router } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import {
@@ -19,13 +19,13 @@ import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmTableImports } from '@spartan-ng/helm/table'
+import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { NgIcon } from '@ng-icons/core'
 import { PinboardItemVM } from '@models/pinboard-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { CellTagRenderer } from './cell-tag-renderer/cell-tag-renderer'
 import { ActionDropdown } from './action-dropdown'
 import { CellBookmark } from './cell-bookmark/cell-bookmark'
-import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { NgxLoadingBar } from '@ngx-loading-bar/core'
 import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/app-constants'
 
@@ -47,6 +47,10 @@ import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/app-constants'
 export class BookmarksTable implements OnInit {
   readonly #router = inject(Router)
   readonly bookmarks = input<PinboardItemVM[]>()
+
+  readonly hasChanges = effect(() => {
+    console.log('bookmarks changed: ', this.bookmarks()?.length)
+  })
 
   readonly #columnFilters = signal<ColumnFiltersState>([])
   readonly #sorting = signal<SortingState>([])
