@@ -1,5 +1,5 @@
 [package]
-name = "pinbored-tauri"
+name = "pinbored"
 version = "0.1.0"
 description = "A Pinboard management app built with Tauri"
 authors = ["Michaël Trouw"]
@@ -39,4 +39,5 @@ tauri-plugin-store = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-sql = { version = "2", features = ["sqlite"] }
 tauri-plugin-fs = "2"
+tauri-plugin-os = "2"
 

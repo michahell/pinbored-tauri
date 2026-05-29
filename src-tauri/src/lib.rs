@@ -12,6 +12,10 @@ pub fn run() {
     #[cfg(debug_assertions)] // only enable instrumentation in development builds
     let devtools = tauri_plugin_devtools::init();
 
+    let platform = tauri_plugin_os::platform();
+    println!("Platform: {}", platform);
+    // Prints "windows" to the terminal
+
     // SQLite migrations
     let migrations = vec![
         // Define your migrations here
@@ -35,7 +39,8 @@ pub fn run() {
         },
     ];
 
-    let mut builder = tauri::Builder::default()
+    let builder = tauri::Builder::default()
+        .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(
             tauri_plugin_sql::Builder::default()

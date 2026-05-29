@@ -29,10 +29,15 @@
     "fs:default",
     {
       "identifier": "fs:scope",
-      "allow": [{ "path": "$APPDATA/databases/*" }]
+      "allow": [
+        {
+          "path": "$APPDATA/databases/*"
+        }
+      ]
     },
     "fs:allow-app-write",
     "fs:allow-home-read-recursive",
-    "fs:allow-home-write-recursive"
+    "fs:allow-home-write-recursive",
+    "os:default"
   ]
 }
