@@ -3,65 +3,67 @@ name: release
 on:
   workflow_dispatch:
   push:
-    branches: ['release']
+    branches:
+      - release
 
-permissions:
-  contents: write
+# This is the example from the readme.
+# On each push to the `release` branch it will create or update a GitHub release,
+# build your app, and upload the artifacts to the release.
 
 jobs:
-  prepare-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '24.14.0'
-      - run: pnpm install
-        continue-on-error: false
-      - run: pnpm run test
-        continue-on-error: true
-      - run: pnpm run build
-        continue-on-error: false
-      - name: install zip
-        uses: montudor/action-zip@v1
-      - name: create zip file
-        run: zip -qq -r dist.zip dist
-      - name: store build output
-        uses: actions/upload-artifact@v7
-        with:
-          name: dist
-          path: 'dist.zip'
-          retention-days: 1
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest' # for Intel based macs.
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
 
-  create-release:
-    needs: prepare-release
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+
+#      - name: setup node
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: lts/*
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.0.8
         with:
-          node-version: '24.14.0'
-      - name: create new tag
-        id: version
+          version: 11.3.0
+          cache: true
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
-          # setup local git config user and e-mail
-          git config --local user.email "action@github.com"
-          git config --local user.name "release workflow action"
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-          # use pnpm version to update version in package.json
-          pnpm version minor -m "create tagged release %s" --force
+      - name: install frontend dependencies
+        run: pnpm install # change this to npm, pnpm or bun depending on which one you use.
 
-          # store that tag in github output for later use
-          echo "TAG_NAME=v$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-
-          # push created release version commit and tags
-          git push --tags --force
-      - name: download dist
-        uses: actions/download-artifact@v8
+      - uses: tauri-apps/tauri-action@v0.6.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: dist
-      - name: create release
-        uses: softprops/action-gh-release@v3
-        with:
-          tag_name: ${{ steps.version.outputs.TAG_NAME }}
-          files: 'dist.zip'
+          tagName: pinbored-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          releaseName: 'Pinbored v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
