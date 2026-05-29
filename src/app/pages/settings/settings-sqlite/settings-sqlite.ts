@@ -38,9 +38,10 @@ export default class SettingsSqlite {
   async clearSelectedDb(): Promise<void> {
     await this.#sqliteService.close()
     this.dbPathCleared.set(true)
+    console.log('closed database connection')
     setTimeout(() => {
-      console.log('resetting dbPathCleared...')
       this.dbPathCleared.set(false)
+      console.log('reset dbPathCleared() signal')
     }, ACTION_DEBOUNCE_TIME)
   }
 }

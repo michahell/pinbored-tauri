@@ -13,8 +13,9 @@ export class SqliteService {
   #database: Database | null = null
 
   async #getDefaultDir(): Promise<string> {
-    // eslint-disable-next-line no-useless-escape
-    return `${await homeDir()}/Library/Mobile\ Documents/com\~apple\~CloudDocs/${ICLOUD_DEFAULT_DIRECTORY_NAME}`
+    //resolves to:
+    //    '/Users/michaeltrouw/Library/Mobile Documents/com~apple~CloudDocs/Pinbored'
+    return `${await homeDir()}/Library/Mobile Documents/com~apple~CloudDocs/${ICLOUD_DEFAULT_DIRECTORY_NAME}`
   }
 
   async selectFile(): Promise<string | null> {
@@ -29,8 +30,8 @@ export class SqliteService {
   async openAndLoadDatabase(): Promise<void> {
     const file = await this.selectFile()
     console.log('opening database: ', file)
-    this.#database = await Database.load(`sqlite:pinbored.db`) // ${file}
-    console.log('opened database with path:', this.#database.path)
+    this.#database = await Database.load(`sqlite:pinbored.db`) //${file}
+    console.log('opened database:', this.#database, 'path: ', this.#database.path)
   }
 
   async createDatabase(): Promise<string | null> {
@@ -44,10 +45,12 @@ export class SqliteService {
         },
       ],
     })
-    console.log(path)
+    console.log('create new pinbored sqlite database using path: ', path)
     if (path) {
       const file = await create(path, { baseDir: BaseDirectory.Home })
+      console.log('created file, fileHandle: ', file)
       await file.close()
+      console.log('...closed file again')
       return path
     } else {
       return null
@@ -59,7 +62,7 @@ export class SqliteService {
       return null
     }
     const result = await this.#database.select<PinboardTagsMap>('SELECT * from tags')
-    console.log('db result: ', result)
+    console.log('getTags() database.select result: ', result)
     return result
   }
 
@@ -68,7 +71,7 @@ export class SqliteService {
       return null
     }
     const result = await this.#database.execute(query, bindValues)
-    console.log('db result: ', result)
+    console.log('execute() database.execute result: ', result)
     return result
   }
 
