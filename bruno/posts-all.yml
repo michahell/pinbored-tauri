@@ -1,0 +1,22 @@
+info:
+  name: posts/all
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: https://api.pinboard.in/v1/posts/all?auth_token={{process.env.PINBOARD_V1_TOKEN}}&format=json
+  params:
+    - name: auth_token
+      value: "{{process.env.PINBOARD_V1_TOKEN}}"
+      type: query
+    - name: format
+      value: json
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
