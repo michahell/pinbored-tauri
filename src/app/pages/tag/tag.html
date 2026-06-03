@@ -14,6 +14,6 @@
   </div>
   <!-- bookmarks table -->
   <div class="p-5">
-    <app-bookmarks-table [bookmarks]="bookmarks()"></app-bookmarks-table>
+    <app-bookmarks-table [bookmarks]="bookmarks()" [highlightTag]="tag()?.name ?? ''"></app-bookmarks-table>
   </div>
 </app-main-layout>

@@ -9,7 +9,11 @@
   <div class="w-full -ml-1 pt-1">
     @if (context.row.original.tags.length > 0) {
       @for (tag of context.row.original.tagsList; track $index) {
-        <a hlmBadge variant="secondary" [class]="`${skyBadge} select-none cursor-pointer`" [routerLink]="`/tags/${tag}`"
+        <a
+          hlmBadge
+          variant="secondary"
+          [class]="`${highlightTag() === tag ? yellowBadge() : skyBadge()} select-none cursor-pointer`"
+          [routerLink]="`/tags/${tag}`"
           >{{ tag }}
         </a>
       }

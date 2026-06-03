@@ -27,7 +27,7 @@ import { CellTagRenderer } from './cell-tag-renderer/cell-tag-renderer'
 import { CellActionDropdown } from './cell-action-dropdown/cell-action-dropdown.component'
 import { CellBookmark } from './cell-bookmark/cell-bookmark'
 import { NgxLoadingBar } from '@ngx-loading-bar/core'
-import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '../../core/constants/app-constants'
+import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/constants/app-constants'
 
 @Component({
   selector: 'app-bookmarks-table',
@@ -50,12 +50,15 @@ export class BookmarksTable implements OnInit {
 
   readonly hasChanges = effect(() => {
     console.log('bookmarks changed: ', this.bookmarks()?.length)
+    console.log('highlightTag: ', this.highlightTag())
   })
 
   readonly #columnFilters = signal<ColumnFiltersState>([])
   readonly #sorting = signal<SortingState>([])
   readonly #rowSelection = signal<RowSelectionState>({})
   readonly #columnVisibility = signal<VisibilityState>({})
+
+  readonly highlightTag = input<string>('')
 
   protected readonly columns: ColumnDef<PinboardItemVM>[] = [
     {
@@ -87,7 +90,7 @@ export class BookmarksTable implements OnInit {
       enableSorting: false,
       enableHiding: false,
       enableGlobalFilter: false,
-      cell: () => flexRenderComponent(CellBookmark),
+      cell: () => flexRenderComponent(CellBookmark, { inputs: { highlightTag: this.highlightTag() } }),
     },
     {
       accessorKey: 'actions',
@@ -98,12 +101,14 @@ export class BookmarksTable implements OnInit {
       cell: () => flexRenderComponent(CellActionDropdown),
     },
     {
+      // not shown but added to be able to search it
       id: 'href',
       accessorKey: 'href',
       enableSorting: false,
       enableHiding: false,
     },
     {
+      // not shown but added to be able to search it
       id: 'description',
       accessorKey: 'description',
       enableSorting: false,

@@ -2,7 +2,7 @@
   <div class="py-5 px-5">
     <!-- title and others having the same bookmark -->
     <div class="flex flex-row justify-between mb-2">
-      <h1>{{ bookmark().description }}</h1>
+      <h1>{{ bookmark()?.description }}</h1>
       <div class="flex flex-row content-center items-center">
         <p class="text-sm">others having this bookmark:&nbsp;</p>
         <hlm-badge variant="default">0</hlm-badge>
@@ -43,10 +43,12 @@
     </div>
   </div>
 
-  <!-- extended OR AI summary of bookmark -->
-  <div class="py-2 px-5 flex flex-row mb-2 align-middle items-center bg-accent">
-    <p>{{ bookmark().extended }}</p>
-  </div>
+  @if (bookmark().extended) {
+    <!-- extended OR AI summary of bookmark -->
+    <div class="py-2 px-5 flex flex-row mb-2 align-middle items-center bg-accent">
+      <p>{{ bookmark().extended }}</p>
+    </div>
+  }
 
   <!-- status -->
   <div class="py-2 px-5 flex flex-row justify-between mb-2">
@@ -61,10 +63,12 @@
       <button hlmBtn variant="default" size="sm" class="select-none cursor-pointer mr-1">open bookmark</button>
       <!-- edit -->
       <button hlmBtn variant="outline" size="sm" class="select-none cursor-pointer mr-1">edit</button>
+    </div>
+    <div>
       <!-- stale-check -->
       <button hlmBtn variant="outline" size="sm" class="select-none cursor-pointer mr-1">stale-check</button>
+      <!-- delete -->
+      <button hlmBtn variant="destructive" size="sm" class="select-none cursor-pointer mr-1">delete</button>
     </div>
-    <!-- delete -->
-    <button hlmBtn variant="destructive" size="sm" class="select-none cursor-pointer mr-1">delete</button>
   </div>
 </app-main-layout>

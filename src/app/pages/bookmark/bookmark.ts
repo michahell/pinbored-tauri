@@ -34,6 +34,7 @@ export default class Bookmark implements OnInit {
   readonly getSuggestedTags = effect(() => {
     const bm = this.bookmark()
     if (bm && bm.tags.length === 0) {
+      console.log('effect running #getTagSuggestionsForBookmark...')
       this.#getTagSuggestionsForBookmark(bm)
     }
   })

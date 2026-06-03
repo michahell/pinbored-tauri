@@ -1,5 +1,5 @@
 export interface PinboardItem {
-  description: string
+  description?: string
   extended: string
   hash: string
   href: string
