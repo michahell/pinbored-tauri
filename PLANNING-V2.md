@@ -1,10 +1,19 @@
 ## V2
 
+### Decouple from Pinboard by using abstract facades / services
+- [ ] create abstract **DataFacade** with similar methods for bookmarks, tags, notes, etc.
+- [ ] rename PinboardFacade to **PinboardDataFacade**
+- [ ] create **SqliteDataFacade**
+- [ ] create settings item where users can switch from Pinboard to **SQLite**
+- [ ] settings item configures which concrete **DataFacade** gets used
+
 ### add support for using SQLite(3) as self-hosted data-store
 - [ ] test using plugin-sqlite and plugin-dialog if it's possible to store and open sqlite files from iCloud storage.
 
 ### main UI
-- [ ] add back and next buttons (with hotkeys shown)
+- [ ] add hotkey support for back and next buttons
+  - [ ] add hotkeys to settings item
+  - [ ] use safari hotkeys: `meta + [` for back, and `meta + ]` for next
 
 ### implement notes support
 - [ ] implement notes page
@@ -24,6 +33,7 @@
   - [ ] localhost URL can be filled in
   - [ ] test connection button
   - [ ] model selection dropdown
+- [ ] settings page should remember theme preference by storing that in Tauri Store
 
 ### tag page
   - [ ] get few-line summary of what a tag probably means.

@@ -7,10 +7,10 @@
 ### single tag page
 - [x] implement single tag page
 - [ ] show a large tag, with a tag name, and if it is a private or public tag
-- [ ] add button rename tag
+- [ ] implement rename tag
 - [ ] editing a single tag works (open edit tag modal again)
-- [ ] add button with title: 'show bookmarks with tag' -> filters bookmarks page
-- [ ] add button delete tag
+- [ ] implement 'show bookmarks with tag' -> filters bookmarks page
+- [ ] implement delete tag
 
 ### single bookmark page
 - [ ] implement single bookmark page
@@ -29,19 +29,14 @@
 - [ ] the tags page has a separate button-bar on the right to select all and select none
 - [ ] the tags page shows private and public tags differently
 
-### settings page
-- [ ] settings page should remember theme preference by storing in Tauri Store
-
-### notes page
-- [ ] implement empty notes page, stating support is coming in V2.
-
 ### needed optimizations
 - [ ] the route guard should not perform an actual auth check every time, only if a new const `PINBOARD_TOKEN_TTL` has expired. until that time, it should check for a stored entry in the Tauri `Store` (together with the actual `TTL` since authentication to compare against) indicating that the user has authenticated.
-- [ ] settings page should remember theme preference by storing in Tauri Store
 
-## Done:
+## Done
 
-- [x] update all unit-tests
+### notes page
+- [x] implement empty notes page, stating support is coming in V2.
+### various
 - [x] implement persisting stale status in store as well
 - [x] login page should use a different page layout compared to pages visible after login
 - [x] bookmarks page should load bookmarks initially, on init
