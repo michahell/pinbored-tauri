@@ -19,7 +19,10 @@
 - [ ] the bookmark page shows private and public tags differently
 
 ### bookmarks page
-- [ ] the bookmarks page has a separate button-bar to show all, private, public, unread, untagged and starred bookmarks
+- [x] bookmarks page should load bookmarks initially, on init
+- [x] stale checker should by default resume stale checking only unchecked bookmarks
+- [x] implement persisting stale status in store as well
+- [x] the bookmarks page has a separate button-bar to show all, private, public, unread, untagged and starred bookmarks
 - [ ] the bookmarks page renders private and public bookmarks with a different background color
 - [ ] the bookmarks page allows to filter by tag. this should be a specific tag selection filter input field.
 
@@ -29,16 +32,15 @@
 - [ ] the tags page has a separate button-bar on the right to select all and select none
 - [ ] the tags page shows private and public tags differently
 
-### needed optimizations
+### optimizations
 - [ ] the route guard should not perform an actual auth check every time, only if a new const `PINBOARD_TOKEN_TTL` has expired. until that time, it should check for a stored entry in the Tauri `Store` (together with the actual `TTL` since authentication to compare against) indicating that the user has authenticated.
-
-## Done
 
 ### notes page
 - [x] implement empty notes page, stating support is coming in V2.
+
+### login page
+- [x] login page should use a different page layout compared to pages visible after login
+
 ### various
 - [x] create GitHub actions pipeline
-- [x] implement persisting stale status in store as well
-- [x] login page should use a different page layout compared to pages visible after login
-- [x] bookmarks page should load bookmarks initially, on init
-- [x] stale checker should by default resume stale checking only unchecked bookmarks
+
