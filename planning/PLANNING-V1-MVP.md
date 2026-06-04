@@ -42,5 +42,6 @@
 - [x] login page should use a different page layout compared to pages visible after login
 
 ### various
+- [ ] trial a signal-based, no dependency signal-store as opposed to NGRX / NGXS
 - [x] create GitHub actions pipeline
 
