@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core'
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core'
 import { ActivatedRoute, Params, RouterLink } from '@angular/router'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
@@ -13,7 +13,6 @@ import { TagsService } from '@services/tags/tags-service'
 @Component({
   selector: 'app-bookmark',
   imports: [MainLayout, HlmBadge, HlmButton, RouterLink],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './bookmark.html',
 })
 export default class Bookmark implements OnInit {

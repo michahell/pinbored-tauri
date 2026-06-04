@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, signal } from '@angular/core'
 import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { HlmButton } from '@spartan-ng/helm/button'
@@ -10,7 +10,6 @@ import { PinboardImporterService } from '@services/pinboard-importer/pinboard-im
 @Component({
   selector: 'app-settings-sqlite',
   imports: [HlmButton, HlmCardImports, HlmInputGroupImports, NgIcon],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './settings-sqlite.html',
 })
 export default class SettingsSqlite {

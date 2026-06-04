@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core'
+import { Component, computed, inject, signal } from '@angular/core'
 import { injectBrnDialogContext } from '@spartan-ng/brain/dialog'
 import { hlmMuted } from '@spartan-ng/helm/typography'
 import { HlmDialogImports } from '@spartan-ng/helm/dialog'
@@ -11,7 +11,6 @@ import { TagVM } from '@data-providers/abstract'
 @Component({
   selector: 'app-tag-edit-modal',
   imports: [HlmDialogImports, HlmButtonImports, HlmInputImports],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './tag-edit-modal.html',
 })
 export class TagEditModal {

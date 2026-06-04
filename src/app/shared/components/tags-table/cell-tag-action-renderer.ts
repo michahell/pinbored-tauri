@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { NgIcon } from '@ng-icons/core'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { TagsService } from '@services/tags/tags-service'
@@ -10,7 +10,6 @@ import { TagVM } from '@data-providers/abstract'
 @Component({
   imports: [NgIcon, HlmButtonImports, HlmIconImports, HlmAlertDialogImports],
   providers: [],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: 'cell-tag-action-renderer.html',
 })
 export class CellTagActionRenderer {

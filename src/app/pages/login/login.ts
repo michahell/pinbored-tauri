@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, computed, inject, OnInit } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmCardImports } from '@spartan-ng/helm/card'
@@ -24,7 +24,6 @@ interface PinboardLoginForm {
     HlmFieldImports,
     HlmInputImports,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './login.html',
 })
 export default class Login implements OnInit {

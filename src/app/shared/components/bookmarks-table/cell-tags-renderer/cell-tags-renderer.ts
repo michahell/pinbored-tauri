@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component } from '@angular/core'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
@@ -6,7 +6,6 @@ import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-vie
 @Component({
   imports: [HlmBadge],
   providers: [],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @for (tag of tags; track $index) {
       &nbsp;<hlm-badge variant="secondary">{{ tag }}</hlm-badge>

@@ -1,4 +1,4 @@
-import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, computed, input } from '@angular/core'
 import { NgIcon } from '@ng-icons/core'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
@@ -7,7 +7,6 @@ import { type HeaderContext, injectFlexRenderContext } from '@tanstack/angular-t
 @Component({
   imports: [HlmButtonImports, NgIcon, HlmIconImports],
   providers: [],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <button hlmBtn size="sm" variant="ghost" (click)="filterClick()" [class.capitalize]="header() === ''">
       {{ _header() }}

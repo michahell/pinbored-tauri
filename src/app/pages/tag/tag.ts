@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, computed, inject, OnInit } from '@angular/core'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { BigTag } from '@components/big-tag/big-tag'
 import { ActivatedRoute, Params } from '@angular/router'
@@ -12,7 +12,6 @@ import { HlmBadge } from '@spartan-ng/helm/badge'
 @Component({
   selector: 'app-tag',
   imports: [HlmBadge, MainLayout, BigTag, BookmarksTable],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './tag.html',
 })
 export default class Tag implements OnInit {

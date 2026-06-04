@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, computed, inject, OnInit } from '@angular/core'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
@@ -9,7 +9,6 @@ import { HlmButtonGroup, HlmButtonGroupImports } from '@spartan-ng/helm/button-g
 @Component({
   selector: 'app-tags',
   imports: [HlmButtonGroupImports, MainLayout, HlmButton, HlmSpinner, TagsTable, HlmButtonGroup],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './tags.html',
 })
 export default class Tags implements OnInit {

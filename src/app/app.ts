@@ -1,4 +1,4 @@
-import { Component, effect, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, effect, inject } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { storage } from '@signality/core'
 import { SettingsService } from './pages/settings/settings-service'
@@ -8,7 +8,6 @@ import { NgxLoadingBar } from '@ngx-loading-bar/core'
   selector: 'app-root',
   imports: [RouterOutlet, NgxLoadingBar],
   templateUrl: './app.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.css',
 })
 export class App {

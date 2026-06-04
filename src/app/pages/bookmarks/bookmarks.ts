@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, signal, computed, inject, OnInit } from '@angular/core'
 import { NgTemplateOutlet } from '@angular/common'
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
@@ -33,7 +33,6 @@ type BookmarkQuickFilters = Record<string, string[]>
     MainLayout,
     NgIcon,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './bookmarks.html',
 })
 export default class Bookmarks implements OnInit {

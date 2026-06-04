@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component } from '@angular/core'
 import { hlmH4 } from '@spartan-ng/helm/typography'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import SettingsCaching from './settings-caching/settings-caching'
@@ -9,7 +9,6 @@ import SettingsShortcuts from './settings-shortcuts/settings-shortcuts'
 @Component({
   selector: 'app-settings',
   imports: [MainLayout, SettingsCaching, SettingsTheme, SettingsSqlite, SettingsShortcuts],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './settings.html',
 })
 export default class Settings {
