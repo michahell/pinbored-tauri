@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core'
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { greenBadge, redBadge, skyBadge, yellowBadge } from '@styles/badge-colors'
@@ -7,6 +7,7 @@ import { PinboardItemVM } from '@models/pinboard-view.model'
 @Component({
   imports: [HlmBadge],
   providers: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './cell-tag-renderer.html',
 })
 export class CellTagRenderer {

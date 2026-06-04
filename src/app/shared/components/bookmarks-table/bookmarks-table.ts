@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, signal } from '@angular/core'
+import { Component, effect, inject, input, OnInit, signal, ChangeDetectionStrategy } from '@angular/core'
 import { Router } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import {
@@ -42,6 +42,7 @@ import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/constants/app-constants'
     HlmInputGroupImports,
     NgxLoadingBar,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './bookmarks-table.html',
 })
 export class BookmarksTable implements OnInit {

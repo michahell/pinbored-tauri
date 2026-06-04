@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core'
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core'
 import { NgIcon } from '@ng-icons/core'
 import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmButton } from '@spartan-ng/helm/button'
@@ -10,6 +10,7 @@ import { LocalStoreService } from '@core/store/local-store-service'
 @Component({
   selector: 'app-settings-caching',
   imports: [HlmCardImports, HlmButton, HlmButtonGroup, HlmSpinner, NgIcon],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './settings-caching.html',
 })
 export default class SettingsCaching {

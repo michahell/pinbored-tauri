@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core'
+import { Component, computed, inject, input, ChangeDetectionStrategy } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
@@ -9,6 +9,7 @@ import { CommonSignalsService } from '@core/common-signals/common-signals-servic
 @Component({
   imports: [HlmBadge, RouterLink],
   providers: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './cell-bookmark.html',
 })
 export class CellBookmark {

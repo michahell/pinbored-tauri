@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core'
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { NgTemplateOutlet } from '@angular/common'
 import { HlmSheetImports } from '@spartan-ng/helm/sheet'
@@ -11,6 +11,7 @@ import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 @Component({
   selector: 'app-debug-info',
   imports: [NgTemplateOutlet, HlmBadge, HlmButtonImports, HlmSheetImports],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './debug-info.html',
 })
 export class DebugInfo {

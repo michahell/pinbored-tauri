@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmButtonGroup } from '@spartan-ng/helm/button-group'
@@ -8,6 +8,7 @@ import { Theme } from '../settings-model'
 @Component({
   selector: 'app-settings-theme',
   imports: [HlmCardImports, HlmButton, HlmButtonGroup],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './settings-theme.html',
 })
 export default class SettingsTheme {

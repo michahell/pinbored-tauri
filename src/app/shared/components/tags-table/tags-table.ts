@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core'
+import { Component, inject, input, signal, ChangeDetectionStrategy } from '@angular/core'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -33,6 +33,7 @@ import { TagsService } from '@services/tags/tags-service'
     HlmIcon,
     NgIcon,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './tags-table.html',
 })
 export class TagsTable {

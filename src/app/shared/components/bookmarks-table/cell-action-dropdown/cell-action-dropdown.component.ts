@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { Router } from '@angular/router'
 import { NgIcon } from '@ng-icons/core'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
@@ -12,6 +12,7 @@ import { PinboardItemVM } from '@models/pinboard-view.model'
   selector: 'hlm-action-dropdown',
   imports: [NgIcon, HlmButtonImports, HlmIconImports, HlmDropdownMenuImports],
   providers: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <button hlmBtn variant="ghost" class="h-8 w-8 p-0" [hlmDropdownMenuTrigger]="ActionDropDownMenu">
       <span class="sr-only">open menu</span>

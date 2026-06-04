@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, signal } from '@angular/core'
+import { AfterViewInit, Component, inject, signal, ChangeDetectionStrategy } from '@angular/core'
 import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmKbdImports } from '@spartan-ng/helm/kbd'
 import { Hotkey, HotkeysService, HotkeysShortcutPipe } from '@ngneat/hotkeys'
@@ -6,6 +6,7 @@ import { Hotkey, HotkeysService, HotkeysShortcutPipe } from '@ngneat/hotkeys'
 @Component({
   selector: 'app-settings-shortcuts',
   imports: [HlmCardImports, HlmKbdImports, HotkeysShortcutPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './settings-shortcuts.html',
 })
 export default class SettingsShortcuts implements AfterViewInit {

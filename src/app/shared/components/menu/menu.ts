@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, inject, OnDestroy, signal } from '@angular/core'
+import { AfterViewInit, Component, computed, inject, OnDestroy, signal, ChangeDetectionStrategy } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { HlmNavigationMenuImports } from '@spartan-ng/helm/navigation-menu'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
@@ -19,6 +19,7 @@ interface MenuItem {
 @Component({
   selector: 'app-menu',
   imports: [HlmNavigationMenuImports, HlmButtonImports, RouterLink, RouterLinkActive, DebugInfo],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './menu.html',
 })
 export class Menu implements AfterViewInit, OnDestroy {
