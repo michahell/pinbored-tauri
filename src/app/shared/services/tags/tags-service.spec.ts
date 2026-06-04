@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagsService } from './tags-service'
-import { PinboardFacade } from '../../core/pinboard-facade/pinboard-facade'
-import { LocalStoreService } from '../../core/store/local-store-service'
+import { PinboardFacade } from '../../data-providers/pinboard/facade/pinboard-facade'
+import { TauriStoreService } from '../../core/tauri-store/tauri-store.service'
 import { HlmDialogService } from '@spartan-ng/helm/dialog'
 
 describe('TagsService', () => {
@@ -30,7 +30,7 @@ describe('TagsService', () => {
       providers: [
         TagsService,
         { provide: PinboardFacade, useValue: mockFacade },
-        { provide: LocalStoreService, useValue: mockLocalStore },
+        { provide: TauriStoreService, useValue: mockLocalStore },
         { provide: HlmDialogService, useValue: mockDialogService },
       ],
     })

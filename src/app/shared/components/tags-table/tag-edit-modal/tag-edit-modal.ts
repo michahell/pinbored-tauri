@@ -6,7 +6,7 @@ import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmInputImports } from '@spartan-ng/helm/input'
 import { TagsService } from '@services/tags/tags-service'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { TagVM } from '@models/tag-view.model'
+import { TagVM } from '@data-providers/abstract'
 
 @Component({
   selector: 'app-tag-edit-modal',

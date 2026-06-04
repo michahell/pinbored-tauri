@@ -15,12 +15,12 @@ import { HlmTableImports } from '@spartan-ng/helm/table'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
-import { TagVM } from '@models/tag-view.model'
 import { TableHeadSortButton } from '../table/sort-header-button'
 import { CellTagActionRenderer } from './cell-tag-action-renderer'
 import { HlmIcon } from '@spartan-ng/helm/icon'
 import { NgIcon } from '@ng-icons/core'
 import { TagsService } from '@services/tags/tags-service'
+import { TagVM } from '@data-providers/abstract'
 
 @Component({
   selector: 'app-tags-table',

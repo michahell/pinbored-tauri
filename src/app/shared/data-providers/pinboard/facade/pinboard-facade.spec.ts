@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { PinboardFacade } from './pinboard-facade'
-import { PinboardService } from '../pinboard-service/pinboard-service'
-import { LocalStoreService } from '../store/local-store-service'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
-import { PinboardItem } from '../../models/pinboard.model'
+import { PinboardService } from '../service/pinboard-service'
+import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
+import { BookmarkVM } from '@data-providers/abstract'
+import { PinboardItem } from '../models/pinboard.model'
 
 function makeRawBookmark(overrides: Partial<PinboardItem> = {}): PinboardItem {
   return {
@@ -21,7 +21,7 @@ function makeRawBookmark(overrides: Partial<PinboardItem> = {}): PinboardItem {
   }
 }
 
-function makeStoredBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
+function makeStoredBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
   return {
     hash: 'abc123',
     href: 'https://example.com',
@@ -69,7 +69,7 @@ describe('PinboardFacade', () => {
       providers: [
         PinboardFacade,
         { provide: PinboardService, useValue: mockPinboard },
-        { provide: LocalStoreService, useValue: mockLocalStore },
+        { provide: TauriStoreService, useValue: mockLocalStore },
       ],
     })
     facade = TestBed.inject(PinboardFacade)

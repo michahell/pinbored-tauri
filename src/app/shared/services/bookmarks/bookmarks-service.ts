@@ -1,24 +1,24 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
-// import { interval, IntervalRef } from '@signality/core'
 import PQueue from 'p-queue'
-import { PinboardItemVM, PinboardItemVMStatus } from '@models/pinboard-view.model'
 import { StaleCheckerService } from '@services/stale-checker/stale-checker-service'
-import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
-import { LocalStoreService } from '@core/store/local-store-service'
+import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
+import { BookmarkVM } from '@data-providers/abstract'
+import { StaleStatus } from '@services/stale-checker/stale-checker.model'
+import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookmarksService {
   readonly #staleChecker = inject(StaleCheckerService)
-  readonly facade = inject(PinboardFacade)
-  readonly #localStore = inject(LocalStoreService)
+  readonly facade = inject(DataProviderFacade)
+  readonly #localStore = inject(TauriStoreService)
 
   // queue
   queue: PQueue | null = null
 
   // data signals
-  readonly bookmarks = signal<PinboardItemVM[]>([])
+  readonly bookmarks = signal<BookmarkVM[]>([])
   // status signals
   readonly bookmarksFetching = signal(false)
   readonly staleChecking = signal(false)
@@ -104,7 +104,7 @@ export class BookmarksService {
     this.staleChecking.update(() => false)
   }
 
-  #handleStaleCheckStart(bookmark: PinboardItemVM): void {
+  #handleStaleCheckStart(bookmark: BookmarkVM): void {
     const bookmarks = this.bookmarks()
     const bookmarkInList = bookmarks.find((b) => b.hash === bookmark.hash)
     if (bookmarkInList) {
@@ -113,8 +113,8 @@ export class BookmarksService {
     }
   }
 
-  #handleStaleCheckComplete(bookmark: PinboardItemVM, response: Response | null): void {
-    let status: PinboardItemVMStatus = 'unchecked'
+  #handleStaleCheckComplete(bookmark: BookmarkVM, response: Response | null): void {
+    let status: StaleStatus = 'unchecked'
 
     if (response == null) {
       console.info(`No Response -> invalid bookmark href -> stale`)

@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { skyBadge, yellowBadge } from '@styles/badge-colors'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
 import { CommonSignalsService } from '@core/common-signals/common-signals-service'
 
 @Component({
@@ -14,7 +14,7 @@ import { CommonSignalsService } from '@core/common-signals/common-signals-servic
 })
 export class CellBookmark {
   readonly #signalsService = inject(CommonSignalsService)
-  readonly context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()
+  readonly context = injectFlexRenderContext<CellContext<BookmarkVM, unknown>>()
 
   protected readonly skyBadge = skyBadge
   readonly isDesktop = computed(() => this.#signalsService.breakpoints.desktop())

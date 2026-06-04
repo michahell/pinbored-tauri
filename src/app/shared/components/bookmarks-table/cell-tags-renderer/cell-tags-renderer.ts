@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
 
 @Component({
   imports: [HlmBadge],
@@ -14,6 +14,6 @@ import { PinboardItemVM } from '@models/pinboard-view.model'
   `,
 })
 export class CellTagsRenderer {
-  readonly #context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()
+  readonly #context = injectFlexRenderContext<CellContext<BookmarkVM, unknown>>()
   readonly tags = this.#context.cell.getValue() as string[]
 }

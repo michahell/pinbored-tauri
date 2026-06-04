@@ -21,7 +21,7 @@ import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmTableImports } from '@spartan-ng/helm/table'
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { NgIcon } from '@ng-icons/core'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { CellTagRenderer } from './cell-tag-renderer/cell-tag-renderer'
 import { CellActionDropdown } from './cell-action-dropdown/cell-action-dropdown.component'
@@ -47,7 +47,7 @@ import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/constants/app-constants'
 })
 export class BookmarksTable implements OnInit {
   readonly #router = inject(Router)
-  readonly bookmarks = input<PinboardItemVM[]>()
+  readonly bookmarks = input<BookmarkVM[]>()
 
   readonly hasChanges = effect(() => {
     console.log('bookmarks changed: ', this.bookmarks()?.length)
@@ -61,7 +61,7 @@ export class BookmarksTable implements OnInit {
 
   readonly highlightTag = input<string>('')
 
-  protected readonly columns: ColumnDef<PinboardItemVM>[] = [
+  protected readonly columns: ColumnDef<BookmarkVM>[] = [
     {
       id: 'hash',
       accessorKey: 'hash',
@@ -117,7 +117,7 @@ export class BookmarksTable implements OnInit {
     },
   ]
 
-  protected readonly table = createAngularTable<PinboardItemVM>(() => ({
+  protected readonly table = createAngularTable<BookmarkVM>(() => ({
     data: this.bookmarks() ?? [],
     initialState: {
       pagination: {
@@ -183,7 +183,7 @@ export class BookmarksTable implements OnInit {
     this.table.setGlobalFilter('')
   }
 
-  protected goToBookmark(event: MouseEvent, bookmark: PinboardItemVM): void {
+  protected goToBookmark(event: MouseEvent, bookmark: BookmarkVM): void {
     if (event.target instanceof HTMLAnchorElement || event.target instanceof HTMLButtonElement) {
       return
     }

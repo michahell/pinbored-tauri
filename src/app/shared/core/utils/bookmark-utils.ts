@@ -1,6 +1,6 @@
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
 
-const matchBookmarkVisibility = (visibility: string, bookmark: PinboardItemVM): boolean => {
+const matchBookmarkVisibility = (visibility: string, bookmark: BookmarkVM): boolean => {
   if (visibility === 'all') {
     return true
   } else if (visibility === 'public') {
@@ -12,7 +12,7 @@ const matchBookmarkVisibility = (visibility: string, bookmark: PinboardItemVM): 
   }
 }
 
-const matchBookmarkReadStatus = (readStatus: string, bookmark: PinboardItemVM): boolean => {
+const matchBookmarkReadStatus = (readStatus: string, bookmark: BookmarkVM): boolean => {
   if (readStatus === 'all') {
     return true
   } else if (readStatus === 'unread') {
@@ -24,7 +24,7 @@ const matchBookmarkReadStatus = (readStatus: string, bookmark: PinboardItemVM): 
   }
 }
 
-const matchBookmarkTaggedStatus = (tagged: string, bookmark: PinboardItemVM): boolean => {
+const matchBookmarkTaggedStatus = (tagged: string, bookmark: BookmarkVM): boolean => {
   if (tagged === 'all') {
     return true
   } else if (tagged === 'yes') {

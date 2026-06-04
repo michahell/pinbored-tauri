@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core'
-import { LocalStoreService } from '@core/store/local-store-service'
-import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
-import { PinboardService } from '@core/pinboard-service/pinboard-service'
+import { TauriStoreService } from '../core/tauri-store/tauri-store.service'
+import { PinboardFacade } from '../data-providers/pinboard/facade/pinboard-facade'
+import { PinboardService } from '../data-providers/pinboard/service/pinboard-service'
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +9,7 @@ import { PinboardService } from '@core/pinboard-service/pinboard-service'
 export class AuthenticationService {
   readonly #facade = inject(PinboardFacade)
   readonly #pinboard = inject(PinboardService)
-  readonly #localStore = inject(LocalStoreService)
+  readonly #localStore = inject(TauriStoreService)
 
   readonly authStatus = signal<'checking' | 'unauthenticated' | 'authenticated'>('checking')
 

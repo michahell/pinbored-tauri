@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { StaleCheckerService } from './stale-checker-service'
 import { ProgressBarService } from '../progress-bar/progress-bar-service'
-import { PinboardItemVM } from '../../models/pinboard-view.model'
+import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
 
 const mockFetch = vi.hoisted(() => vi.fn())
 
@@ -10,7 +10,7 @@ vi.mock('@tauri-apps/plugin-http', () => ({
   fetch: mockFetch,
 }))
 
-function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
+function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
   return {
     hash: 'abc123',
     href: 'https://example.com',
@@ -47,10 +47,7 @@ describe('StaleCheckerService', () => {
     }
 
     TestBed.configureTestingModule({
-      providers: [
-        StaleCheckerService,
-        { provide: ProgressBarService, useValue: mockProgressBar },
-      ],
+      providers: [StaleCheckerService, { provide: ProgressBarService, useValue: mockProgressBar }],
     })
     service = TestBed.inject(StaleCheckerService)
     mockFetch.mockReset()
@@ -138,9 +135,7 @@ describe('StaleCheckerService', () => {
         makeBookmark({ hash: 'a', href: 'https://fails.com' }),
         makeBookmark({ hash: 'b', href: 'https://ok.com' }),
       ]
-      mockFetch
-        .mockRejectedValueOnce(new Error('fail'))
-        .mockResolvedValueOnce({ ok: true, status: 200 })
+      mockFetch.mockRejectedValueOnce(new Error('fail')).mockResolvedValueOnce({ ok: true, status: 200 })
 
       const completeHandler = vi.fn()
       const queue = service.newQueue()

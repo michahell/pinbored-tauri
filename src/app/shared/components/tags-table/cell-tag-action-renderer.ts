@@ -5,7 +5,7 @@ import { TagsService } from '@services/tags/tags-service'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmAlertDialogImports } from '@spartan-ng/helm/alert-dialog'
-import { TagVM } from '@models/tag-view.model'
+import { TagVM } from '@data-providers/abstract'
 
 @Component({
   imports: [NgIcon, HlmButtonImports, HlmIconImports, HlmAlertDialogImports],

@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksService } from './bookmarks-service'
-import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
+import { PinboardFacade } from '../../data-providers/pinboard/facade/pinboard-facade'
 import { StaleCheckerService } from '../stale-checker/stale-checker-service'
-import { LocalStoreService } from '@core/store/local-store-service'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { TauriStoreService } from '../../core/tauri-store/tauri-store.service'
+import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
 
 vi.mock('@signality/core', () => ({
   interval: vi.fn(() => null),
 }))
 
-function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
+function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
   return {
     hash: 'abc123',
     href: 'https://example.com',
@@ -62,7 +62,7 @@ describe('BookmarksService', () => {
         BookmarksService,
         { provide: PinboardFacade, useValue: mockFacade },
         { provide: StaleCheckerService, useValue: mockStaleChecker },
-        { provide: LocalStoreService, useValue: mockLocalStore },
+        { provide: TauriStoreService, useValue: mockLocalStore },
       ],
     })
     service = TestBed.inject(BookmarksService)
@@ -221,7 +221,7 @@ describe('BookmarksService', () => {
   })
 
   describe('stale check status mapping', () => {
-    let completeHandler: (bookmark: PinboardItemVM, response: Response | null) => void
+    let completeHandler: (bookmark: BookmarkVM, response: Response | null) => void
     const bookmark = makeBookmark({ hash: 'target' })
 
     beforeEach(async () => {
@@ -330,7 +330,7 @@ describe('BookmarksService', () => {
       mockFacade.getAllBookmarks.mockResolvedValue([bookmark])
       await service.getAllBookmarks()
 
-      let startHandler!: (b: PinboardItemVM) => void
+      let startHandler!: (b: BookmarkVM) => void
       mockStaleChecker.startWith.mockImplementation(async (_q: unknown, _l: unknown, handler: typeof startHandler) => {
         startHandler = handler
       })

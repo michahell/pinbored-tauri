@@ -4,14 +4,14 @@ import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Bookmarks from './bookmarks'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../shared/data-providers/abstract/models/abstract-view.model'
 import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 describe('Bookmarks', () => {
   let component: Bookmarks
   let fixture: ComponentFixture<Bookmarks>
 
-  const bookmarksSignal = signal<PinboardItemVM[]>([])
+  const bookmarksSignal = signal<BookmarkVM[]>([])
   const bookmarksFetchingSignal = signal(false)
   const staleCheckingSignal = signal(false)
   const hasBookmarksSignal = signal(false)

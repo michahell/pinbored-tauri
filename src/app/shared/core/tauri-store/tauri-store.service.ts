@@ -4,7 +4,7 @@ import { load, Store } from '@tauri-apps/plugin-store'
 @Injectable({
   providedIn: 'root',
 })
-export class LocalStoreService {
+export class TauriStoreService {
   #store: Store | null = null
 
   async load(): Promise<void> {

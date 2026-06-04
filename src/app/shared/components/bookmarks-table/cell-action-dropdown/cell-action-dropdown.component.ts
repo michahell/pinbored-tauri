@@ -5,8 +5,8 @@ import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
-import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { PinboardFacade } from '../../../data-providers/pinboard/facade/pinboard-facade'
+import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
 
 @Component({
   selector: 'hlm-action-dropdown',
@@ -34,7 +34,7 @@ import { PinboardItemVM } from '@models/pinboard-view.model'
 export class CellActionDropdown {
   readonly #router = inject(Router)
   readonly #facade = inject(PinboardFacade)
-  readonly #context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()
+  readonly #context = injectFlexRenderContext<CellContext<BookmarkVM, unknown>>()
 
   editBookmark() {
     const bookmark = this.#context.row.original

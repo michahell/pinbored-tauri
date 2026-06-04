@@ -1,10 +1,10 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core'
 import { provideRouter } from '@angular/router'
 import { routes } from './app.routes'
-import { provideAllIcons } from './shared/core/utils/provide-all-icons'
 import { provideLoadingBar } from '@ngx-loading-bar/core'
 import { provideLoadingBarRouter } from '@ngx-loading-bar/router'
-import { LocalStoreService } from '@core/store/local-store-service'
+import { provideAllIcons } from '@core/utils/provide-all-icons'
+import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideLoadingBarRouter(),
     // custom initializer logic
     provideAppInitializer(async () => {
-      const localStore = inject(LocalStoreService)
+      const localStore = inject(TauriStoreService)
       await localStore.load()
     }),
   ],

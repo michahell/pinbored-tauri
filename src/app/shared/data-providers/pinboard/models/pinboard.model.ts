@@ -1,4 +1,6 @@
-export interface PinboardItem {
+import { Bookmark, Note } from '@data-providers/abstract/models/abstract.model'
+
+export interface PinboardItem extends Bookmark {
   description?: string
   extended: string
   hash: string
@@ -8,6 +10,15 @@ export interface PinboardItem {
   tags: string
   time: string
   toread: string
+}
+
+/** notes/list — individual note summary */
+export interface PinboardNote extends Note {
+  id: string
+  title: string
+  created_at: string
+  updated_at: string
+  length: number
 }
 
 /** posts/update */
@@ -53,15 +64,6 @@ export interface PinboardUserSecret {
 /** user/api_token */
 export interface PinboardUserApiToken {
   result: string
-}
-
-/** notes/list — individual note summary */
-export interface PinboardNote {
-  id: string
-  title: string
-  created_at: string
-  updated_at: string
-  length: number
 }
 
 /** notes/list */

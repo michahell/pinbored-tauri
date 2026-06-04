@@ -2,7 +2,7 @@ import { Component, computed, input, ChangeDetectionStrategy } from '@angular/co
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { greenBadge, redBadge, skyBadge, yellowBadge } from '@styles/badge-colors'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
 
 @Component({
   imports: [HlmBadge],
@@ -11,7 +11,7 @@ import { PinboardItemVM } from '@models/pinboard-view.model'
   templateUrl: './cell-tag-renderer.html',
 })
 export class CellTagRenderer {
-  readonly context = injectFlexRenderContext<CellContext<PinboardItemVM, unknown>>()
+  readonly context = injectFlexRenderContext<CellContext<BookmarkVM, unknown>>()
   readonly status = input<string>()
   readonly color = computed(() => {
     switch (this.status()) {

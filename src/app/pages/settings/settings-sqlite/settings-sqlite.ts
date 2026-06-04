@@ -4,7 +4,7 @@ import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { NgIcon } from '@ng-icons/core'
 import { ACTION_DEBOUNCE_TIME } from '@core/constants/app-constants'
-import { SqliteService } from '@services/sqlite/sqlite-service'
+import { SqliteService } from '@data-providers/sqlite/service/sqlite-service'
 import { PinboardImporterService } from '@services/pinboard-importer/pinboard-importer-service'
 
 @Component({

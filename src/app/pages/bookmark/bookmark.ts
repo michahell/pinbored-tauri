@@ -5,8 +5,8 @@ import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { PinboardItemVM } from '@models/pinboard-view.model'
-import { PinboardSuggestResult } from '@models/pinboard.model'
+import { BookmarkVM } from '../../shared/data-providers/abstract/models/abstract-view.model'
+import { PinboardSuggestResult } from '../../shared/data-providers/pinboard/models/pinboard.model'
 import { skyBadge } from '@styles/badge-colors'
 import { TagsService } from '@services/tags/tags-service'
 
@@ -25,8 +25,8 @@ export default class Bookmark implements OnInit {
 
   readonly #params = toSignal<Params>(this.#activatedRoute.params)
   readonly #requestedBookmark = computed<string>(() => this.#params()!['bookmark'])
-  readonly #bookmarks = computed<PinboardItemVM[]>(() => this.#bookmarksService.bookmarks())
-  readonly bookmark = computed<PinboardItemVM>(() => {
+  readonly #bookmarks = computed<BookmarkVM[]>(() => this.#bookmarksService.bookmarks())
+  readonly bookmark = computed<BookmarkVM>(() => {
     return this.#bookmarks().find((bookmark) => this.#requestedBookmark() == bookmark.hash)!
   })
 
@@ -48,7 +48,7 @@ export default class Bookmark implements OnInit {
     await this.#bookmarksService.getAllBookmarks()
   }
 
-  #getTagSuggestionsForBookmark(pinboardItemVM: PinboardItemVM): Promise<PinboardSuggestResult> {
+  #getTagSuggestionsForBookmark(pinboardItemVM: BookmarkVM): Promise<PinboardSuggestResult> {
     return this.#tagsService.suggestTagsForUrl(pinboardItemVM.href)
   }
 }

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { PinboardService } from './pinboard-service'
-import { FetchService } from '../fetch/fetch-service'
+import { FetchService } from '../../../core/fetch/fetch-service'
 
 const mockFetch = vi.fn()
 

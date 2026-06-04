@@ -3,11 +3,11 @@ import { fetch } from '@tauri-apps/plugin-http'
 import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
 import { STALE_CHECKER_DEFAULT_CONCURRENCY } from '@core/constants/app-constants'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
 import { ProgressBarService } from '@services/progress-bar/progress-bar-service'
 
-export type PinboardStaleCheckStartHandler = (item: PinboardItemVM) => void
-export type PinboardStaleCheckCompleteHandler = (item: PinboardItemVM, result: Response | null) => void
+export type PinboardStaleCheckStartHandler = (item: BookmarkVM) => void
+export type PinboardStaleCheckCompleteHandler = (item: BookmarkVM, result: Response | null) => void
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class StaleCheckerService {
 
   async startWith(
     queue: PQueue,
-    list: PinboardItemVM[],
+    list: BookmarkVM[],
     startHandler: PinboardStaleCheckStartHandler,
     completeHandler: PinboardStaleCheckCompleteHandler
   ): Promise<void> {
@@ -46,8 +46,8 @@ export class StaleCheckerService {
     this.#progressBarService.stop('staleProgress')
   }
 
-  async #fetchBookmark(pinboardItem: PinboardItemVM): Promise<[PinboardItemVM, Response | null]> {
-    let result: [PinboardItemVM, Response | null]
+  async #fetchBookmark(pinboardItem: BookmarkVM): Promise<[BookmarkVM, Response | null]> {
+    let result: [BookmarkVM, Response | null]
     try {
       result = await fetch(pinboardItem.href, {
         method: 'GET',

@@ -3,7 +3,7 @@ import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { TagsTable } from '@components/tags-table/tags-table'
-import { TagsService } from '../../shared/services/tags/tags-service'
+import { TagsService } from '@services/tags/tags-service'
 import { HlmButtonGroup, HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
 
 @Component({

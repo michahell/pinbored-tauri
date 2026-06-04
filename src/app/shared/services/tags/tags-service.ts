@@ -1,18 +1,17 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
 import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { BrnDialogRef } from '@spartan-ng/brain/dialog'
-import { PinboardFacade } from '@core/pinboard-facade/pinboard-facade'
-import { LocalStoreService } from '@core/store/local-store-service'
-import { TagVM } from '@models/tag-view.model'
+import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { TagEditModal } from '@components/tags-table/tag-edit-modal/tag-edit-modal'
-import { PinboardSuggestResult, PinboardTagsMap } from '@models/pinboard.model'
+import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
+import { SuggestTagsResult, TagsVM, TagVM } from '@data-providers/abstract'
 
 @Injectable({
   providedIn: 'root',
 })
 export class TagsService {
-  readonly #facade = inject(PinboardFacade)
-  readonly #localStore = inject(LocalStoreService)
+  readonly #facade = inject(DataProviderFacade)
+  readonly tauriStore = inject(TauriStoreService)
   readonly #dialogService = inject(HlmDialogService)
 
   readonly tags = signal<TagVM[]>([])
@@ -49,7 +48,7 @@ export class TagsService {
     await this.#updateTagsInLocalStore()
   }
 
-  async suggestTagsForUrl(bookmarkUrl: string): Promise<PinboardSuggestResult> {
+  async suggestTagsForUrl(bookmarkUrl: string): Promise<SuggestTagsResult> {
     return this.#facade.suggestTagsForUrl(bookmarkUrl)
   }
 
@@ -67,11 +66,11 @@ export class TagsService {
   }
 
   async #updateTagsInLocalStore(): Promise<void> {
-    const tagsMap: PinboardTagsMap = Object.fromEntries(this.tags().map((t) => [t.name, String(t.count)]))
-    await this.#localStore.set('tags', tagsMap)
+    const tagsMap: TagsVM = Object.fromEntries(this.tags().map((t) => [t.name, String(t.count)]))
+    await this.tauriStore.set('tags', tagsMap)
   }
 
-  #mapToTagVMs(tagsMap: PinboardTagsMap): TagVM[] {
+  #mapToTagVMs(tagsMap: TagsVM): TagVM[] {
     return Object.entries(tagsMap).map(([name, count]) => ({ name, count: Number(count) }))
   }
 }

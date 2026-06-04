@@ -6,9 +6,9 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagEditModal } from './tag-edit-modal'
 import { TagsService } from '@services/tags/tags-service'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
 
-function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
+function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
   return {
     hash: 'abc123',
     href: 'https://example.com',
@@ -32,7 +32,7 @@ describe('TagEditModal', () => {
     renameTag: ReturnType<typeof vi.fn>
     closeTagEditModal: ReturnType<typeof vi.fn>
   }
-  let bookmarksSignal: ReturnType<typeof signal<PinboardItemVM[]>>
+  let bookmarksSignal: ReturnType<typeof signal<BookmarkVM[]>>
 
   beforeEach(async () => {
     mockTagsService = {

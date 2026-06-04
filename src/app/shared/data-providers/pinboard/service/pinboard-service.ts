@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { FetchService } from '../fetch/fetch-service'
+import { FetchService } from '@core/fetch/fetch-service'
 import {
   PinboardDatesResult,
   PinboardItem,
@@ -13,7 +13,7 @@ import {
   PinboardUpdateResult,
   PinboardUserApiToken,
   PinboardUserSecret,
-} from '@models/pinboard.model'
+} from '../models/pinboard.model'
 
 const PINBOARD_BASE_URL = 'https://api.pinboard.in/v1'
 

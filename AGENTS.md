@@ -36,9 +36,23 @@ pnpm lint
 
 ## Architecture
 
+### Data-providers
+To be able to make the app data-backend agnostic, 
+the idea is to have a number of supported data-backends in 
+`src/app/shared/data-providers`. 
+The `Pinboard` data provider is the default one and contains all the services, 
+facades, models and utils to be able to interface with the Pinboard.in service.
+
+An SQLite data provider (using the @tauri-sql plugin) is planned 
+for a future version to be able to support independence from Pinboard.in 
+and support (sovereign) data-portability.
+
+The app should use a data provider service to remove knowledge of data provider specifics. 
+Data providers should therefore conform to a shared abstract data provider interface.
+
 ### Tauri Integration
-- HTTP requests to external URLs (Pinboard API, staleness checks) go through **`@tauri-apps/plugin-http`** `fetch`, not the browser's `fetch`. This bypasses CORS and is required for the app to work.
-- Rust backend (`src-tauri/`) is minimal — it exposes a `greet` command but core logic lives in Angular.
+- HTTP requests to external URLs go through **`@tauri-apps/plugin-http`** `fetch`, not the browser's `fetch`. This bypasses CORS and is required for the app to work.
+- Rust backend (`src-tauri/`) should remain minimal. Preferably, TypeScript variants of Tauri plugins are used.
 - Tauri plugin permissions are configured in `src-tauri/capabilities/`.
 
 ### Service Layer

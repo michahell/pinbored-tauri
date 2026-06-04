@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { LocalStoreService } from './local-store-service'
+import { TauriStoreService } from './tauri-store.service'
 
 const mockStoreInstance = vi.hoisted(() => ({
   get: vi.fn(),
@@ -13,12 +13,12 @@ vi.mock('@tauri-apps/plugin-store', () => ({
   load: (...args: unknown[]) => mockLoad(...args),
 }))
 
-describe('LocalStoreService', () => {
-  let service: LocalStoreService
+describe(TauriStoreService.name, () => {
+  let service: TauriStoreService
 
   beforeEach(() => {
     TestBed.configureTestingModule({})
-    service = TestBed.inject(LocalStoreService)
+    service = TestBed.inject(TauriStoreService)
     vi.clearAllMocks()
   })
 

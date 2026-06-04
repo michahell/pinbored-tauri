@@ -1,12 +1,11 @@
 import { Component, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
-import { BigTag } from '../../shared/components/big-tag/big-tag'
+import { BigTag } from '@components/big-tag/big-tag'
 import { ActivatedRoute, Params } from '@angular/router'
-import { TagsService } from '../../shared/services/tags/tags-service'
-import { TagVM } from '@models/tag-view.model'
+import { TagsService } from '@services/tags/tags-service'
+import { BookmarkVM, TagVM } from '@data-providers/abstract'
 import { BookmarksTable } from '@components/bookmarks-table/bookmarks-table'
-import { BookmarksService } from '../../shared/services/bookmarks/bookmarks-service'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 
@@ -29,7 +28,7 @@ export default class Tag implements OnInit {
     return this.#tags().find((tag: TagVM) => this.#requestedTag() == tag.name) ?? null
   })
 
-  bookmarks = computed<PinboardItemVM[]>(() =>
+  bookmarks = computed<BookmarkVM[]>(() =>
     this.#bookmarksService.bookmarks().filter((bookmark) => bookmark.tags.includes(this.#params()?.['tag']))
   )
 

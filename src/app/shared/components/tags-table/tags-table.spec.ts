@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagsTable } from './tags-table'
 import { TagsService } from '@services/tags/tags-service'
-import { TagVM } from '@models/tag-view.model'
 import { provideAllIcons } from '@core/utils/provide-all-icons'
+import { TagVM } from '@data-providers/abstract'
 
 function makeTag(overrides: Partial<TagVM> = {}): TagVM {
   return { name: 'javascript', count: 42, ...overrides }

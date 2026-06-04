@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksTable } from './bookmarks-table'
-import { PinboardItemVM } from '@models/pinboard-view.model'
+import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
 import { provideAllIcons } from '@core/utils/provide-all-icons'
 
-function makeBookmark(overrides: Partial<PinboardItemVM> = {}): PinboardItemVM {
+function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
   return {
     hash: 'abc123',
     href: 'https://example.com',
@@ -54,7 +54,7 @@ describe('BookmarksTable', () => {
   })
 
   it('renders with bookmarks of various statuses', () => {
-    const bookmarks: PinboardItemVM[] = [
+    const bookmarks: BookmarkVM[] = [
       makeBookmark({ status: 'unchecked' }),
       makeBookmark({ hash: 'b', status: 'ok' }),
       makeBookmark({ hash: 'c', status: 'stale' }),

@@ -5,7 +5,7 @@ import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmButtonGroup } from '@spartan-ng/helm/button-group'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { ACTION_DEBOUNCE_TIME } from '@core/constants/app-constants'
-import { LocalStoreService } from '@core/store/local-store-service'
+import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 
 @Component({
   selector: 'app-settings-caching',
@@ -14,7 +14,7 @@ import { LocalStoreService } from '@core/store/local-store-service'
   templateUrl: './settings-caching.html',
 })
 export default class SettingsCaching {
-  #store = inject(LocalStoreService)
+  #store = inject(TauriStoreService)
 
   clearingStore = signal(false)
   storeCleared = signal(false)
