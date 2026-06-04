@@ -37,6 +37,7 @@
 ### notes page
 - [x] implement empty notes page, stating support is coming in V2.
 ### various
+- [x] create GitHub actions pipeline
 - [x] implement persisting stale status in store as well
 - [x] login page should use a different page layout compared to pages visible after login
 - [x] bookmarks page should load bookmarks initially, on init
