@@ -43,5 +43,6 @@
 
 ### various
 - [ ] trial a signal-based, no dependency signal-store as opposed to NGRX / NGXS
+- [ ] 
 - [x] create GitHub actions pipeline
 

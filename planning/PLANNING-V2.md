@@ -19,7 +19,3 @@
 - [ ] the footer has a lighter background in dark mode, and darker in light mode
 - [ ] the footer contains some creator info, links to pinboard.in
 - [ ] the footer can be hidden via settings
-
-## Done:
-
-nothing!
