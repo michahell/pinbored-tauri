@@ -14,7 +14,8 @@
       "mcp__vitest__set_project_root",
       "mcp__vitest__run_tests",
       "Bash(pnpm test *)",
-      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); t=d['projects']['pinbored-tauri']['architect']['test']; print\\(json.dumps\\(t, indent=2\\)\\)\")"
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); t=d['projects']['pinbored-tauri']['architect']['test']; print\\(json.dumps\\(t, indent=2\\)\\)\")",
+      "WebFetch(domain:angular.dev)"
     ]
   },
   "enableAllProjectMcpServers": true,

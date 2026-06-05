@@ -1,10 +1,8 @@
-import { computed, Injectable, Signal } from '@angular/core'
+import { computed, Service, Signal } from '@angular/core'
 import { mediaQuery } from '@signality/core'
 import { Theme } from './settings-model'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class SettingsService {
   readonly prefersDark = mediaQuery('(prefers-color-scheme: dark)')
   readonly prefersLight = mediaQuery('(prefers-color-scheme: light)')

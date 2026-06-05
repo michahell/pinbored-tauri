@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core'
+import { Service } from '@angular/core'
 import { breakpoints } from '@signality/core'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class CommonSignalsService {
   breakpoints = breakpoints({
     mobile: '(max-width: 767px)',

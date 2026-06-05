@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core'
+import { inject, Service } from '@angular/core'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { StaleStatus } from '@services/stale-checker/stale-checker.model'
 import { AbstractDataProviderFacade, BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract'
@@ -9,9 +9,7 @@ import {
   PinboardUserApiToken,
 } from '@data-providers/pinboard/models/pinboard.model'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class PinboardFacade extends AbstractDataProviderFacade {
   #pinboard = inject(PinboardService)
   #localStore = inject(TauriStoreService)

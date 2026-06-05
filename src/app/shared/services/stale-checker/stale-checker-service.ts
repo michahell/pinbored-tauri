@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core'
+import { inject, Service } from '@angular/core'
 import { fetch } from '@tauri-apps/plugin-http'
 import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
@@ -9,9 +9,7 @@ import { ProgressBarService } from '@services/progress-bar/progress-bar-service'
 export type PinboardStaleCheckStartHandler = (item: BookmarkVM) => void
 export type PinboardStaleCheckCompleteHandler = (item: BookmarkVM, result: Response | null) => void
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class StaleCheckerService {
   readonly #progressBarService = inject(ProgressBarService)
 

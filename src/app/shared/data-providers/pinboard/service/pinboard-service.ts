@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core'
+import { inject, Service } from '@angular/core'
 import { FetchService } from '@core/fetch/fetch-service'
 import {
   PinboardDatesResult,
@@ -17,9 +17,7 @@ import {
 
 const PINBOARD_BASE_URL = 'https://api.pinboard.in/v1'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class PinboardService {
   #fetchService = inject(FetchService)
   // we alias #fetch to be able to 'intercept' fetching and do things before and after

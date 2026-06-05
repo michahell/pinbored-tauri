@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core'
+import { inject, Service } from '@angular/core'
 import { SqliteService } from '@data-providers/sqlite'
 import { PinboardFacade } from '@data-providers/pinboard'
 import { PinboardTagsMap } from '@data-providers/pinboard/models/pinboard.model'
@@ -13,9 +13,7 @@ interface PinboardImporterProgress {
   notes: EntityProgress
   bookmarks: EntityProgress
 }
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class PinboardImporterService {
   #pinboardFacade = inject(PinboardFacade)
   #sqliteService = inject(SqliteService)

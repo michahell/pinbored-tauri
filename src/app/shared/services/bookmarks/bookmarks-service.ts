@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core'
+import { computed, inject, Service, signal } from '@angular/core'
 import PQueue from 'p-queue'
 import { StaleCheckerService } from '@services/stale-checker/stale-checker-service'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
@@ -6,9 +6,7 @@ import { BookmarkVM } from '@data-providers/abstract'
 import { StaleStatus } from '@services/stale-checker/stale-checker.model'
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class BookmarksService {
   readonly #staleChecker = inject(StaleCheckerService)
   readonly facade = inject(DataProviderFacade)

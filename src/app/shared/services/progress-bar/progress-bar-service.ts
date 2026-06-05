@@ -1,9 +1,7 @@
-import { inject, Injectable } from '@angular/core'
+import { inject, Service } from '@angular/core'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ProgressBarService {
   #loadingBarService = inject(LoadingBarService)
 

@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core'
+import { Service } from '@angular/core'
 import { load, Store } from '@tauri-apps/plugin-store'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class TauriStoreService {
   #store: Store | null = null
 

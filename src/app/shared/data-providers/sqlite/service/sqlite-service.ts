@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Service } from '@angular/core'
 import { open, save } from '@tauri-apps/plugin-dialog'
 import { homeDir } from '@tauri-apps/api/path'
 import { create, BaseDirectory } from '@tauri-apps/plugin-fs'
@@ -6,9 +6,7 @@ import Database, { QueryResult } from '@tauri-apps/plugin-sql'
 import { ICLOUD_DEFAULT_DIRECTORY_NAME } from '@core/constants/app-constants'
 import { TagsVM } from '@data-providers/abstract'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class SqliteService {
   #database: Database | null = null
 

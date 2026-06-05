@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core'
+import { computed, inject, Service, signal } from '@angular/core'
 import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { BrnDialogRef } from '@spartan-ng/brain/dialog'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
@@ -6,9 +6,7 @@ import { TagEditModal } from '@components/tags-table/tag-edit-modal/tag-edit-mod
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
 import { TagsVM, TagVM, SuggestTagsResultVM } from '@data-providers/abstract'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class TagsService {
   readonly #facade = inject(DataProviderFacade)
   readonly tauriStore = inject(TauriStoreService)

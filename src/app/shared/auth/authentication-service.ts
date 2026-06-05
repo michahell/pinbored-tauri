@@ -1,10 +1,8 @@
-import { inject, Injectable, signal } from '@angular/core'
+import { inject, Service, signal } from '@angular/core'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { PinboardService, PinboardFacade } from '@data-providers/pinboard'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class AuthenticationService {
   readonly #facade = inject(PinboardFacade)
   readonly #pinboard = inject(PinboardService)
