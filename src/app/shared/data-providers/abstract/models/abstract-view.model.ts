@@ -14,3 +14,8 @@ export interface TagVM extends Tag {
 export interface NoteVM extends Note {}
 
 export type TagsVM = Tags
+
+export interface SuggestTagsResultVM {
+  popular: string[]
+  recommended: string[]
+}

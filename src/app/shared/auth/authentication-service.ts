@@ -1,7 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core'
-import { TauriStoreService } from '../core/tauri-store/tauri-store.service'
-import { PinboardFacade } from '../data-providers/pinboard/facade/pinboard-facade'
-import { PinboardService } from '../data-providers/pinboard/service/pinboard-service'
+import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
+import { PinboardService, PinboardFacade } from '@data-providers/pinboard'
 
 @Injectable({
   providedIn: 'root',

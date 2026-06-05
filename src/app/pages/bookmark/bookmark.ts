@@ -5,10 +5,10 @@ import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { BookmarkVM } from '../../shared/data-providers/abstract/models/abstract-view.model'
-import { PinboardSuggestResult } from '../../shared/data-providers/pinboard/models/pinboard.model'
-import { skyBadge } from '@styles/badge-colors'
 import { TagsService } from '@services/tags/tags-service'
+import { skyBadge } from '@styles/badge-colors'
+import { BookmarkVM, SuggestTagsResult } from '@data-providers/abstract'
+import { SuggestTagsResultVM } from '@data-providers/abstract/models/abstract-view.model'
 
 @Component({
   selector: 'app-bookmark',
@@ -29,13 +29,14 @@ export default class Bookmark implements OnInit {
     return this.#bookmarks().find((bookmark) => this.#requestedBookmark() == bookmark.hash)!
   })
 
-  readonly suggestedTags = signal<string[]>([])
+  readonly suggestedTags = signal<SuggestTagsResultVM | null>(null)
 
-  readonly getSuggestedTags = effect(() => {
+  readonly getSuggestedTags = effect(async () => {
     const bm = this.bookmark()
     if (bm && bm.tags.length === 0) {
-      console.log('effect running #getTagSuggestionsForBookmark...')
-      this.#getTagSuggestionsForBookmark(bm)
+      const suggestions = await this.#getTagSuggestionsForBookmark(bm)
+      this.suggestedTags.set(suggestions)
+      console.log('effect ran #getTagSuggestionsForBookmark: ', suggestions)
     }
   })
 
@@ -47,7 +48,7 @@ export default class Bookmark implements OnInit {
     await this.#bookmarksService.getAllBookmarks()
   }
 
-  #getTagSuggestionsForBookmark(pinboardItemVM: BookmarkVM): Promise<PinboardSuggestResult> {
+  #getTagSuggestionsForBookmark(pinboardItemVM: BookmarkVM): Promise<SuggestTagsResultVM> {
     return this.#tagsService.suggestTagsForUrl(pinboardItemVM.href)
   }
 }

@@ -1,9 +1,13 @@
 import { inject, Injectable } from '@angular/core'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
-import { PinboardService } from '../service/pinboard-service'
 import { StaleStatus } from '@services/stale-checker/stale-checker.model'
-import { AbstractDataProviderFacade, BookmarkVM, TagsVM, SuggestTagsResult } from '@data-providers/abstract'
-import { PinboardTagResult, PinboardUserApiToken } from '../models/pinboard.model'
+import { AbstractDataProviderFacade, BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract'
+import { PinboardService } from '@data-providers/pinboard/service/pinboard-service'
+import {
+  PinboardSuggestResult,
+  PinboardTagResult,
+  PinboardUserApiToken,
+} from '@data-providers/pinboard/models/pinboard.model'
 
 @Injectable({
   providedIn: 'root',
@@ -51,8 +55,9 @@ export class PinboardFacade extends AbstractDataProviderFacade {
     await this.#pinboard.deleteBookmark(url)
   }
 
-  async suggestTagsForUrl(url: string): Promise<SuggestTagsResult> {
-    return this.#pinboard.suggestTagsForUrl(url)
+  async suggestTagsForUrl(url: string): Promise<SuggestTagsResultVM> {
+    const result: PinboardSuggestResult = await this.#pinboard.suggestTagsForUrl(url)
+    return { popular: result[0].popular, recommended: result[1].recommended }
   }
 
   async getUserApiToken(username: string, token: string): Promise<PinboardUserApiToken> {

@@ -1,5 +1,11 @@
 import { inject, Injector, Service } from '@angular/core'
-import { AbstractDataProviderFacade, IDataProviderFacade, BookmarkVM, TagsVM } from '@data-providers/abstract'
+import {
+  AbstractDataProviderFacade,
+  IDataProviderFacade,
+  BookmarkVM,
+  TagsVM,
+  SuggestTagsResultVM,
+} from '@data-providers/abstract'
 import { PinboardFacade } from '@data-providers/pinboard/facade/pinboard-facade'
 import { SqliteFacade } from '@data-providers/sqlite/facade/sqlite-facade'
 
@@ -46,7 +52,7 @@ export class DataProviderFacade implements IDataProviderFacade {
     return this.concreteFacade.deleteBookmark(url)
   }
 
-  suggestTagsForUrl(url: string): Promise<any> {
+  suggestTagsForUrl(url: string): Promise<SuggestTagsResultVM> {
     return this.concreteFacade.suggestTagsForUrl(url)
   }
 }

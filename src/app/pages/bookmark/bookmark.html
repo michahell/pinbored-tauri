@@ -22,13 +22,17 @@
         }
       } @else {
         <hlm-badge variant="default">no tags</hlm-badge>
-        <small>&nbsp;suggested tags:&nbsp;</small>
-        @if (suggestedTags().length) {
-          <!--          @for {-->
-          <!--          }-->
-        }
       }
     </div>
+    <!-- suggested tags -->
+    @if (bookmark().tags.length === 0) {
+      <div class="flex flex-row mb-2 align-middle items-center">
+        <small>&nbsp;suggested tags:&nbsp;</small>
+        @if (suggestedTags() !== null) {
+          popular: {{ suggestedTags()?.popular }} recommended: {{ suggestedTags()?.recommended }}
+        }
+      </div>
+    }
     <!-- visibility -->
     <div class="flex flex-row mb-2 align-middle items-center">
       <small
@@ -37,23 +41,21 @@
         }}</hlm-badge></small
       >
     </div>
+    <!-- extended OR AI summary of bookmark -->
+    <div class="flex flex-row mb-2 align-middle items-center">
+      <small
+        >extended:&nbsp;
+        @if (bookmark().extended) {
+          {{ bookmark().extended }}
+        } @else {
+          no extended text
+        }
+      </small>
+    </div>
     <!-- actual link -->
     <div class="flex flex-row mb-2 align-middle items-center">
       <small>url:&nbsp;{{ bookmark().href }}</small>
     </div>
-  </div>
-
-  @if (bookmark().extended) {
-    <!-- extended OR AI summary of bookmark -->
-    <div class="py-2 px-5 flex flex-row mb-2 align-middle items-center bg-accent">
-      <p>{{ bookmark().extended }}</p>
-    </div>
-  }
-
-  <!-- status -->
-  <div class="py-2 px-5 flex flex-row justify-between mb-2">
-    <small>stale-check status:</small>
-    <hlm-badge variant="default">{{ bookmark().status }}</hlm-badge>
   </div>
 
   <!-- options -->
@@ -70,5 +72,11 @@
       <!-- delete -->
       <button hlmBtn variant="destructive" size="sm" class="select-none cursor-pointer mr-1">delete</button>
     </div>
+  </div>
+
+  <!-- stale check status -->
+  <div class="py-2 px-5 flex flex-row justify-between mb-2">
+    <small>stale-check status:</small>
+    <hlm-badge variant="default">{{ bookmark().status }}</hlm-badge>
   </div>
 </app-main-layout>

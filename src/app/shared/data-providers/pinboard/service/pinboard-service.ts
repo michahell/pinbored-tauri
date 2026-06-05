@@ -13,7 +13,7 @@ import {
   PinboardUpdateResult,
   PinboardUserApiToken,
   PinboardUserSecret,
-} from '../models/pinboard.model'
+} from '@data-providers/pinboard/models/pinboard.model'
 
 const PINBOARD_BASE_URL = 'https://api.pinboard.in/v1'
 

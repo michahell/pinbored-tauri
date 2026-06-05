@@ -4,7 +4,7 @@ import { BrnDialogRef } from '@spartan-ng/brain/dialog'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { TagEditModal } from '@components/tags-table/tag-edit-modal/tag-edit-modal'
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
-import { SuggestTagsResult, TagsVM, TagVM } from '@data-providers/abstract'
+import { TagsVM, TagVM, SuggestTagsResultVM } from '@data-providers/abstract'
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +48,7 @@ export class TagsService {
     await this.#updateTagsInLocalStore()
   }
 
-  async suggestTagsForUrl(bookmarkUrl: string): Promise<SuggestTagsResult> {
+  async suggestTagsForUrl(bookmarkUrl: string): Promise<SuggestTagsResultVM> {
     return this.#facade.suggestTagsForUrl(bookmarkUrl)
   }
 
