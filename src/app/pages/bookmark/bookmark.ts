@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core'
 import { ActivatedRoute, Params, RouterLink } from '@angular/router'
 import { toSignal } from '@angular/core/rxjs-interop'
+import { openUrl } from '@tauri-apps/plugin-opener'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { HlmButton } from '@spartan-ng/helm/button'
@@ -46,6 +47,10 @@ export default class Bookmark implements OnInit {
 
   async getBookmarks(): Promise<void> {
     await this.#bookmarksService.getAllBookmarks()
+  }
+
+  async openBookmark(): Promise<void> {
+    await openUrl(this.bookmark().href)
   }
 
   #getTagSuggestionsForBookmark(pinboardItemVM: BookmarkVM): Promise<SuggestTagsResultVM> {

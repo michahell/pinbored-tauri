@@ -7,6 +7,9 @@ import Bookmark from './bookmark'
 import { provideAllIcons } from '../../shared/core/utils/provide-all-icons'
 import { BookmarksService } from '../../shared/services/bookmarks/bookmarks-service'
 import { TagsService } from '../../shared/services/tags/tags-service'
+import { openUrl } from '@tauri-apps/plugin-opener'
+
+vi.mock('@tauri-apps/plugin-opener', () => ({ openUrl: vi.fn() }))
 
 const testBookmark = {
   hash: 'test-hash',
@@ -55,5 +58,10 @@ describe('Bookmark', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy()
+  })
+
+  it('openBookmark() calls openUrl with the bookmark href', async () => {
+    await component.openBookmark()
+    expect(openUrl).toHaveBeenCalledWith(testBookmark.href)
   })
 })
