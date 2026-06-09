@@ -1,7 +1,6 @@
 import { inject, Service } from '@angular/core'
 import { SqliteService } from '@data-providers/sqlite'
-import { PinboardFacade } from '@data-providers/pinboard'
-import { PinboardTagsMap } from '@data-providers/pinboard/models/pinboard.model'
+import { PinboardFacade, PinboardTagsMap } from '@data-providers/pinboard'
 
 interface EntityProgress {
   total: number

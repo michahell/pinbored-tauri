@@ -2,7 +2,7 @@ import { Component, computed, input } from '@angular/core'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { greenBadge, redBadge, skyBadge, yellowBadge } from '@styles/badge-colors'
-import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
+import { BookmarkVM } from '@data-providers/abstract'
 
 @Component({
   imports: [HlmBadge],

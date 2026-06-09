@@ -3,7 +3,7 @@ import { fetch } from '@tauri-apps/plugin-http'
 import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
 import { STALE_CHECKER_DEFAULT_CONCURRENCY } from '@core/constants/app-constants'
-import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
+import { BookmarkVM } from '@data-providers/abstract'
 import { ProgressBarService } from '@services/progress-bar/progress-bar-service'
 
 export type PinboardStaleCheckStartHandler = (item: BookmarkVM) => void

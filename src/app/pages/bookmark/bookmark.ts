@@ -8,8 +8,8 @@ import { HlmButton } from '@spartan-ng/helm/button'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 import { TagsService } from '@services/tags/tags-service'
 import { skyBadge } from '@styles/badge-colors'
-import { BookmarkVM, SuggestTagsResult } from '@data-providers/abstract'
-import { SuggestTagsResultVM } from '@data-providers/abstract/models/abstract-view.model'
+import { BookmarkVM } from '@data-providers/abstract'
+import { SuggestTagsResultVM } from '@data-providers/abstract'
 
 @Component({
   selector: 'app-bookmark',

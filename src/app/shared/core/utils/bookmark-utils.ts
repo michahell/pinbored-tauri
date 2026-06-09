@@ -1,4 +1,4 @@
-import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
+import { BookmarkVM } from '@data-providers/abstract'
 
 const matchBookmarkVisibility = (visibility: string, bookmark: BookmarkVM): boolean => {
   if (visibility === 'all') {

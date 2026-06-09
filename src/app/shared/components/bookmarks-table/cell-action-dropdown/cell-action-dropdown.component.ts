@@ -5,8 +5,8 @@ import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmIconImports } from '@spartan-ng/helm/icon'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
-import { PinboardFacade } from '../../../data-providers/pinboard/facade/pinboard-facade'
-import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
+import { PinboardFacade } from '@data-providers/pinboard'
+import { BookmarkVM } from '@data-providers/abstract'
 
 @Component({
   selector: 'hlm-action-dropdown',

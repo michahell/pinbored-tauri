@@ -6,8 +6,8 @@ import {
   TagsVM,
   SuggestTagsResultVM,
 } from '@data-providers/abstract'
-import { PinboardFacade } from '@data-providers/pinboard/facade/pinboard-facade'
-import { SqliteFacade } from '@data-providers/sqlite/facade/sqlite-facade'
+import { PinboardFacade } from '@data-providers/pinboard'
+import { SqliteFacade } from '@data-providers/sqlite'
 
 @Service()
 export class DataProviderFacade implements IDataProviderFacade {

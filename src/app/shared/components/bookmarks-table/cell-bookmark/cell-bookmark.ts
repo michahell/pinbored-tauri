@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
 import { skyBadge, yellowBadge } from '@styles/badge-colors'
-import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
+import { BookmarkVM } from '@data-providers/abstract'
 import { CommonSignalsService } from '@core/common-signals/common-signals-service'
 
 @Component({

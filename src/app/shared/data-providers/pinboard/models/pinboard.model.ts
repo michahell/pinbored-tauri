@@ -1,4 +1,4 @@
-import { Bookmark, Note } from '@data-providers/abstract/models/abstract.model'
+import { Bookmark, Note } from '@data-providers/abstract'
 
 export interface PinboardItem extends Bookmark {
   description?: string
