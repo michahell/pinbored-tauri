@@ -40,15 +40,15 @@ export class DataProviderFacade implements IDataProviderFacade {
     return this.concreteFacade.getAllTags()
   }
 
-  renameTag(oldName: string, newName: string): Promise<any> {
+  renameTag(oldName: string, newName: string): Promise<unknown> {
     return this.concreteFacade.renameTag(oldName, newName)
   }
 
-  deleteTag(name: string): Promise<any> {
+  deleteTag(name: string): Promise<unknown> {
     return this.concreteFacade.deleteTag(name)
   }
 
-  deleteBookmark(url: string): Promise<any> {
+  deleteBookmark(url: string): Promise<unknown> {
     return this.concreteFacade.deleteBookmark(url)
   }
 

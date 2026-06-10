@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksService } from './bookmarks-service'
-import { PinboardFacade } from '../../data-providers/pinboard/facade/pinboard-facade'
-import { StaleCheckerService } from '../stale-checker/stale-checker-service'
-import { TauriStoreService } from '../../core/tauri-store/tauri-store.service'
-import { BookmarkVM } from '../../data-providers/abstract/models/abstract-view.model'
+import { PinboardFacade } from '@data-providers/pinboard'
+import { BookmarkVM } from '@data-providers/abstract'
+import { StaleCheckerService } from '@services/stale-checker'
+import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 
 vi.mock('@signality/core', () => ({
   interval: vi.fn(() => null),

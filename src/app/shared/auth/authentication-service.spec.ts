@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { AuthenticationService } from './authentication-service'
-import { TauriStoreService } from '../core/tauri-store/tauri-store.service'
-import { PinboardService } from '../data-providers/pinboard/service/pinboard-service'
+import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
+import { PinboardService } from '@data-providers/pinboard'
 
 describe('AuthenticationService', () => {
   let service: AuthenticationService

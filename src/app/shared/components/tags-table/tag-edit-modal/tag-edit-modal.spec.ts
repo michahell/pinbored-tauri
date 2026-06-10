@@ -6,7 +6,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagEditModal } from './tag-edit-modal'
 import { TagsService } from '@services/tags/tags-service'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { BookmarkVM } from '../../../data-providers/abstract/models/abstract-view.model'
+import { BookmarkVM } from '@data-providers/abstract'
 
 function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
   return {

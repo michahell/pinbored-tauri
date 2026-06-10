@@ -1,4 +1,4 @@
-import { Bookmark, Note, Tag, Tags } from '@data-providers/abstract/models/abstract.model'
+import { Bookmark, Note, Tag, Tags } from '@data-providers/abstract'
 import { StaleStatus } from '@services/stale-checker'
 
 export interface BookmarkVM extends Bookmark {
@@ -12,6 +12,7 @@ export interface TagVM extends Tag {
   count: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface NoteVM extends Note {}
 
 export type TagsVM = Tags
