@@ -1,6 +1,6 @@
 import { inject, Service } from '@angular/core'
 import { SqliteService } from '@data-providers/sqlite'
-import { PinboardFacade, PinboardTagsMap } from '@data-providers/pinboard'
+import { PinboardFacade, type PinboardTypes } from '@data-providers/pinboard'
 
 interface EntityProgress {
   total: number
@@ -42,7 +42,7 @@ export class PinboardImporterService {
   }
 
   async #importTags(): Promise<void> {
-    const tags: PinboardTagsMap = await this.#pinboardFacade.getAllTags()
+    const tags: PinboardTypes.PinboardTagsMap = await this.#pinboardFacade.getAllTags()
     this.progress.tags.total = Object.keys(tags).length
     this.progress.tags.current = 1
     for (const [tag, count] of Object.entries(tags)) {

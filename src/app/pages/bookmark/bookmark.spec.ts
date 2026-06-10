@@ -23,6 +23,7 @@ const testBookmark = {
   meta: '',
   time: '2024-01-01',
   toread: 'no',
+  changeHash: '',
 }
 
 describe('Bookmark', () => {
@@ -32,7 +33,9 @@ describe('Bookmark', () => {
   beforeEach(async () => {
     const mockBookmarksService = {
       bookmarks: signal([testBookmark]),
+      staleChecking: signal(false),
       getAllBookmarks: vi.fn().mockResolvedValue(undefined),
+      checkSingleBookmark: vi.fn().mockResolvedValue(undefined),
     }
     const mockTagsService = {
       suggestTagsForUrl: vi.fn().mockResolvedValue({ popular: [], recommended: [] }),
@@ -63,5 +66,15 @@ describe('Bookmark', () => {
   it('openBookmark() calls openUrl with the bookmark href', async () => {
     await component.openBookmark()
     expect(openUrl).toHaveBeenCalledWith(testBookmark.href)
+  })
+
+  it('checkStale() calls checkSingleBookmark with the current bookmark', async () => {
+    const mockService = TestBed.inject(BookmarksService) as unknown as {
+      checkSingleBookmark: ReturnType<typeof vi.fn>
+    }
+    await component.checkStale()
+    expect(mockService.checkSingleBookmark).toHaveBeenCalledWith(
+      expect.objectContaining({ hash: testBookmark.hash })
+    )
   })
 })

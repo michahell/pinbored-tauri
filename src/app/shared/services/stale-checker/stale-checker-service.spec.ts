@@ -23,6 +23,7 @@ function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
     toread: 'no',
     tagsList: [],
     status: 'unchecked',
+    changeHash: '',
     ...overrides,
   }
 }

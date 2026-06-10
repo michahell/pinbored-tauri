@@ -1,10 +1,11 @@
 import { computed, inject, Service, signal } from '@angular/core'
+import { interval, IntervalRef } from '@signality/core'
 import PQueue from 'p-queue'
-import { StaleCheckerService } from '@services/stale-checker/stale-checker-service'
+import { StaleCheckerService, StaleStatus } from '@services/stale-checker'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { BookmarkVM } from '@data-providers/abstract'
-import { StaleStatus } from '@services/stale-checker/stale-checker.model'
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
+import { getChangeHash } from '@core/utils/bookmark-utils'
 
 @Service()
 export class BookmarksService {
@@ -23,14 +24,10 @@ export class BookmarksService {
   readonly hasBookmarks = computed(() => this.bookmarks().length > 0)
 
   // for queue
-  // #pollQueue = signal<boolean>(false)
-  // #poller: IntervalRef = interval(() => {
-  //   if (!this.queue?.isPaused && this.queue ? this.queue.size > 0 : false) {
-  //     this.hasQueue.update(() => !!this.queue)
-  //     this.queueLength.update(() => this.queue?.size ?? 0)
-  //     this.queueTasks.update(() => this.queue?.runningTasks ?? undefined)
-  //   }
-  // }, 100)
+  #isPollingQueue = signal(false)
+  // create queue poller (updates queue signals with 100ms interval)
+  // eslint-disable-next-line no-unused-private-class-members
+  #poller: IntervalRef = this.#createQueuePoller()
   readonly hasQueue = signal(false)
   readonly queueLength = signal(0)
   readonly queueTasks = signal<
@@ -62,6 +59,23 @@ export class BookmarksService {
       })
   }
 
+  async checkSingleBookmark(bookmark: BookmarkVM): Promise<void> {
+    try {
+      this.staleChecking.set(true)
+      const queue = this.#staleChecker.newQueue({ concurrency: 1 })
+      await this.#staleChecker.startWith(
+        queue,
+        [bookmark],
+        this.#handleStaleCheckStart.bind(this),
+        this.#handleStaleCheckComplete.bind(this)
+      )
+    } catch (error) {
+      console.error(error)
+    } finally {
+      this.staleChecking.set(false)
+    }
+  }
+
   async startStaleCheck(restart = false): Promise<void> {
     try {
       this.queue = this.#staleChecker.newQueue()
@@ -70,6 +84,9 @@ export class BookmarksService {
       )
       // start stale checking
       this.staleChecking.update(() => true)
+      // start queue polling
+      this.#isPollingQueue.update(() => true)
+      // start stale-check
       await this.#staleChecker.startWith(
         this.queue,
         restart ? this.bookmarks() : uncheckedBookmarks,
@@ -78,14 +95,14 @@ export class BookmarksService {
       )
     } catch (error) {
       console.error(error)
-      this.staleChecking.update(() => false)
+      this.#stopStaleChecking()
     }
   }
 
   async pauseStaleCheck(): Promise<void> {
     this.queue?.pause()
     await this.#updateBookmarksInLocalStore()
-    this.staleChecking.update(() => false)
+    this.#stopStaleChecking()
   }
 
   async resumeStaleCheck(): Promise<void> {
@@ -99,7 +116,7 @@ export class BookmarksService {
     this.queue?.clear()
     this.queue = null
     await this.#updateBookmarksInLocalStore()
-    this.staleChecking.update(() => false)
+    this.#stopStaleChecking()
   }
 
   #handleStaleCheckStart(bookmark: BookmarkVM): void {
@@ -107,6 +124,7 @@ export class BookmarksService {
     const bookmarkInList = bookmarks.find((b) => b.hash === bookmark.hash)
     if (bookmarkInList) {
       bookmarkInList.status = 'checking'
+      bookmarkInList.changeHash = getChangeHash()
       this.bookmarks.update(() => [...bookmarks])
     }
   }
@@ -136,11 +154,33 @@ export class BookmarksService {
     const bookmarkInList = bookmarks.find((b) => b.hash === bookmark.hash)
     if (bookmarkInList) {
       bookmarkInList.status = status
+      bookmarkInList.changeHash = getChangeHash()
       this.bookmarks.set([...bookmarks])
     }
   }
 
   async #updateBookmarksInLocalStore(): Promise<void> {
     await this.#localStore.set('bookmarks', this.bookmarks())
+  }
+
+  #createQueuePoller(): IntervalRef {
+    return interval(() => {
+      if (!this.#isPollingQueue()) {
+        return
+      }
+      console.log('resuming queue polling...')
+      if (!this.queue?.isPaused && this.queue ? this.queue.size > 0 : false) {
+        this.hasQueue.update(() => !!this.queue)
+        this.queueLength.update(() => this.queue?.size ?? 0)
+        this.queueTasks.update(() => this.queue?.runningTasks ?? undefined)
+      }
+    }, 100)
+  }
+
+  #stopStaleChecking(): void {
+    console.log('stopping stale checking...')
+    this.staleChecking.update(() => false)
+    console.log('stopping queue polling...')
+    this.#isPollingQueue.update(() => false)
   }
 }

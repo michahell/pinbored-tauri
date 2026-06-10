@@ -10,6 +10,8 @@ import { TagsService } from '@services/tags/tags-service'
 import { skyBadge } from '@styles/badge-colors'
 import { BookmarkVM } from '@data-providers/abstract'
 import { SuggestTagsResultVM } from '@data-providers/abstract'
+import { getStaleBadgeColor } from '@core/utils/stale-utils'
+import { bookmarksAreEqual } from '@core/utils/bookmark-utils'
 
 @Component({
   selector: 'app-bookmark',
@@ -21,14 +23,17 @@ export default class Bookmark implements OnInit {
   readonly #bookmarksService = inject(BookmarksService)
   readonly #tagsService = inject(TagsService)
 
-  protected readonly skyBadge = skyBadge
+  readonly skyBadge = skyBadge
 
   readonly #params = toSignal<Params>(this.#activatedRoute.params)
   readonly #requestedBookmark = computed<string>(() => this.#params()!['bookmark'])
   readonly #bookmarks = computed<BookmarkVM[]>(() => this.#bookmarksService.bookmarks())
-  readonly bookmark = computed<BookmarkVM>(() => {
-    return this.#bookmarks().find((bookmark) => this.#requestedBookmark() == bookmark.hash)!
-  })
+  readonly bookmark = computed<BookmarkVM>(
+    () => this.#bookmarks().find((bookmark) => this.#requestedBookmark() == bookmark.hash)!,
+    { equal: bookmarksAreEqual }
+  )
+  readonly staleChecking = computed(() => this.#bookmarksService.staleChecking())
+  readonly staleStatusColor = computed(() => getStaleBadgeColor(this.bookmark()?.status))
 
   readonly suggestedTags = signal<SuggestTagsResultVM | null>(null)
 
@@ -47,6 +52,10 @@ export default class Bookmark implements OnInit {
 
   async getBookmarks(): Promise<void> {
     await this.#bookmarksService.getAllBookmarks()
+  }
+
+  async checkStale(): Promise<void> {
+    await this.#bookmarksService.checkSingleBookmark(this.bookmark())
   }
 
   async openBookmark(): Promise<void> {

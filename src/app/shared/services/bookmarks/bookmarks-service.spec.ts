@@ -23,6 +23,7 @@ function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
     toread: 'no',
     tagsList: ['dev', 'tools'],
     status: 'unchecked',
+    changeHash: '',
     ...overrides,
   }
 }
@@ -371,6 +372,47 @@ describe('BookmarksService', () => {
       await service.stopStaleCheck()
 
       expect(mockLocalStore.set).toHaveBeenCalledWith('bookmarks', service.bookmarks())
+    })
+  })
+
+  describe('checkSingleBookmark()', () => {
+    const bookmark = makeBookmark({ hash: 'single' })
+
+    beforeEach(async () => {
+      mockFacade.getAllBookmarks.mockResolvedValue([bookmark])
+      await service.getAllBookmarks()
+    })
+
+    it('creates a concurrency-1 queue', async () => {
+      await service.checkSingleBookmark(bookmark)
+      expect(mockStaleChecker.newQueue).toHaveBeenCalledWith({ concurrency: 1 })
+    })
+
+    it('calls startWith with only the target bookmark', async () => {
+      await service.checkSingleBookmark(bookmark)
+      const [, passedList] = mockStaleChecker.startWith.mock.calls[0]
+      expect(passedList).toHaveLength(1)
+      expect(passedList[0].hash).toBe('single')
+    })
+
+    it('sets staleChecking to true while running then false after', async () => {
+      let checkedDuringRun = false
+      mockStaleChecker.startWith.mockImplementation(async () => {
+        checkedDuringRun = service.staleChecking()
+      })
+
+      await service.checkSingleBookmark(bookmark)
+
+      expect(checkedDuringRun).toBe(true)
+      expect(service.staleChecking()).toBe(false)
+    })
+
+    it('sets staleChecking to false even when startWith throws', async () => {
+      mockStaleChecker.startWith.mockRejectedValue(new Error('fetch failed'))
+
+      await service.checkSingleBookmark(bookmark)
+
+      expect(service.staleChecking()).toBe(false)
     })
   })
 })

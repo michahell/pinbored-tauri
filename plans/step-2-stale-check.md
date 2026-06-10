@@ -10,12 +10,12 @@ page will update automatically because the existing `#handleStaleCheckStart` /
 ## Files to change
 
 ### `src/app/shared/services/bookmarks/bookmarks-service.ts`
-- Add signal: `readonly singleStaleChecking = signal(false)`
+- No new signals — reuse the existing `staleChecking` signal
 - Add method:
   ```ts
   async checkSingleBookmark(bookmark: BookmarkVM): Promise<void> {
     try {
-      this.singleStaleChecking.set(true)
+      this.staleChecking.set(true)
       const queue = this.#staleChecker.newQueue({ concurrency: 1 })
       await this.#staleChecker.startWith(
         queue,
@@ -26,13 +26,13 @@ page will update automatically because the existing `#handleStaleCheckStart` /
     } catch (error) {
       console.error(error)
     } finally {
-      this.singleStaleChecking.set(false)
+      this.staleChecking.set(false)
     }
   }
   ```
 
 ### `src/app/pages/bookmark/bookmark.ts`
-- Add computed: `protected readonly singleStaleChecking = computed(() => this.#bookmarksService.singleStaleChecking())`
+- Add computed: `protected readonly staleChecking = computed(() => this.#bookmarksService.staleChecking())`
 - Add method:
   ```ts
   async checkStale(): Promise<void> {
@@ -41,7 +41,7 @@ page will update automatically because the existing `#handleStaleCheckStart` /
   ```
 
 ### `src/app/pages/bookmark/bookmark.html`
-- Add `(click)="checkStale()"` and `[disabled]="singleStaleChecking()"` to the stale-check button
+- Add `(click)="checkStale()"` and `[disabled]="staleChecking()"` to the stale-check button
 
 ### `src/app/shared/services/bookmarks/bookmarks-service.spec.ts`
 - Add `checkSingleBookmark: vi.fn().mockResolvedValue(undefined)` to the mock shape
@@ -49,10 +49,10 @@ page will update automatically because the existing `#handleStaleCheckStart` /
 - Add `describe('checkSingleBookmark()')` tests:
   - Creates a concurrency-1 queue (assert `newQueue` called with `{ concurrency: 1 }`)
   - Calls `startWith` with only the target bookmark in the list
-  - Sets `singleStaleChecking` to `true` while running, `false` after
-  - Sets `singleStaleChecking` to `false` even when `startWith` throws
+  - Sets `staleChecking` to `true` while running, `false` after
+  - Sets `staleChecking` to `false` even when `startWith` throws
 
 ### `src/app/pages/bookmark/bookmark.spec.ts`
 - Add `checkSingleBookmark: vi.fn().mockResolvedValue(undefined)` and
-  `singleStaleChecking: signal(false)` to the mock `BookmarksService`
+  `staleChecking: signal(false)` to the mock `BookmarksService`
 - Add test: the stale-check button calls `checkSingleBookmark` with the current bookmark

@@ -36,4 +36,12 @@ const matchBookmarkTaggedStatus = (tagged: string, bookmark: BookmarkVM): boolea
   }
 }
 
-export { matchBookmarkVisibility, matchBookmarkReadStatus, matchBookmarkTaggedStatus }
+const getChangeHash = () => {
+  return self.crypto.randomUUID()
+}
+
+const bookmarksAreEqual = (bookmarkA: BookmarkVM, bookmarkB: BookmarkVM): boolean => {
+  return bookmarkA.changeHash == bookmarkB.changeHash
+}
+
+export { matchBookmarkVisibility, matchBookmarkReadStatus, matchBookmarkTaggedStatus, getChangeHash, bookmarksAreEqual }

@@ -1,13 +1,9 @@
 import { inject, Service } from '@angular/core'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
-import { StaleStatus } from '@services/stale-checker/stale-checker.model'
+import { StaleStatus } from '@services/stale-checker'
 import { AbstractDataProviderFacade, BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract'
-import { PinboardService } from '@data-providers/pinboard/service/pinboard-service'
-import {
-  PinboardSuggestResult,
-  PinboardTagResult,
-  PinboardUserApiToken,
-} from '@data-providers/pinboard/models/pinboard.model'
+import { PinboardService, PinboardTypes } from '@data-providers/pinboard'
+import { getChangeHash } from '@core/utils/bookmark-utils'
 
 @Service()
 export class PinboardFacade extends AbstractDataProviderFacade {
@@ -24,6 +20,7 @@ export class PinboardFacade extends AbstractDataProviderFacade {
         ...bookmark,
         tagsList: bookmark.tags.split(' '),
         status: 'unchecked' as StaleStatus,
+        changeHash: getChangeHash(),
       }))
       await this.#localStore.set('bookmarks', mappedBookmarks)
       return Promise.resolve(mappedBookmarks)
@@ -41,11 +38,11 @@ export class PinboardFacade extends AbstractDataProviderFacade {
     }
   }
 
-  async renameTag(oldName: string, newName: string): Promise<PinboardTagResult> {
+  async renameTag(oldName: string, newName: string): Promise<PinboardTypes.PinboardTagResult> {
     return this.#pinboard.renameTag(oldName, newName)
   }
 
-  async deleteTag(name: string): Promise<PinboardTagResult> {
+  async deleteTag(name: string): Promise<PinboardTypes.PinboardTagResult> {
     return this.#pinboard.deleteTag(name)
   }
 
@@ -54,11 +51,11 @@ export class PinboardFacade extends AbstractDataProviderFacade {
   }
 
   async suggestTagsForUrl(url: string): Promise<SuggestTagsResultVM> {
-    const result: PinboardSuggestResult = await this.#pinboard.suggestTagsForUrl(url)
+    const result: PinboardTypes.PinboardSuggestResult = await this.#pinboard.suggestTagsForUrl(url)
     return { popular: result[0].popular, recommended: result[1].recommended }
   }
 
-  async getUserApiToken(username: string, token: string): Promise<PinboardUserApiToken> {
+  async getUserApiToken(username: string, token: string): Promise<PinboardTypes.PinboardUserApiToken> {
     return this.#pinboard.getUserApiToken(username, token)
   }
 }

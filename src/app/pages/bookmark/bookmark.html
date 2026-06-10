@@ -11,7 +11,7 @@
     <div class="flex flex-row mb-2 align-middle items-center">
       <!-- tags -->
       <small>tags:&nbsp;</small>
-      @if (bookmark().tags.length > 0) {
+      @if (bookmark()?.tags.length > 0) {
         @for (tag of bookmark().tagsList; track $index) {
           <hlm-badge
             variant="default"
@@ -25,7 +25,7 @@
       }
     </div>
     <!-- suggested tags -->
-    @if (bookmark().tags.length === 0) {
+    @if (bookmark()?.tags.length === 0) {
       <div class="flex flex-row mb-2 align-middle items-center">
         <small>&nbsp;suggested tags:&nbsp;</small>
         @if (suggestedTags() !== null) {
@@ -37,7 +37,7 @@
     <div class="flex flex-row mb-2 align-middle items-center">
       <small
         >visibility:&nbsp;<hlm-badge variant="default">{{
-          bookmark().shared === 'no' ? 'public' : 'private'
+          bookmark()?.shared === 'no' ? 'public' : 'private'
         }}</hlm-badge></small
       >
     </div>
@@ -45,7 +45,7 @@
     <div class="flex flex-row mb-2 align-middle items-center">
       <small
         >extended:&nbsp;
-        @if (bookmark().extended) {
+        @if (bookmark()?.extended) {
           {{ bookmark().extended }}
         } @else {
           no extended text
@@ -54,7 +54,7 @@
     </div>
     <!-- actual link -->
     <div class="flex flex-row mb-2 align-middle items-center">
-      <small>url:&nbsp;{{ bookmark().href }}</small>
+      <small>url:&nbsp;{{ bookmark()?.href }}</small>
     </div>
   </div>
 
@@ -62,13 +62,24 @@
   <div class="py-2 px-5 flex flex-row mb-2 align-middle items-center justify-between bg-accent">
     <div class="flex flex-row">
       <!-- open -->
-      <button hlmBtn variant="default" size="sm" class="select-none cursor-pointer mr-1" (click)="openBookmark()">open bookmark</button>
+      <button hlmBtn variant="default" size="sm" class="select-none cursor-pointer mr-1" (click)="openBookmark()">
+        open bookmark
+      </button>
       <!-- edit -->
       <button hlmBtn variant="outline" size="sm" class="select-none cursor-pointer mr-1">edit</button>
     </div>
     <div>
       <!-- stale-check -->
-      <button hlmBtn variant="outline" size="sm" class="select-none cursor-pointer mr-1">stale-check</button>
+      <button
+        hlmBtn
+        variant="outline"
+        size="sm"
+        class="select-none cursor-pointer mr-1"
+        (click)="checkStale()"
+        [disabled]="staleChecking()"
+      >
+        stale-check
+      </button>
       <!-- delete -->
       <button hlmBtn variant="destructive" size="sm" class="select-none cursor-pointer mr-1">delete</button>
     </div>
@@ -77,6 +88,8 @@
   <!-- stale check status -->
   <div class="py-2 px-5 flex flex-row justify-between mb-2">
     <small>stale-check status:</small>
-    <hlm-badge variant="default">{{ bookmark().status }}</hlm-badge>
+    {{ bookmark()?.status }}<br />
+    {{ staleStatusColor() }}
+    <hlm-badge [class]="staleStatusColor()">{{ bookmark()?.status }}</hlm-badge>
   </div>
 </app-main-layout>

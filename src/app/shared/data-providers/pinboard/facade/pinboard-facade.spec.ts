@@ -34,6 +34,7 @@ function makeStoredBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
     toread: 'no',
     tagsList: ['dev', 'tools'],
     status: 'unchecked',
+    changeHash: '',
     ...overrides,
   }
 }
