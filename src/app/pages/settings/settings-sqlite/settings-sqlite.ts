@@ -4,7 +4,7 @@ import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { NgIcon } from '@ng-icons/core'
 import { ACTION_DEBOUNCE_TIME } from '@core/constants/app-constants'
-import { SqliteService } from '@data-providers/sqlite'
+import { SqliteInterface } from '@core/sqlite-interface/sqlite-interface'
 import { PinboardImporterService } from '@services/pinboard-importer/pinboard-importer-service'
 
 @Component({
@@ -13,30 +13,29 @@ import { PinboardImporterService } from '@services/pinboard-importer/pinboard-im
   templateUrl: './settings-sqlite.html',
 })
 export default class SettingsSqlite {
-  #sqliteService = inject(SqliteService)
+  #sqliteInterface = inject(SqliteInterface)
   #importService = inject(PinboardImporterService)
 
   dbPathCleared = signal(false)
 
   async createDb(): Promise<void> {
-    await this.#sqliteService.createDatabase()
+    await this.#sqliteInterface.createDatabase()
   }
 
   async selectDb(): Promise<void> {
-    await this.#sqliteService.openAndLoadDatabase()
+    await this.#sqliteInterface.openAndLoadDatabase()
   }
 
   async testDb(): Promise<void> {
-    await this.#sqliteService.getTags()
+    await this.#sqliteInterface.testConnection()
   }
 
   async importPinboard(): Promise<void> {
     await this.#importService.import()
-    await this.#sqliteService.getTags()
   }
 
   async clearSelectedDb(): Promise<void> {
-    await this.#sqliteService.close()
+    await this.#sqliteInterface.close()
     this.dbPathCleared.set(true)
     console.log('closed database connection')
     setTimeout(() => {

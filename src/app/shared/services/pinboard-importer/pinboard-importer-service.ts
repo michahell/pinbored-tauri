@@ -1,6 +1,6 @@
 import { inject, Service } from '@angular/core'
-import { SqliteService } from '@data-providers/sqlite'
 import { PinboardFacade, type PinboardTypes } from '@data-providers/pinboard'
+import { SqliteInterface } from '@core/sqlite-interface/sqlite-interface'
 
 interface EntityProgress {
   total: number
@@ -15,7 +15,7 @@ interface PinboardImporterProgress {
 @Service()
 export class PinboardImporterService {
   #pinboardFacade = inject(PinboardFacade)
-  #sqliteService = inject(SqliteService)
+  #sqliteInterface = inject(SqliteInterface)
 
   progress: PinboardImporterProgress = {
     tags: {
@@ -35,10 +35,13 @@ export class PinboardImporterService {
   #importTagQuery =
     'INSERT INTO tags (id, name, count) VALUES ($1, $2, $3) ON CONFLICT(name) DO UPDATE SET name  = excluded.name, count=excluded.count;'
 
+  #selectCountsQuery = 'SELECT COUNT(hash) FROM bookmarks AS bookmarkCount'
+
   async import(): Promise<void> {
     await this.#importTags()
     // await this.#importNotes()
     // await this.#importBookmarks()
+    await this.#reportImported()
   }
 
   async #importTags(): Promise<void> {
@@ -46,7 +49,7 @@ export class PinboardImporterService {
     this.progress.tags.total = Object.keys(tags).length
     this.progress.tags.current = 1
     for (const [tag, count] of Object.entries(tags)) {
-      await this.#sqliteService.execute(this.#importTagQuery, [tag, count])
+      await this.#sqliteInterface.execute(this.#importTagQuery, [tag, count])
       this.progress.tags.current++
     }
   }
@@ -54,4 +57,8 @@ export class PinboardImporterService {
   // async #importNotes(): Promise<void> {}
 
   // async #importBookmarks(): Promise<void> {}
+
+  async #reportImported(): Promise<string | null> {
+    return await this.#sqliteInterface.select(this.#selectCountsQuery)
+  }
 }

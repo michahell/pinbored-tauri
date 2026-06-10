@@ -41,15 +41,7 @@ export const sheriffConfig: SheriffConfig = {
     'domain:auth': [sameTag, 'domain:core', 'domain:data', 'pinboard-facade', 'pinboard-service'],
     'domain:core': [sameTag, 'domain:data', 'type:ui', 'pinboard-facade'],
     'domain:data': [sameTag, 'domain:core', 'type:ui'],
-    'type:ui': [
-      sameTag,
-      'domain:pinbored',
-      'domain:data',
-      'domain:core',
-      'domain:auth',
-      'type:external-ui',
-      'pinboard-facade', // REMOVE THIS TEMP WORKAROUND FOR CELL-ACTION-DROPDOWN BY USING STATE MGMT: UI->ACTION->FACADE
-    ],
+    'type:ui': [sameTag, 'domain:pinbored', 'domain:data', 'domain:core', 'domain:auth', 'type:external-ui'],
     'type:external-ui': [sameTag],
     'pinboard-facade': ['domain:core', 'type:data', 'pinboard-service'],
     'pinboard-service': ['domain:core', 'type:data'],

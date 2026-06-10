@@ -88,8 +88,6 @@
   <!-- stale check status -->
   <div class="py-2 px-5 flex flex-row justify-between mb-2">
     <small>stale-check status:</small>
-    {{ bookmark()?.status }}<br />
-    {{ staleStatusColor() }}
     <hlm-badge [class]="staleStatusColor()">{{ bookmark()?.status }}</hlm-badge>
   </div>
 </app-main-layout>

@@ -1,5 +1,5 @@
 import { Service } from '@angular/core'
-import { AbstractDataProviderFacade, BookmarkVM, TagsVM } from '@data-providers/abstract'
+import { AbstractDataProviderFacade, BookmarkVM, SuggestTagsResultVM, TagsVM } from '@data-providers/abstract'
 
 @Service()
 export class SqliteFacade extends AbstractDataProviderFacade {
@@ -22,7 +22,7 @@ export class SqliteFacade extends AbstractDataProviderFacade {
     throw new Error('Method not implemented.')
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  override suggestTagsForUrl(url: string): Promise<never> {
+  override suggestTagsForUrl(url: string): Promise<SuggestTagsResultVM> {
     throw new Error('Method not implemented.')
   }
 }
