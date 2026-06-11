@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing'
+import { computed, signal, WritableSignal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksService } from './bookmarks-service'
-import { PinboardFacade } from '@data-providers/pinboard'
+import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
 import { BookmarkVM } from '@data-providers/abstract'
 import { StaleCheckerService } from '@services/stale-checker'
-import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
+import { SignalStore } from '@services/signal-store'
 
 vi.mock('@signality/core', () => ({
   interval: vi.fn(() => null),
@@ -30,6 +31,7 @@ function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
 
 describe('BookmarksService', () => {
   let service: BookmarksService
+  let bookmarksSignal: WritableSignal<BookmarkVM[]>
   let mockFacade: { getAllBookmarks: ReturnType<typeof vi.fn> }
   let mockQueue: {
     pause: ReturnType<typeof vi.fn>
@@ -41,29 +43,39 @@ describe('BookmarksService', () => {
     newQueue: ReturnType<typeof vi.fn>
     startWith: ReturnType<typeof vi.fn>
   }
-  let mockLocalStore: {
-    get: ReturnType<typeof vi.fn>
-    set: ReturnType<typeof vi.fn>
-  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let mockSignalStore: any
 
   beforeEach(() => {
+    bookmarksSignal = signal<BookmarkVM[]>([])
+    const hasBookmarksSignal = computed(() => bookmarksSignal().length > 0)
+
+    mockSignalStore = {
+      get bookmarks() {
+        return bookmarksSignal
+      },
+      get hasBookmarks() {
+        return hasBookmarksSignal
+      },
+      setBookmarks: vi.fn().mockImplementation((bookmarks: BookmarkVM[]) => bookmarksSignal.set(bookmarks)),
+      mutateBookmark: vi.fn().mockImplementation((updatedBookmark: BookmarkVM) => {
+        bookmarksSignal.update((bs) => bs.map((b) => (b.hash === updatedBookmark.hash ? { ...b, ...updatedBookmark } : b)))
+      }),
+    }
+
     mockQueue = { pause: vi.fn(), start: vi.fn(), clear: vi.fn(), isPaused: false }
     mockFacade = { getAllBookmarks: vi.fn() }
     mockStaleChecker = {
       newQueue: vi.fn().mockReturnValue(mockQueue),
       startWith: vi.fn().mockResolvedValue(undefined),
     }
-    mockLocalStore = {
-      get: vi.fn().mockResolvedValue(undefined),
-      set: vi.fn().mockResolvedValue(undefined),
-    }
 
     TestBed.configureTestingModule({
       providers: [
         BookmarksService,
-        { provide: PinboardFacade, useValue: mockFacade },
+        { provide: DataProviderFacade, useValue: mockFacade },
         { provide: StaleCheckerService, useValue: mockStaleChecker },
-        { provide: TauriStoreService, useValue: mockLocalStore },
+        { provide: SignalStore, useValue: mockSignalStore },
       ],
     })
     service = TestBed.inject(BookmarksService)
@@ -219,6 +231,13 @@ describe('BookmarksService', () => {
       await service.stopStaleCheck()
       expect(service.staleChecking()).toBe(false)
     })
+
+    it('sets queue to null after stopping', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      service.queue = mockQueue as any
+      await service.stopStaleCheck()
+      expect(service.queue).toBeNull()
+    })
   })
 
   describe('stale check status mapping', () => {
@@ -339,39 +358,6 @@ describe('BookmarksService', () => {
       startHandler(bookmark)
 
       expect(service.bookmarks().find((b) => b.hash === 'target')?.status).toBe('checking')
-    })
-  })
-
-  describe('pauseStaleCheck() — local store', () => {
-    it('persists current bookmarks to local store', async () => {
-      mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
-      await service.getAllBookmarks()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      service.queue = mockQueue as any
-
-      await service.pauseStaleCheck()
-
-      expect(mockLocalStore.set).toHaveBeenCalledWith('bookmarks', service.bookmarks())
-    })
-  })
-
-  describe('stopStaleCheck()', () => {
-    it('sets queue to null after stopping', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      service.queue = mockQueue as any
-      await service.stopStaleCheck()
-      expect(service.queue).toBeNull()
-    })
-
-    it('persists current bookmarks to local store', async () => {
-      mockFacade.getAllBookmarks.mockResolvedValue([makeBookmark()])
-      await service.getAllBookmarks()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      service.queue = mockQueue as any
-
-      await service.stopStaleCheck()
-
-      expect(mockLocalStore.set).toHaveBeenCalledWith('bookmarks', service.bookmarks())
     })
   })
 

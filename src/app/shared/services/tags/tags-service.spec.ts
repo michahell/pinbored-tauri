@@ -1,36 +1,60 @@
 import { TestBed } from '@angular/core/testing'
+import { computed, signal, WritableSignal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagsService } from './tags-service'
-import { PinboardFacade } from '@data-providers/pinboard'
-import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
+import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
 import { HlmDialogService } from '@spartan-ng/helm/dialog'
+import { SignalStore } from '@services/signal-store'
+import { TagVM } from '@data-providers/abstract'
 
 describe('TagsService', () => {
   let service: TagsService
+  let tagsSignal: WritableSignal<TagVM[]>
   let mockFacade: {
     getAllTags: ReturnType<typeof vi.fn>
     renameTag: ReturnType<typeof vi.fn>
     deleteTag: ReturnType<typeof vi.fn>
+    suggestTagsForUrl: ReturnType<typeof vi.fn>
   }
-  let mockLocalStore: { set: ReturnType<typeof vi.fn> }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let mockSignalStore: any
   let mockDialogRef: { close: ReturnType<typeof vi.fn>; state: ReturnType<typeof vi.fn> }
   let mockDialogService: { open: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
+    tagsSignal = signal<TagVM[]>([])
+    const hasTagsSignal = computed(() => tagsSignal().length > 0)
+
+    mockSignalStore = {
+      get tags() {
+        return tagsSignal
+      },
+      get hasTags() {
+        return hasTagsSignal
+      },
+      setTags: vi.fn().mockImplementation((tags: TagVM[]) => tagsSignal.set(tags)),
+      mutateTag: vi.fn().mockImplementation((oldName: string, newName: string) => {
+        tagsSignal.update((tags) => tags.map((t) => (t.name === oldName ? { ...t, name: newName } : t)))
+      }),
+      deleteTag: vi.fn().mockImplementation((name: string) => {
+        tagsSignal.update((tags) => tags.filter((t) => t.name !== name))
+      }),
+    }
+
     mockDialogRef = { close: vi.fn(), state: vi.fn().mockReturnValue('closed') }
     mockFacade = {
       getAllTags: vi.fn().mockResolvedValue({}),
       renameTag: vi.fn().mockResolvedValue(undefined),
       deleteTag: vi.fn().mockResolvedValue(undefined),
+      suggestTagsForUrl: vi.fn().mockResolvedValue(undefined),
     }
-    mockLocalStore = { set: vi.fn().mockResolvedValue(undefined) }
     mockDialogService = { open: vi.fn().mockReturnValue(mockDialogRef) }
 
     TestBed.configureTestingModule({
       providers: [
         TagsService,
-        { provide: PinboardFacade, useValue: mockFacade },
-        { provide: TauriStoreService, useValue: mockLocalStore },
+        { provide: DataProviderFacade, useValue: mockFacade },
+        { provide: SignalStore, useValue: mockSignalStore },
         { provide: HlmDialogService, useValue: mockDialogService },
       ],
     })
@@ -71,7 +95,6 @@ describe('TagsService', () => {
     })
 
     it('resets tags to [] on error', async () => {
-      service.tags.set([{ name: 'old', count: 1 }])
       mockFacade.getAllTags.mockRejectedValue(new Error('network error'))
       await service.getAllTags()
       expect(service.tags()).toEqual([])
@@ -80,33 +103,30 @@ describe('TagsService', () => {
 
   describe('renameTag()', () => {
     it('calls facade.renameTag with old and new names', async () => {
-      service.tags.set([{ name: 'js', count: 10 }])
       await service.renameTag('js', 'javascript')
       expect(mockFacade.renameTag).toHaveBeenCalledWith('js', 'javascript')
     })
 
-    it('updates the tag name in the tags signal', async () => {
-      service.tags.set([{ name: 'js', count: 10 }])
+    it('calls signalStore.mutateTag with old and new names', async () => {
       await service.renameTag('js', 'javascript')
-      expect(service.tags()[0].name).toBe('javascript')
+      expect(mockSignalStore.mutateTag).toHaveBeenCalledWith('js', 'javascript')
     })
 
-    it('persists the updated tags to local store', async () => {
-      service.tags.set([{ name: 'js', count: 10 }])
+    it('updates the tag name in the tags signal', async () => {
+      tagsSignal.set([{ name: 'js', count: 10 }])
       await service.renameTag('js', 'javascript')
-      expect(mockLocalStore.set).toHaveBeenCalledWith('tags', { javascript: '10' })
+      expect(service.tags()[0].name).toBe('javascript')
     })
   })
 
   describe('deleteTag()', () => {
     it('calls facade.deleteTag with the tag name', async () => {
-      service.tags.set([{ name: 'obsolete', count: 3 }])
       await service.deleteTag('obsolete')
       expect(mockFacade.deleteTag).toHaveBeenCalledWith('obsolete')
     })
 
     it('removes the tag from the tags signal', async () => {
-      service.tags.set([
+      tagsSignal.set([
         { name: 'obsolete', count: 3 },
         { name: 'keep', count: 7 },
       ])

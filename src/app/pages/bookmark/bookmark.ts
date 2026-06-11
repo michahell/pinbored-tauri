@@ -12,6 +12,7 @@ import { BookmarkVM } from '@data-providers/abstract'
 import { SuggestTagsResultVM } from '@data-providers/abstract'
 import { getStaleBadgeColor } from '@core/utils/stale-utils'
 import { bookmarksAreEqual } from '@core/utils/bookmark-utils'
+import { Immutable } from 'signalstory'
 
 @Component({
   selector: 'app-bookmark',
@@ -27,8 +28,8 @@ export default class Bookmark implements OnInit {
 
   readonly #params = toSignal<Params>(this.#activatedRoute.params)
   readonly #requestedBookmark = computed<string>(() => this.#params()!['bookmark'])
-  readonly #bookmarks = computed<BookmarkVM[]>(() => this.#bookmarksService.bookmarks())
-  readonly bookmark = computed<BookmarkVM>(
+  readonly #bookmarks = computed<Immutable<BookmarkVM[]>>(() => this.#bookmarksService.bookmarks())
+  readonly bookmark = computed<Immutable<BookmarkVM>>(
     () => this.#bookmarks().find((bookmark) => this.#requestedBookmark() == bookmark.hash)!,
     { equal: bookmarksAreEqual }
   )
@@ -62,7 +63,7 @@ export default class Bookmark implements OnInit {
     await openUrl(this.bookmark().href)
   }
 
-  #getTagSuggestionsForBookmark(pinboardItemVM: BookmarkVM): Promise<SuggestTagsResultVM> {
+  #getTagSuggestionsForBookmark(pinboardItemVM: Immutable<BookmarkVM>): Promise<SuggestTagsResultVM> {
     return this.#tagsService.suggestTagsForUrl(pinboardItemVM.href)
   }
 }

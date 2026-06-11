@@ -27,6 +27,7 @@ export const sheriffConfig: SheriffConfig = {
           'pinboard-importer': ['domain:data'],
           'progress-bar': ['type:ui'],
           'stale-checker': ['domain:data'],
+          'signal-store': ['domain:data'],
           tags: ['domain:pinbored'],
         },
       },

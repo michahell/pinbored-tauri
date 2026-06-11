@@ -1,9 +1,8 @@
 import { inject, Service } from '@angular/core'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
-import { StaleStatus } from '@services/stale-checker'
 import { AbstractDataProviderFacade, BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract'
 import { PinboardService, PinboardTypes } from '@data-providers/pinboard'
-import { getChangeHash } from '@core/utils/bookmark-utils'
+import { pinboardBookmarkToBookmarkVM } from '@core/utils/bookmark-utils'
 
 @Service()
 export class PinboardFacade extends AbstractDataProviderFacade {
@@ -11,20 +10,16 @@ export class PinboardFacade extends AbstractDataProviderFacade {
   #localStore = inject(TauriStoreService)
 
   async getAllBookmarks(via: 'cache' | 'server'): Promise<BookmarkVM[]> {
+    let mappedBookmarks: BookmarkVM[] = []
     const storedBookmarks = await this.#localStore.get<BookmarkVM[]>('bookmarks')
     if (via === 'cache' && storedBookmarks != null) {
-      return Promise.resolve(storedBookmarks)
+      mappedBookmarks = storedBookmarks.map(pinboardBookmarkToBookmarkVM)
     } else {
       const bookmarks = await this.#pinboard.getAllBookmarks()
-      const mappedBookmarks = bookmarks.map((bookmark) => ({
-        ...bookmark,
-        tagsList: bookmark.tags.split(' '),
-        status: 'unchecked' as StaleStatus,
-        changeHash: getChangeHash(),
-      }))
-      await this.#localStore.set('bookmarks', mappedBookmarks)
-      return Promise.resolve(mappedBookmarks)
+      mappedBookmarks = bookmarks.map(pinboardBookmarkToBookmarkVM)
     }
+    await this.#localStore.set('bookmarks', mappedBookmarks)
+    return Promise.resolve(mappedBookmarks)
   }
 
   async getAllTags(): Promise<TagsVM> {

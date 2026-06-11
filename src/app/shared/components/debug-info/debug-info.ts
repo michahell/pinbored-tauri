@@ -18,11 +18,11 @@ export class DebugInfo {
   readonly skyBadge = skyBadge
   readonly greenBadge = greenBadge
 
-  readonly #authentication = inject(AuthenticationService)
-  readonly #bookmarks = inject(BookmarksService)
+  readonly #authenticationService = inject(AuthenticationService)
+  readonly #bookmarksService = inject(BookmarksService)
   readonly #activatedRoute = inject(ActivatedRoute)
 
-  isLoggedIn = computed(() => this.#authentication.authStatus() === 'authenticated')
+  isLoggedIn = computed(() => this.#authenticationService.authStatus() === 'authenticated')
   routeDebug = computed<string[]>(() => {
     const route = this.#activatedRoute.snapshot.pathFromRoot.map((s) => s.url).join(' > ')
     const queryParams = Object.entries(this.#activatedRoute.snapshot.queryParams)
@@ -34,10 +34,10 @@ export class DebugInfo {
     return [route, queryParams, params]
   })
 
-  readonly bookmarksFetching = computed(() => this.#bookmarks.bookmarksFetching())
-  readonly staleChecking = computed(() => this.#bookmarks.staleChecking())
-  readonly hasBookmarks = computed(() => this.#bookmarks.hasBookmarks())
+  readonly bookmarksFetching = computed(() => this.#bookmarksService.bookmarksFetching())
+  readonly staleChecking = computed(() => this.#bookmarksService.staleChecking())
+  readonly hasBookmarks = computed(() => this.#bookmarksService.hasBookmarks())
   // for queue
-  readonly queueLength = computed(() => this.#bookmarks.queueLength())
-  readonly queueExists = computed(() => this.#bookmarks.hasQueue())
+  readonly queueLength = computed(() => this.#bookmarksService.queueLength())
+  readonly queueExists = computed(() => this.#bookmarksService.hasQueue())
 }

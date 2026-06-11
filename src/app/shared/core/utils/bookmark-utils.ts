@@ -1,6 +1,7 @@
 import { BookmarkVM } from '@data-providers/abstract'
+import { Immutable } from 'signalstory'
 
-const matchBookmarkVisibility = (visibility: string, bookmark: BookmarkVM): boolean => {
+const matchBookmarkVisibility = (visibility: string, bookmark: Immutable<BookmarkVM>): boolean => {
   if (visibility === 'all') {
     return true
   } else if (visibility === 'public') {
@@ -12,7 +13,7 @@ const matchBookmarkVisibility = (visibility: string, bookmark: BookmarkVM): bool
   }
 }
 
-const matchBookmarkReadStatus = (readStatus: string, bookmark: BookmarkVM): boolean => {
+const matchBookmarkReadStatus = (readStatus: string, bookmark: Immutable<BookmarkVM>): boolean => {
   if (readStatus === 'all') {
     return true
   } else if (readStatus === 'unread') {
@@ -24,7 +25,7 @@ const matchBookmarkReadStatus = (readStatus: string, bookmark: BookmarkVM): bool
   }
 }
 
-const matchBookmarkTaggedStatus = (tagged: string, bookmark: BookmarkVM): boolean => {
+const matchBookmarkTaggedStatus = (tagged: string, bookmark: Immutable<BookmarkVM>): boolean => {
   if (tagged === 'all') {
     return true
   } else if (tagged === 'yes') {
@@ -40,7 +41,7 @@ const getChangeHash = () => {
   return self.crypto.randomUUID()
 }
 
-const bookmarksAreEqual = (bookmarkA: BookmarkVM, bookmarkB: BookmarkVM): boolean => {
+const bookmarksAreEqual = (bookmarkA: Immutable<BookmarkVM>, bookmarkB: Immutable<BookmarkVM>): boolean => {
   return bookmarkA.changeHash == bookmarkB.changeHash
 }
 

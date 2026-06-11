@@ -1,20 +1,21 @@
-import { computed, inject, Service, signal } from '@angular/core'
+import { computed, inject, Service, Signal, signal } from '@angular/core'
 import { HlmDialogService } from '@spartan-ng/helm/dialog'
 import { BrnDialogRef } from '@spartan-ng/brain/dialog'
-import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { TagEditModal } from '@components/tags-table/tag-edit-modal/tag-edit-modal'
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
 import { TagsVM, TagVM, SuggestTagsResultVM } from '@data-providers/abstract'
+import { SignalStore } from '@services/signal-store'
+import { Immutable } from 'signalstory'
 
 @Service()
 export class TagsService {
   readonly #facade = inject(DataProviderFacade)
-  readonly tauriStore = inject(TauriStoreService)
+  readonly #signalStore = inject(SignalStore)
   readonly #dialogService = inject(HlmDialogService)
 
-  readonly tags = signal<TagVM[]>([])
+  readonly tags: Signal<Immutable<TagVM[]>> = computed(() => this.#signalStore.tags())
+  readonly hasTags = computed(() => this.#signalStore.hasTags())
   readonly tagsFetching = signal(false)
-  readonly hasTags = computed(() => this.tags().length > 0)
 
   #tagEditModalRef: BrnDialogRef | null = null
 
@@ -23,10 +24,10 @@ export class TagsService {
     await this.#facade
       .getAllTags()
       .then((tagsMap) => {
-        this.tags.set(this.#mapToTagVMs(tagsMap))
+        this.#signalStore.setTags(this.#mapToTagVMs(tagsMap))
       })
       .catch((err) => {
-        this.tags.set([])
+        this.#signalStore.setTags([])
         console.error('ERRORED!', err)
       })
       .finally(() => {
@@ -36,14 +37,12 @@ export class TagsService {
 
   async renameTag(oldName: string, newName: string): Promise<void> {
     await this.#facade.renameTag(oldName, newName)
-    this.tags.update((tags) => tags.map((t) => (t.name === oldName ? { ...t, name: newName } : t)))
-    await this.#updateTagsInLocalStore()
+    this.#signalStore.mutateTag(oldName, newName)
   }
 
   async deleteTag(name: string): Promise<void> {
     await this.#facade.deleteTag(name)
-    this.tags.update((tags) => tags.filter((t) => t.name !== name))
-    await this.#updateTagsInLocalStore()
+    this.#signalStore.deleteTag(name)
   }
 
   async suggestTagsForUrl(bookmarkUrl: string): Promise<SuggestTagsResultVM> {
@@ -61,11 +60,6 @@ export class TagsService {
 
   closeTagEditModal(): void {
     this.#tagEditModalRef?.close()
-  }
-
-  async #updateTagsInLocalStore(): Promise<void> {
-    const tagsMap: TagsVM = Object.fromEntries(this.tags().map((t) => [t.name, String(t.count)]))
-    await this.tauriStore.set('tags', tagsMap)
   }
 
   #mapToTagVMs(tagsMap: TagsVM): TagVM[] {

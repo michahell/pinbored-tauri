@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core'
+import { Component, signal, computed, inject, OnInit, Signal } from '@angular/core'
 import { NgTemplateOutlet } from '@angular/common'
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu'
@@ -11,6 +11,8 @@ import { BookmarksTable } from '@components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 import { NgIcon } from '@ng-icons/core'
 import { matchBookmarkReadStatus, matchBookmarkTaggedStatus, matchBookmarkVisibility } from '@core/utils/bookmark-utils'
+import { BookmarkVM, TagVM } from '@data-providers/abstract'
+import { Immutable } from 'signalstory'
 
 interface BookmarkFilters {
   visibility: string
@@ -37,7 +39,7 @@ type BookmarkQuickFilters = Record<string, string[]>
 })
 export default class Bookmarks implements OnInit {
   readonly hlmMuted = hlmMuted
-  readonly #bookmarks = inject(BookmarksService)
+  readonly #bookmarksService = inject(BookmarksService)
 
   // bookmark quick filter related
   readonly #quickFilters: BookmarkQuickFilters = {
@@ -50,23 +52,32 @@ export default class Bookmarks implements OnInit {
   // fetch-all type (cache/server)
   readonly fetchAllType = signal<'cache' | 'server'>('cache')
   // data signals
-  readonly bookmarks = computed(() => {
+  // for the ugly transformations done here:
+  // @see: https://github.com/zuriscript/signalstory/discussions/114
+  readonly bookmarks: Signal<BookmarkVM[]> = computed(() => {
+    // transform Immutable<BookmarkVM[]> into BookmarkVM[]...
+    const immutableBookmarks: Immutable<BookmarkVM[]> = this.#bookmarksService.bookmarks()
+    const mutableListOfImmutableBookmarks: Immutable<BookmarkVM>[] = [...immutableBookmarks]
+    const mutableBookmarks: BookmarkVM[] = mutableListOfImmutableBookmarks.map((bm) => {
+      let mutableBm: BookmarkVM = { ...bm, tagsList: [...bm.tagsList] }
+      return mutableBm
+    })
+    // filter bookmarks based on selected quick filters
     const filters = this.currentFilters()
-    return this.#bookmarks
-      .bookmarks()
-      .filter(
-        (bookmark) =>
-          matchBookmarkVisibility(filters.visibility, bookmark) &&
-          matchBookmarkReadStatus(filters.read, bookmark) &&
-          matchBookmarkTaggedStatus(filters.tagged, bookmark)
-      )
+    return mutableBookmarks.filter(
+      (bookmark) =>
+        matchBookmarkVisibility(filters.visibility, bookmark) &&
+        matchBookmarkReadStatus(filters.read, bookmark) &&
+        matchBookmarkTaggedStatus(filters.tagged, bookmark)
+    )
   })
+
   // status signals
-  readonly bookmarksFetching = computed(() => this.#bookmarks.bookmarksFetching())
-  readonly staleChecking = computed(() => this.#bookmarks.staleChecking())
-  readonly hasBookmarks = computed(() => this.#bookmarks.hasBookmarks())
+  readonly bookmarksFetching = computed(() => this.#bookmarksService.bookmarksFetching())
+  readonly staleChecking = computed(() => this.#bookmarksService.staleChecking())
+  readonly hasBookmarks = computed(() => this.#bookmarksService.hasBookmarks())
   // for queue
-  readonly queueExists = computed(() => this.#bookmarks.hasQueue())
+  readonly queueExists = computed(() => this.#bookmarksService.hasQueue())
   // flag signals
   readonly startStaleCheckDisabled = computed(
     () => this.queueExists() || !this.hasBookmarks() || this.bookmarksFetching() || this.staleChecking()
@@ -84,23 +95,23 @@ export default class Bookmarks implements OnInit {
   }
 
   async getBookmarks(): Promise<void> {
-    await this.#bookmarks.getAllBookmarks(this.fetchAllType())
+    await this.#bookmarksService.getAllBookmarks(this.fetchAllType())
   }
 
   async startStaleCheck(): Promise<void> {
-    await this.#bookmarks.startStaleCheck()
+    await this.#bookmarksService.startStaleCheck()
   }
 
   async toggleStaleCheck(): Promise<void> {
-    if (this.#bookmarks.queue?.isPaused) {
-      await this.#bookmarks.resumeStaleCheck()
+    if (this.#bookmarksService.queue?.isPaused) {
+      await this.#bookmarksService.resumeStaleCheck()
     } else {
-      await this.#bookmarks.pauseStaleCheck()
+      await this.#bookmarksService.pauseStaleCheck()
     }
   }
 
   async stopStaleCheck(): Promise<void> {
-    await this.#bookmarks.stopStaleCheck()
+    await this.#bookmarksService.stopStaleCheck()
   }
 
   setQuickFilter(filterName: string, filterType: string): void {

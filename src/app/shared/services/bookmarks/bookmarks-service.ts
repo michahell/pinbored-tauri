@@ -1,27 +1,28 @@
-import { computed, inject, Service, signal } from '@angular/core'
+import { computed, inject, Service, Signal, signal } from '@angular/core'
 import { interval, IntervalRef } from '@signality/core'
 import PQueue from 'p-queue'
 import { StaleCheckerService, StaleStatus } from '@services/stale-checker'
-import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { BookmarkVM } from '@data-providers/abstract'
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
 import { getChangeHash } from '@core/utils/bookmark-utils'
+import { SignalStore } from '@services/signal-store'
+import { Immutable } from 'signalstory'
 
 @Service()
 export class BookmarksService {
   readonly #staleChecker = inject(StaleCheckerService)
-  readonly facade = inject(DataProviderFacade)
-  readonly #localStore = inject(TauriStoreService)
+  readonly #dataProvider = inject(DataProviderFacade)
+  readonly #signalStore = inject(SignalStore)
 
   // queue
   queue: PQueue | null = null
 
-  // data signals
-  readonly bookmarks = signal<BookmarkVM[]>([])
+  // signal store signals
+  readonly bookmarks: Signal<Immutable<BookmarkVM[]>> = computed(() => this.#signalStore.bookmarks())
+  readonly hasBookmarks = computed(() => this.#signalStore.hasBookmarks())
   // status signals
   readonly bookmarksFetching = signal(false)
   readonly staleChecking = signal(false)
-  readonly hasBookmarks = computed(() => this.bookmarks().length > 0)
 
   // for queue
   #isPollingQueue = signal(false)
@@ -42,15 +43,15 @@ export class BookmarksService {
 
   async getAllBookmarks(via: 'cache' | 'server' = 'cache'): Promise<void> {
     this.bookmarksFetching.set(true)
-    await this.facade
+    await this.#dataProvider
       .getAllBookmarks(via)
       .then((bookmarks) => {
         if (bookmarks && bookmarks.length > 0) {
-          this.bookmarks.set(bookmarks)
+          this.#signalStore.setBookmarks(bookmarks)
         }
       })
       .catch((err) => {
-        this.bookmarks.set([])
+        this.#signalStore.setBookmarks([])
         console.error('ERRORED!', err)
       })
       .finally(() => {
@@ -59,7 +60,7 @@ export class BookmarksService {
       })
   }
 
-  async checkSingleBookmark(bookmark: BookmarkVM): Promise<void> {
+  async checkSingleBookmark(bookmark: Immutable<BookmarkVM>): Promise<void> {
     try {
       this.staleChecking.set(true)
       const queue = this.#staleChecker.newQueue({ concurrency: 1 })
@@ -79,7 +80,7 @@ export class BookmarksService {
   async startStaleCheck(restart = false): Promise<void> {
     try {
       this.queue = this.#staleChecker.newQueue()
-      const uncheckedBookmarks = this.bookmarks().filter(
+      const unprocessedBookmarks: Immutable<BookmarkVM>[] = this.bookmarks().filter(
         (bookmark) => bookmark.status === 'unchecked' || bookmark.status === 'checking'
       )
       // start stale checking
@@ -89,7 +90,7 @@ export class BookmarksService {
       // start stale-check
       await this.#staleChecker.startWith(
         this.queue,
-        restart ? this.bookmarks() : uncheckedBookmarks,
+        restart ? this.bookmarks() : unprocessedBookmarks,
         this.#handleStaleCheckStart.bind(this),
         this.#handleStaleCheckComplete.bind(this)
       )
@@ -101,7 +102,6 @@ export class BookmarksService {
 
   async pauseStaleCheck(): Promise<void> {
     this.queue?.pause()
-    await this.#updateBookmarksInLocalStore()
     this.#stopStaleChecking()
   }
 
@@ -115,21 +115,18 @@ export class BookmarksService {
   async stopStaleCheck(): Promise<void> {
     this.queue?.clear()
     this.queue = null
-    await this.#updateBookmarksInLocalStore()
     this.#stopStaleChecking()
   }
 
-  #handleStaleCheckStart(bookmark: BookmarkVM): void {
-    const bookmarks = this.bookmarks()
-    const bookmarkInList = bookmarks.find((b) => b.hash === bookmark.hash)
-    if (bookmarkInList) {
-      bookmarkInList.status = 'checking'
-      bookmarkInList.changeHash = getChangeHash()
-      this.bookmarks.update(() => [...bookmarks])
-    }
+  #handleStaleCheckStart(bookmark: Immutable<BookmarkVM>): void {
+    this.#signalStore.mutateBookmark({
+      ...bookmark,
+      status: 'checking',
+      changeHash: getChangeHash(),
+    })
   }
 
-  #handleStaleCheckComplete(bookmark: BookmarkVM, response: Response | null): void {
+  #handleStaleCheckComplete(bookmark: Immutable<BookmarkVM>, response: Response | null): void {
     let status: StaleStatus = 'unchecked'
 
     if (response == null) {
@@ -150,17 +147,11 @@ export class BookmarksService {
       }
     }
 
-    const bookmarks = this.bookmarks()
-    const bookmarkInList = bookmarks.find((b) => b.hash === bookmark.hash)
-    if (bookmarkInList) {
-      bookmarkInList.status = status
-      bookmarkInList.changeHash = getChangeHash()
-      this.bookmarks.set([...bookmarks])
-    }
-  }
-
-  async #updateBookmarksInLocalStore(): Promise<void> {
-    await this.#localStore.set('bookmarks', this.bookmarks())
+    this.#signalStore.mutateBookmark({
+      ...bookmark,
+      status,
+      changeHash: getChangeHash(),
+    })
   }
 
   #createQueuePoller(): IntervalRef {

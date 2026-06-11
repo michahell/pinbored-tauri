@@ -22,6 +22,7 @@ import { HlmTableImports } from '@spartan-ng/helm/table'
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { NgIcon } from '@ng-icons/core'
 import { BookmarkVM } from '@data-providers/abstract'
+import { Immutable } from 'signalstory'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { CellTagRenderer } from './cell-tag-renderer/cell-tag-renderer'
 import { CellActionDropdown } from './cell-action-dropdown/cell-action-dropdown.component'
@@ -46,7 +47,8 @@ import { BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE } from '@core/constants/app-constants'
 })
 export class BookmarksTable implements OnInit {
   readonly #router = inject(Router)
-  readonly bookmarks = input<BookmarkVM[]>()
+
+  readonly bookmarks = input<BookmarkVM[]>([])
 
   readonly hasChanges = effect(() => {
     console.log('bookmarks changed: ', this.bookmarks()?.length)
@@ -117,7 +119,7 @@ export class BookmarksTable implements OnInit {
   ]
 
   protected readonly table = createAngularTable<BookmarkVM>(() => ({
-    data: this.bookmarks() ?? [],
+    data: this.bookmarks(),
     initialState: {
       pagination: {
         pageSize: BOOKMARKS_PAGE_DEFAULT_PAGE_SIZE,

@@ -1,10 +1,12 @@
-import { Component, computed, inject, OnInit } from '@angular/core'
+import { Component, computed, inject, OnInit, Signal } from '@angular/core'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmSpinner } from '@spartan-ng/helm/spinner'
 import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { TagsTable } from '@components/tags-table/tags-table'
 import { TagsService } from '@services/tags/tags-service'
 import { HlmButtonGroup, HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
+import { TagVM } from '@data-providers/abstract'
+import { Immutable } from 'signalstory'
 
 @Component({
   selector: 'app-tags',
@@ -12,11 +14,16 @@ import { HlmButtonGroup, HlmButtonGroupImports } from '@spartan-ng/helm/button-g
   templateUrl: './tags.html',
 })
 export default class Tags implements OnInit {
-  readonly #tags = inject(TagsService)
-
-  readonly tags = computed(() => this.#tags.tags())
-  readonly tagsFetching = computed(() => this.#tags.tagsFetching())
-  readonly hasTags = computed(() => this.#tags.hasTags())
+  readonly #tagsService = inject(TagsService)
+  // for the ugly transformations done here:
+  // @see: https://github.com/zuriscript/signalstory/discussions/114
+  readonly tags: Signal<TagVM[]> = computed(() => {
+    let immutableTags: Immutable<TagVM[]> = this.#tagsService.tags()
+    let mutableTagList: TagVM[] = [...immutableTags]
+    return mutableTagList
+  })
+  readonly tagsFetching = computed(() => this.#tagsService.tagsFetching())
+  readonly hasTags = computed(() => this.#tagsService.hasTags())
 
   async ngOnInit(): Promise<void> {
     await this.getTags()
@@ -24,6 +31,6 @@ export default class Tags implements OnInit {
 
   async getTags(): Promise<void> {
     console.info('getting all tags...')
-    await this.#tags.getAllTags()
+    await this.#tagsService.getAllTags()
   }
 }

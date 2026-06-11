@@ -2,12 +2,13 @@ import { inject, Service } from '@angular/core'
 import { fetch } from '@tauri-apps/plugin-http'
 import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
-import { STALE_CHECKER_DEFAULT_CONCURRENCY } from '@core/constants/app-constants'
+import { Immutable } from 'signalstory'
 import { BookmarkVM } from '@data-providers/abstract'
+import { STALE_CHECKER_DEFAULT_CONCURRENCY } from '@core/constants/app-constants'
 import { ProgressBarService } from '@services/progress-bar/progress-bar-service'
 
-export type PinboardStaleCheckStartHandler = (item: BookmarkVM) => void
-export type PinboardStaleCheckCompleteHandler = (item: BookmarkVM, result: Response | null) => void
+export type PinboardStaleCheckStartHandler = (item: Immutable<BookmarkVM>) => void
+export type PinboardStaleCheckCompleteHandler = (item: Immutable<BookmarkVM>, result: Response | null) => void
 
 @Service()
 export class StaleCheckerService {
@@ -19,7 +20,7 @@ export class StaleCheckerService {
 
   async startWith(
     queue: PQueue,
-    list: BookmarkVM[],
+    list: Immutable<BookmarkVM[]>,
     startHandler: PinboardStaleCheckStartHandler,
     completeHandler: PinboardStaleCheckCompleteHandler
   ): Promise<void> {
@@ -44,8 +45,8 @@ export class StaleCheckerService {
     this.#progressBarService.stop('staleProgress')
   }
 
-  async #fetchBookmark(pinboardItem: BookmarkVM): Promise<[BookmarkVM, Response | null]> {
-    let result: [BookmarkVM, Response | null]
+  async #fetchBookmark(pinboardItem: Immutable<BookmarkVM>): Promise<[Immutable<BookmarkVM>, Response | null]> {
+    let result: [Immutable<BookmarkVM>, Response | null]
     try {
       result = await fetch(pinboardItem.href, {
         method: 'GET',

@@ -39,7 +39,6 @@ export class TagsTable {
   readonly #tagsService = inject(TagsService)
 
   readonly tags = input<TagVM[]>([])
-
   readonly #sorting = signal<SortingState>([])
   readonly #columnFilters = signal<ColumnFiltersState>([])
 
@@ -66,7 +65,7 @@ export class TagsTable {
   ]
 
   protected readonly table = createAngularTable<TagVM>(() => ({
-    data: this.tags() ?? [],
+    data: this.tags(),
     initialState: {
       pagination: {
         pageSize: 9,
