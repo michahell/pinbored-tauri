@@ -44,7 +44,7 @@ const getChangeHash = () => {
 }
 
 const bookmarksAreEqual = (bookmarkA: Immutable<BookmarkVM>, bookmarkB: Immutable<BookmarkVM>): boolean => {
-  return bookmarkA.changeHash == bookmarkB.changeHash
+  return bookmarkA.href == bookmarkB.href
 }
 
 const pinboardBookmarkToBookmarkVM = (bookmark: PinboardTypes.PinboardItem) => ({

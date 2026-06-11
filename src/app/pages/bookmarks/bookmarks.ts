@@ -103,6 +103,7 @@ export default class Bookmarks implements OnInit {
   }
 
   async toggleStaleCheck(): Promise<void> {
+    console.log('toggleStaleCheck - queue is paused? ', this.#bookmarksService.queue?.isPaused)
     if (this.#bookmarksService.queue?.isPaused) {
       await this.#bookmarksService.resumeStaleCheck()
     } else {
