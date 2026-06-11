@@ -15,6 +15,5 @@ export default class SettingsShortcuts implements AfterViewInit {
   ngAfterViewInit(): void {
     const hotkeys = this.hotkeyService.getHotkeys()
     this.hotkeys.set(hotkeys.filter((hotkey) => hotkey.group !== 'hidden'))
-    console.log('getting hotkeys... ', this.hotkeys())
   }
 }

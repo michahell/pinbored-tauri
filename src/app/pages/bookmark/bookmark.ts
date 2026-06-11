@@ -43,7 +43,7 @@ export default class Bookmark implements OnInit {
     if (bm && bm.tags.length === 0) {
       const suggestions = await this.#getTagSuggestionsForBookmark(bm)
       this.suggestedTags.set(suggestions)
-      console.log('effect ran #getTagSuggestionsForBookmark: ', suggestions)
+      // console.log('effect ran #getTagSuggestionsForBookmark: ', suggestions)
     }
   })
 

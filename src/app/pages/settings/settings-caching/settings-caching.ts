@@ -20,11 +20,9 @@ export default class SettingsCaching {
 
   async clearStore(): Promise<void> {
     this.clearingStore.set(true)
-    console.log('clearing store...')
     await this.#store.clear()
     this.storeCleared.set(true)
     setTimeout(() => {
-      console.log('resetting storeCleared...')
       this.storeCleared.set(false)
       this.clearingStore.set(false)
     }, ACTION_DEBOUNCE_TIME)

@@ -157,9 +157,7 @@ export class PinboardService {
     if (options?.todt != null) params.append('todt', options.todt)
     if (options?.meta != null) params.append('meta', String(options.meta))
     const url = `${PINBOARD_BASE_URL}/posts/all?${params}`
-    console.log('getAllPosts url: ', url)
     return this.#fetch(url, { method: 'GET', headers: {} }).then<PinboardItem[]>((response) => {
-      console.log(response)
       return response.json()
     })
   }
@@ -178,9 +176,7 @@ export class PinboardService {
     this.#requireAuth()
     const params = this.#getParams()
     const url = `${PINBOARD_BASE_URL}/tags/get?${params}`
-    console.log('getAllTags url: ', url)
     return this.#fetch(url, { method: 'GET' }).then((response) => {
-      console.log(response)
       return response.json()
     })
   }

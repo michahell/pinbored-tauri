@@ -50,11 +50,6 @@ export class BookmarksTable implements OnInit {
 
   readonly bookmarks = input<BookmarkVM[]>([])
 
-  readonly hasChanges = effect(() => {
-    console.log('bookmarks changed: ', this.bookmarks()?.length)
-    console.log('highlightTag: ', this.highlightTag())
-  })
-
   readonly #columnFilters = signal<ColumnFiltersState>([])
   readonly #sorting = signal<SortingState>([])
   readonly #rowSelection = signal<RowSelectionState>({})

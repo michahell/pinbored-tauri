@@ -33,7 +33,6 @@ export class StaleCheckerService {
     // start queue
     for await (const [pinboardItem, response] of pMapIterable(list, (bookmark) =>
       queue.add(() => {
-        // console.log('adding to queue: ', bookmark.hash)
         startHandler(bookmark)
         this.#progressBarService.increment('staleProgress', incrementAmount)
         return this.#fetchBookmark(bookmark)

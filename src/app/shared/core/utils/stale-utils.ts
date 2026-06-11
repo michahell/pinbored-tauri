@@ -1,7 +1,6 @@
 import { greenBadge, redBadge, skyBadge, yellowBadge } from '@styles/badge-colors'
 
 export function getStaleBadgeColor(status?: string) {
-  console.log('getStaleBadgeColor status: ', status)
   switch (status) {
     case 'unchecked':
       return 'bg-primary'
