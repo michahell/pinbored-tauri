@@ -10,26 +10,24 @@ export class PinboardFacade extends AbstractDataProviderFacade {
   #localStore = inject(TauriStoreService)
 
   async getAllBookmarks(via: 'cache' | 'server'): Promise<BookmarkVM[]> {
-    let mappedBookmarks: BookmarkVM[] = []
     const storedBookmarks = await this.#localStore.get<BookmarkVM[]>('bookmarks')
     if (via === 'cache' && storedBookmarks != null) {
-      mappedBookmarks = storedBookmarks.map(pinboardBookmarkToBookmarkVM)
-    } else {
-      const bookmarks = await this.#pinboard.getAllBookmarks()
-      mappedBookmarks = bookmarks.map(pinboardBookmarkToBookmarkVM)
+      return storedBookmarks
     }
+    const bookmarks = await this.#pinboard.getAllBookmarks()
+    const mappedBookmarks = bookmarks.map(pinboardBookmarkToBookmarkVM)
     await this.#localStore.set('bookmarks', mappedBookmarks)
-    return Promise.resolve(mappedBookmarks)
+    return mappedBookmarks
   }
 
   async getAllTags(): Promise<TagsVM> {
     const storedTags = await this.#localStore.get<TagsVM>('tags')
     if (storedTags != null) {
-      return Promise.resolve(storedTags)
+      return storedTags
     } else {
       const tags = await this.#pinboard.getAllTags()
       await this.#localStore.set('tags', tags)
-      return Promise.resolve(tags)
+      return tags
     }
   }
 

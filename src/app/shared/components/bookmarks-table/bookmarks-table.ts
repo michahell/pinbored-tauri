@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, signal } from '@angular/core'
+import { Component, inject, input, OnInit, signal } from '@angular/core'
 import { Router } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import {
@@ -22,7 +22,6 @@ import { HlmTableImports } from '@spartan-ng/helm/table'
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group'
 import { NgIcon } from '@ng-icons/core'
 import { BookmarkVM } from '@data-providers/abstract'
-import { Immutable } from 'signalstory'
 import { TableHeadSelection, TableRowSelection } from '../table/selection-column'
 import { CellTagRenderer } from './cell-tag-renderer/cell-tag-renderer'
 import { CellActionDropdown } from './cell-action-dropdown/cell-action-dropdown.component'
