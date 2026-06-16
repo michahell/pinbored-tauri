@@ -15,7 +15,11 @@
       "mcp__vitest__run_tests",
       "Bash(pnpm test *)",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); t=d['projects']['pinbored-tauri']['architect']['test']; print\\(json.dumps\\(t, indent=2\\)\\)\")",
-      "WebFetch(domain:angular.dev)"
+      "WebFetch(domain:angular.dev)",
+      "mcp__backlog__milestone_list",
+      "mcp__backlog__task_list",
+      "mcp__backlog__get_backlog_instructions",
+      "mcp__backlog__task_create"
     ]
   },
   "enableAllProjectMcpServers": true,
