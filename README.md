@@ -1,11 +1,12 @@
 # Pinbored
 
-Pinbored is a _desktop_ tool built to administer pinboard.in _bookmarks_, _tags_ and _note_ collections.
+Pinbored is a _desktop_ tool being built to administer pinboard.in _bookmarks_, _tags_ and _note_ collections.
 See below [screenshots](#screenshots) for an impression.
+There is no 1.0 release yet - everything is still very much in flux.
 
-Future plans include ways to administer locally by moving collections into a single-file SQLite DB that is easily shared using local (NAS) or cloud-storage (sovereign or not).
+Future plans include ways to administer locally by moving collections into a single-file SQLite DB that is easily shared using local file-system or cloud-storage.
 
-Built with Tauri, Angular, Spartan-NG and Signality.
+Built with Tauri, Angular, Spartan-NG, Signality and Signalstory.
 
 <p align="center"> 
 <img src="resources/tauri.svg" alt="Alt Text" width="80" height="80">
@@ -16,7 +17,7 @@ Built with Tauri, Angular, Spartan-NG and Signality.
 
 ## Project history
 
-Please be seated, for the fourth iteration of Pinbored:
+Please be seated for the fourth iteration of Pinbored:
 
 * [iteration one](https://github.com/michahell/pinbored-AS3) ([Adobe Air](https://airsdk.harman.com/) / [AS3](https://airsdk.dev/reference/actionscript/3.0/) / [Starling](https://gamua.com/starling/) / self-built UI)
 * [iteration two](https://github.com/michahell/pinbored-nwjs) ([nwjs](https://nwjs.io/) / [angular.js](https://angularjs.org/) / self-built UI)
