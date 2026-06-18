@@ -5,6 +5,7 @@
 
 @import '@spartan-ng/brain/hlm-tailwind-preset.css';
 @import './app/styles/page-transitions.css';
+@import './app/styles/global-styles.css';
 
 :root {
   color-scheme: light;
