@@ -20,17 +20,18 @@ export class AuthenticationService {
     // neither stored nor input given, auth failed
     if ((!storedUsername || !storedToken) && (!withInput?.username || !withInput?.token)) {
       return this.#setUnauthenticated()
-      // return Promise.reject('no stored auth found nor input auth provided -> failed to authenticate.')
     }
 
-    // try to authenticate from stored auth when none given, first
-    if (storedUsername && storedToken) {
-      return this.#doAuthenticate(storedUsername, storedToken)
-    }
     // try to authenticate from input auth, when provided
-    else if (withInput?.username && withInput?.token) {
+    if (withInput?.username && withInput?.token) {
       return this.#doAuthenticate(withInput.username, withInput.token)
     }
+
+    // try to authenticate from stored auth when no input was given
+    else if (storedUsername && storedToken) {
+      return this.#doAuthenticate(storedUsername, storedToken)
+    }
+
     return this.#setUnauthenticated()
   }
 
