@@ -4,13 +4,14 @@ title: 'Bookmarks page — initial load, stale status persistence, and button-ba
 status: Done
 assignee: []
 created_date: '2026-06-16 12:54'
+updated_date: '2026-06-18 14:21'
 labels:
   - bookmarks
   - ui
 milestone: m-0
 dependencies: []
 priority: high
-ordinal: 20000
+ordinal: 9000
 ---
 
 ## Acceptance Criteria
