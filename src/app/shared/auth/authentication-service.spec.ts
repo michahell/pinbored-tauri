@@ -116,7 +116,7 @@ describe('AuthenticationService', () => {
       expect(service.authStatus()).toBe('authenticated')
     })
 
-    it('prefers stored credentials over provided input credentials', async () => {
+    it('prefers provided input credentials over stored credentials', async () => {
       mockLocalStore.get.mockImplementation((key: string) =>
         Promise.resolve(key === 'username' ? 'storeduser' : 'storedtoken')
       )
@@ -124,7 +124,7 @@ describe('AuthenticationService', () => {
 
       await service.authenticate({ username: 'inputuser', token: 'inputtoken' })
 
-      expect(mockPinboard.storedUsername).toBe('storeduser')
+      expect(mockPinboard.storedUsername).toBe('inputuser')
     })
 
     it('returns false when both stored and input credentials are empty strings', async () => {
