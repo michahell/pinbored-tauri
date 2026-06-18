@@ -4,6 +4,7 @@ title: 'Single bookmark page — view, edit, and delete'
 status: To Do
 assignee: []
 created_date: '2026-06-16 12:52'
+updated_date: '2026-06-18 14:21'
 labels:
   - bookmarks
   - ui
@@ -12,7 +13,7 @@ dependencies: []
 references:
   - plans/step-3-delete-bookmark.md
 priority: high
-ordinal: 3000
+ordinal: 750
 ---
 
 ## Description
