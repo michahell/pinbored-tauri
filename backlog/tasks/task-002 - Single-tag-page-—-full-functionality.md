@@ -4,13 +4,14 @@ title: Single tag page — full functionality
 status: To Do
 assignee: []
 created_date: '2026-06-16 12:52'
+updated_date: '2026-06-18 14:21'
 labels:
   - tags
   - ui
 milestone: m-0
 dependencies: []
 priority: high
-ordinal: 2000
+ordinal: 500
 ---
 
 ## Acceptance Criteria
