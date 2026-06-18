@@ -18,8 +18,8 @@ export default class Tags implements OnInit {
   // for the ugly transformations done here:
   // @see: https://github.com/zuriscript/signalstory/discussions/114
   readonly tags: Signal<TagVM[]> = computed(() => {
-    let immutableTags: Immutable<TagVM[]> = this.#tagsService.tags()
-    let mutableTagList: TagVM[] = [...immutableTags]
+    const immutableTags: Immutable<TagVM[]> = this.#tagsService.tags()
+    const mutableTagList: TagVM[] = [...immutableTags]
     return mutableTagList
   })
   readonly tagsFetching = computed(() => this.#tagsService.tagsFetching())

@@ -25,8 +25,8 @@ export default class Tag implements OnInit {
   // for the ugly transformations done here:
   // @see: https://github.com/zuriscript/signalstory/discussions/114
   readonly #tags: Signal<TagVM[]> = computed(() => {
-    let immutableTags: Immutable<TagVM[]> = this.#tagsService.tags()
-    let mutableTagList: TagVM[] = [...immutableTags]
+    const immutableTags: Immutable<TagVM[]> = this.#tagsService.tags()
+    const mutableTagList: TagVM[] = [...immutableTags]
     return mutableTagList
   })
   readonly tag = computed<TagVM | null>(() => {
@@ -37,7 +37,7 @@ export default class Tag implements OnInit {
     const immutableBookmarks: Immutable<BookmarkVM[]> = this.#bookmarksService.bookmarks()
     const mutableListOfImmutableBookmarks: Immutable<BookmarkVM>[] = [...immutableBookmarks]
     const mutableBookmarks: BookmarkVM[] = mutableListOfImmutableBookmarks.map((bm) => {
-      let mutableBm: BookmarkVM = { ...bm, tagsList: [...bm.tagsList] }
+      const mutableBm: BookmarkVM = { ...bm, tagsList: [...bm.tagsList] }
       return mutableBm
     })
     return mutableBookmarks.filter((bookmark) => bookmark.tags.includes(this.#params()?.['tag']))

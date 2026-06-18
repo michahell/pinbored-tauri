@@ -35,10 +35,15 @@ export class AuthenticationService {
   }
 
   async #doAuthenticate(username: string, token: string): Promise<boolean> {
-    const apiToken = await this.#facade.getUserApiToken(username, token)
-    if (apiToken != null) {
-      return this.#setAuthenticated(username, token, true, true)
-    } else {
+    try {
+      const apiToken = await this.#facade.getUserApiToken(username, token)
+      if (apiToken != null) {
+        return this.#setAuthenticated(username, token, true, true)
+      } else {
+        return this.#setUnauthenticated()
+      }
+    } catch (error) {
+      console.log(error)
       return this.#setUnauthenticated()
     }
   }

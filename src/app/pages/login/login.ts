@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core'
+import { Component, computed, effect, inject, OnInit } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmCardImports } from '@spartan-ng/helm/card'
@@ -6,7 +6,8 @@ import { HlmFieldImports } from '@spartan-ng/helm/field'
 import { HlmInputImports } from '@spartan-ng/helm/input'
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner'
 import { Router } from '@angular/router'
-import { AuthenticationService } from '../../shared/auth/authentication-service'
+import { AuthenticationService } from '@auth/authentication-service'
+import { LANDING_ROUTE_AFTER_LOGIN } from '@core/constants/app-constants'
 
 interface PinboardLoginForm {
   username: FormControl<string | null>
@@ -36,6 +37,10 @@ export default class Login implements OnInit {
   })
 
   readonly authStatus = computed(() => this.#authenticationService.authStatus())
+
+  readonly authEffect = effect(() => {
+    console.log('auth changed? ', this.authStatus())
+  })
 
   async ngOnInit(): Promise<void> {
     console.log('Login page initialized, checking authentication...')
@@ -67,6 +72,6 @@ export default class Login implements OnInit {
   }
 
   async #doLogin(): Promise<boolean> {
-    return this.#router.navigate(['/bookmarks'])
+    return this.#router.navigate([`/${LANDING_ROUTE_AFTER_LOGIN}`])
   }
 }

@@ -11,7 +11,7 @@ import { BookmarksTable } from '@components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 import { NgIcon } from '@ng-icons/core'
 import { matchBookmarkReadStatus, matchBookmarkTaggedStatus, matchBookmarkVisibility } from '@core/utils/bookmark-utils'
-import { BookmarkVM, TagVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract'
 import { Immutable } from 'signalstory'
 
 interface BookmarkFilters {
@@ -59,7 +59,7 @@ export default class Bookmarks implements OnInit {
     const immutableBookmarks: Immutable<BookmarkVM[]> = this.#bookmarksService.bookmarks()
     const mutableListOfImmutableBookmarks: Immutable<BookmarkVM>[] = [...immutableBookmarks]
     const mutableBookmarks: BookmarkVM[] = mutableListOfImmutableBookmarks.map((bm) => {
-      let mutableBm: BookmarkVM = { ...bm, tagsList: [...bm.tagsList] }
+      const mutableBm: BookmarkVM = { ...bm, tagsList: [...bm.tagsList] }
       return mutableBm
     })
     // filter bookmarks based on selected quick filters
