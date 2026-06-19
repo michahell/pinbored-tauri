@@ -21,6 +21,7 @@ jobs:
          cache: true
 
   build:
+    needs: pre
     if: '!cancelled()'
     runs-on: ubuntu-latest
     steps:
