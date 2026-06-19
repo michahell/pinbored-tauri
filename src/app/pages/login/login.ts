@@ -51,10 +51,10 @@ export default class Login implements OnInit {
   }
 
   async login(): Promise<void> {
-    const username = this.loginForm.controls.username.value
-    const token = this.loginForm.controls.token.value
+    const username = this.loginForm.controls.username.value ?? ''
+    const token = this.loginForm.controls.token.value ?? ''
 
-    if (username != null && token != null) {
+    if (username !== '' && token !== '') {
       try {
         await this.#authenticationService.authenticate({ username, token })
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -145,7 +145,7 @@ describe('AuthenticationService', () => {
 
     it('clears token from local store', async () => {
       mockLocalStore.set.mockResolvedValue(undefined)
-      await service.logout()
+      service.logout()
       expect(mockLocalStore.set).toHaveBeenCalledWith('token', null)
     })
   })

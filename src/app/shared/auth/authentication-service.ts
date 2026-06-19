@@ -1,21 +1,20 @@
 import { inject, Service, signal } from '@angular/core'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { PinboardService, PinboardFacade } from '@data-providers/pinboard'
+import { SignalStore } from '@services/signal-store'
 
 @Service()
 export class AuthenticationService {
   readonly #facade = inject(PinboardFacade)
   readonly #pinboard = inject(PinboardService)
+  readonly #signalStore = inject(SignalStore)
   readonly #localStore = inject(TauriStoreService)
 
   readonly authStatus = signal<'checking' | 'unauthenticated' | 'authenticated'>('checking')
 
   async authenticate(withInput: { username: string; token: string } | null = null): Promise<boolean> {
-    // try to fetch stored auth from local storage
-    const [storedUsername, storedToken] = await Promise.all([
-      this.#localStore.get<string>('username'),
-      this.#localStore.get<string>('token'),
-    ])
+    // try to fetch stored auth from signal store (possible due to local-storage persistence)
+    const { storedUsername, storedToken } = this.#signalStore.auth() ?? { storedUsername: null, storedToken: null }
 
     // neither stored nor input given, auth failed
     if ((!storedUsername || !storedToken) && (!withInput?.username || !withInput?.token)) {
@@ -23,7 +22,7 @@ export class AuthenticationService {
     }
 
     // try to authenticate from input auth, when provided
-    if (withInput?.username && withInput?.token) {
+    else if (withInput?.username && withInput?.token) {
       return this.#doAuthenticate(withInput.username, withInput.token)
     }
 
@@ -58,10 +57,9 @@ export class AuthenticationService {
     if (username == null || token == null) {
       throw new Error('username or token is null')
     }
+    // store username & token in signal store
     if (saveToStore) {
-      // store username & token in localStorage
-      this.#localStore.set('username', username)
-      this.#localStore.set('token', token)
+      this.#signalStore.setAuth(username, token)
     }
     if (saveToPinboardService) {
       this.#pinboard.storedUsername = username
@@ -81,9 +79,7 @@ export class AuthenticationService {
     return false
   }
 
-  async logout(): Promise<void> {
-    await this.#localStore.set('username', null)
-    await this.#localStore.set('token', null)
-    return
+  logout(): void {
+    this.#signalStore.deleteAuth()
   }
 }

@@ -2,7 +2,7 @@ import { computed, Service, Signal } from '@angular/core'
 import { produce } from 'immer'
 import { Immutable, ImmutableStore, useDevtools, useLogger, useStorePersistence } from 'signalstory'
 import { BookmarkVM, NoteVM, TagVM } from '@data-providers/abstract'
-import { Settings } from '@services/signal-store'
+import { Auth, Settings } from '@services/signal-store'
 import { bookmarksAreEqual } from '@core/utils/bookmark-utils'
 
 interface State {
@@ -10,6 +10,7 @@ interface State {
   tags: TagVM[]
   notes: NoteVM[]
   settings: Settings
+  auth: Auth
 }
 
 const INITIAL_STATE: State = {
@@ -18,6 +19,10 @@ const INITIAL_STATE: State = {
   notes: [],
   settings: {
     theme: 'dark',
+  },
+  auth: {
+    storedUsername: '',
+    storedToken: '',
   },
 }
 
@@ -39,6 +44,10 @@ export class SignalStore extends ImmutableStore<State> {
   }
 
   // set new store data
+  setAuth(username: string, token: string) {
+    this.set({ ...this.state(), auth: { storedUsername: username, storedToken: token } }, 'setAuth')
+  }
+
   setBookmarks(bookmarks: BookmarkVM[]) {
     this.set({ ...this.state(), bookmarks: bookmarks }, 'setBookmarks')
   }
@@ -52,6 +61,13 @@ export class SignalStore extends ImmutableStore<State> {
   }
 
   // modify store data
+  deleteAuth() {
+    this.mutate((state) => {
+      state.auth.storedUsername = ''
+      state.auth.storedToken = ''
+    })
+  }
+
   mutateBookmark(bookmark: Immutable<BookmarkVM>) {
     this.mutate((state) => {
       const bookmarkToMutate: BookmarkVM = state.bookmarks.find((bookmarkInState: Immutable<BookmarkVM>) =>
@@ -89,6 +105,10 @@ export class SignalStore extends ImmutableStore<State> {
   }
 
   // query store data
+  get auth(): Signal<Immutable<Auth>> {
+    return computed(() => this.state().auth)
+  }
+
   get bookmarks(): Signal<Immutable<BookmarkVM[]>> {
     return computed(() => this.state().bookmarks)
   }

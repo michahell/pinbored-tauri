@@ -1,7 +1,7 @@
 <app-main-layout animate.enter="fade-slide-in" animate.leave="fade-slide-out">
   <div class="pt-0">
     <!-- actions -->
-    <div class="flex flex-row place-items-center pl-2 dark:bg-blue-100/20 bg-primary/10">
+    <div class="flex flex-wrap flex-row place-content-center pl-2 dark:bg-blue-100/20 bg-primary/10">
       <div *ngTemplateOutlet="fetchActions"></div>
       <div *ngTemplateOutlet="filterActions"></div>
       <div *ngTemplateOutlet="staleActions"></div>
@@ -14,49 +14,50 @@
 
   <!-- FETCH ACTIONS -->
   <ng-template #fetchActions>
-    <p [class]="`${hlmMuted} p-2 ml-5`">data</p>
+    <div class="flex flex-row place-items-center pl-2">
+      <p [class]="`${hlmMuted} p-2 ml-5`">data</p>
+      <div hlmButtonGroup>
+        <!-- fetch all -->
+        <button
+          hlmBtn
+          variant="secondary"
+          size="xs"
+          (click)="getBookmarks()"
+          [attr.disabled]="bookmarksFetching() ? 'disabled' : null"
+        >
+          @if (fetchAllType() === 'cache') {
+            <ng-icon name="lucideDatabaseZap" />
+          } @else if (fetchAllType() === 'server') {
+            <ng-icon name="lucideServer" />
+          }
+          &nbsp; fetch all
+          @if (bookmarksFetching()) {
+            <hlm-spinner data-icon="inline-start" />
+          }
+        </button>
+        <button hlmBtn variant="outline" size="xs" [hlmDropdownMenuTrigger]="menu" align="end">
+          <ng-icon hlm name="lucideChevronDown" size="xs" />
+        </button>
+        <ng-template #menu>
+          <hlm-dropdown-menu class="w-[49] [--radius:1rem]">
+            <hlm-dropdown-menu-group>
+              <!-- fetch all from cache -->
+              <button hlmDropdownMenuItem (click)="changeFetchAllType('cache')">
+                <ng-icon hlm name="lucideDatabaseZap" size="sm" />
+                <span>from cache</span>
+              </button>
+              <!-- fetch all from server -->
+              <button hlmDropdownMenuItem (click)="changeFetchAllType('server')">
+                <ng-icon hlm name="lucideServer" size="sm" />
+                <span>from server</span>
+              </button>
+            </hlm-dropdown-menu-group>
+          </hlm-dropdown-menu>
+        </ng-template>
 
-    <div hlmButtonGroup>
-      <!-- fetch all -->
-      <button
-        hlmBtn
-        variant="secondary"
-        size="xs"
-        (click)="getBookmarks()"
-        [attr.disabled]="bookmarksFetching() ? 'disabled' : null"
-      >
-        @if (fetchAllType() === 'cache') {
-          <ng-icon name="lucideDatabaseZap" />
-        } @else if (fetchAllType() === 'server') {
-          <ng-icon name="lucideServer" />
-        }
-        &nbsp; fetch all
-        @if (bookmarksFetching()) {
-          <hlm-spinner data-icon="inline-start" />
-        }
-      </button>
-      <button hlmBtn variant="outline" size="xs" [hlmDropdownMenuTrigger]="menu" align="end">
-        <ng-icon hlm name="lucideChevronDown" size="xs" />
-      </button>
-      <ng-template #menu>
-        <hlm-dropdown-menu class="w-[49] [--radius:1rem]">
-          <hlm-dropdown-menu-group>
-            <!-- fetch all from cache -->
-            <button hlmDropdownMenuItem (click)="changeFetchAllType('cache')">
-              <ng-icon hlm name="lucideDatabaseZap" size="sm" />
-              <span>from cache</span>
-            </button>
-            <!-- fetch all from server -->
-            <button hlmDropdownMenuItem (click)="changeFetchAllType('server')">
-              <ng-icon hlm name="lucideServer" size="sm" />
-              <span>from server</span>
-            </button>
-          </hlm-dropdown-menu-group>
-        </hlm-dropdown-menu>
-      </ng-template>
-
-      <!-- fetch most recent bookmarks -->
-      <button hlmBtn variant="secondary" size="xs" [disabled]="'disabled'">fetch most recent</button>
+        <!-- fetch most recent bookmarks -->
+        <button hlmBtn variant="secondary" size="xs" [disabled]="'disabled'">fetch most recent</button>
+      </div>
     </div>
   </ng-template>
 
@@ -90,41 +91,43 @@
 
   <!-- STALE ACTIONS -->
   <ng-template #staleActions>
-    <p [class]="`${hlmMuted} p-2 ml-5`">stale checker</p>
-    <div hlmButtonGroup>
-      <!-- stale checker testing -->
-      <button
-        hlmBtn
-        size="xs"
-        variant="secondary"
-        (click)="startStaleCheck()"
-        [disabled]="startStaleCheckDisabled() ? 'disabled' : null"
-      >
-        @if (staleChecking()) {
-          running
-          <hlm-spinner data-icon="inline-start" />
-        } @else {
-          start
-        }
-      </button>
-      <button
-        hlmBtn
-        size="xs"
-        variant="secondary"
-        (click)="toggleStaleCheck()"
-        [disabled]="pauseStaleCheckDisabled() ? 'disabled' : null"
-      >
-        {{ staleChecking() ? 'pause' : 'resume' }}
-      </button>
-      <button
-        hlmBtn
-        size="xs"
-        variant="secondary"
-        (click)="stopStaleCheck()"
-        [disabled]="stopStaleCheckDisabled() ? 'disabled' : null"
-      >
-        stop
-      </button>
+    <div class="flex flex-row place-items-center pl-2">
+      <p [class]="`${hlmMuted} p-2 ml-5`">stale checker</p>
+      <div hlmButtonGroup>
+        <!-- stale checker testing -->
+        <button
+          hlmBtn
+          size="xs"
+          variant="secondary"
+          (click)="startStaleCheck()"
+          [disabled]="startStaleCheckDisabled() ? 'disabled' : null"
+        >
+          @if (staleChecking()) {
+            running
+            <hlm-spinner data-icon="inline-start" />
+          } @else {
+            start
+          }
+        </button>
+        <button
+          hlmBtn
+          size="xs"
+          variant="secondary"
+          (click)="toggleStaleCheck()"
+          [disabled]="pauseStaleCheckDisabled() ? 'disabled' : null"
+        >
+          {{ staleChecking() ? 'pause' : 'resume' }}
+        </button>
+        <button
+          hlmBtn
+          size="xs"
+          variant="secondary"
+          (click)="stopStaleCheck()"
+          [disabled]="stopStaleCheckDisabled() ? 'disabled' : null"
+        >
+          stop
+        </button>
+      </div>
     </div>
   </ng-template>
 </app-main-layout>

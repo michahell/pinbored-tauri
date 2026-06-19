@@ -86,7 +86,7 @@ export class Menu implements AfterViewInit, OnDestroy {
   }
 
   async logout(): Promise<void> {
-    await this.#authentication.logout()
+    this.#authentication.logout()
     await this.#router.navigate(['/login'])
   }
 
