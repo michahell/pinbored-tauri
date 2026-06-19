@@ -10,21 +10,11 @@ permissions:
   contents: read
 
 jobs:
-  pre:
-    runs-on: ubuntu-latest
-    steps:
-     - uses: actions/checkout@v7
-     - name: checkout
-       uses: pnpm/action-setup@v6.0.8
-       with:
-         version: 11.4.0
-         cache: true
-
   build:
-    needs: pre
     if: '!cancelled()'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
         with:
           install: 'true'
@@ -34,6 +24,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
       - run: pnpm run test
 
@@ -41,6 +32,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
       - run: pnpm run lint
 
@@ -48,5 +40,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
       - run: pnpm run sheriff
