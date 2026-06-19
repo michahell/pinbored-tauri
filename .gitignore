@@ -44,3 +44,4 @@ Thumbs.db
 # Secrets
 .env
 **/.env
+.fallow/

@@ -1,6 +1,6 @@
 import { AbstractDataProviderFacade } from './facade/abstract-data-provider-facade'
 import { IDataProviderFacade } from './facade/data-provider-facade.interface'
-import { Bookmark, Tag, Tags, Note, SuggestTagsResult } from './models/abstract.model'
+import { Bookmark, Tag, Tags, Note } from './models/abstract.model'
 import { BookmarkVM, TagVM, TagsVM, NoteVM, SuggestTagsResultVM } from './models/abstract-view.model'
 
 export {
@@ -15,5 +15,4 @@ export {
   type Tag,
   type Tags,
   type Note,
-  type SuggestTagsResult,
 }

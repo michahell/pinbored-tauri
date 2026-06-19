@@ -12,7 +12,7 @@ interface State {
   settings: Settings
 }
 
-export const INITIAL_STATE: State = {
+const INITIAL_STATE: State = {
   bookmarks: [],
   tags: [],
   notes: [],

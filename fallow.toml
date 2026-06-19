@@ -1,0 +1,43 @@
+# fallow.toml - Codebase analysis configuration
+# See https://docs.fallow.tools for documentation
+
+entry = ["src/index.{ts,js}", "src/main.{ts,js}"]
+
+ignorePatterns = ["**/*.d.ts"]
+ignoreDependencies = ["@types/node"]
+
+[duplicates]
+# Hide pair-only clones; focus on widespread copy-paste worth refactoring.
+# Lower to 2 to report every duplicate pair.
+minOccurrences = 3
+# Common additions (uncomment to enable):
+ ignore = [
+   "libs/**",                                   # spartan-ng components (not ours)
+   "sheriff.config.ts", "sheriff.config.js",    # sheriff config file
+   "vitest-base.config.ts"                      # vitest config file
+ ]
+
+# Per-issue-type severity: "error" (fail CI), "warn" (report only), "off" (ignore)
+[rules]
+unused-dependencies = "warn"
+unresolved-imports = "error"
+unlisted-dependencies = "error"
+unused-exports = "error"
+
+# copied from docs: @see: https://fallow.tools/docs/configuration/rules/
+
+#unused-files = "error"
+#unused-types = "off"
+#private-type-leaks = "off"
+#unused-dev-dependencies = "warn"
+#unused-optional-dependencies = "warn"
+#unused-enum-members = "warn"
+#unused-class-members = "off"
+#duplicate-exports = "warn"
+#circular-dependencies = "error"
+#re-export-cycle = "warn"
+#boundary-violation = "error"
+#type-only-dependencies = "error"
+#test-only-dependencies = "warn"
+#coverage-gaps = "off"
+#stale-suppressions = "warn"

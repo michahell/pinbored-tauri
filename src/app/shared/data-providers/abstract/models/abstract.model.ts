@@ -24,5 +24,3 @@ export interface Note {
   updated_at: string
   length: number
 }
-
-export type SuggestTagsResult = [{ popular: string[] }, { recommended: string[] }]
