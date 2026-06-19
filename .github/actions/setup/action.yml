@@ -1,0 +1,20 @@
+name: Setup pnpm environment
+description: Checkout repo and set up pnpm, optionally running pnpm install
+
+inputs:
+  install:
+    description: Run pnpm install after setup
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v7
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v6.0.8
+      with:
+        version: 11.4.0
+        cache: true
+    - if: ${{ inputs.install == 'true' }}
+      run: pnpm install
+      shell: bash

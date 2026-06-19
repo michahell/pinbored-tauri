@@ -14,47 +14,28 @@ jobs:
     if: '!cancelled()'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6.0.8
+      - uses: ./.github/actions/setup
         with:
-          version: 11.4.0
-          cache: true
-      - run: pnpm install
+          install: 'true'
       - run: pnpm run build
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6.0.8
-        with:
-          version: 11.4.0
-          cache: true
+      - uses: ./.github/actions/setup
       - run: pnpm run test
 
   lint:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6.0.8
-        with:
-          version: 11.4.0
-          cache: true
+      - uses: ./.github/actions/setup
       - run: pnpm run lint
 
   sheriff:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6.0.8
-        with:
-          version: 11.4.0
-          cache: true
+      - uses: ./.github/actions/setup
       - run: pnpm run sheriff
