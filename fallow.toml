@@ -17,6 +17,7 @@ minOccurrences = 3
    "vitest-base.config.ts"                      # vitest config file
  ]
 
+
 # Per-issue-type severity: "error" (fail CI), "warn" (report only), "off" (ignore)
 [rules]
 unused-dependencies = "warn"
