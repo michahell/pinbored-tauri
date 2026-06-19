@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/setup-pnpm
         with:
           install: 'true'
       - run: pnpm run build
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/setup-pnpm
       - run: pnpm run test
 
   lint:
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/setup-pnpm
       - run: pnpm run lint
 
   sheriff:
@@ -41,5 +41,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/setup-pnpm
       - run: pnpm run sheriff
