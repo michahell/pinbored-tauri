@@ -48,6 +48,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: ./.github/actions/setup-pnpm
       - name: Generate health badge
         run: pnpm fallow health --format badge > badge.svg
 
