@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate health badge
-        run: fallow health --format badge > badge.svg
+        run: pnpm fallow health --format badge > badge.svg
 
       - name: Publish badge
         uses: peaceiris/actions-gh-pages@v4

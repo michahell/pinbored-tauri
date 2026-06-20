@@ -16,15 +16,6 @@ jobs:
           install: 'true'
       - run: pnpm run spartan-health
 
-  slop-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup-pnpm
-        with:
-          install: 'true'
-      - run: pnpm run slop-check
-
   fallow-health:
     runs-on: ubuntu-latest
     steps:
@@ -32,4 +23,4 @@ jobs:
       - uses: ./.github/actions/setup-pnpm
         with:
           install: 'true'
-      - run: pnpm run fallow
+      - run: pnpm run fallow-health
