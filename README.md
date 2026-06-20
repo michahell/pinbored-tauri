@@ -1,5 +1,7 @@
 # Pinbored
 
+![fallow health](https://raw.githubusercontent.com/michahell/pinbored-tauri/badges/badge.svg)
+
 Pinbored is a _desktop_ tool being built to administer pinboard.in _bookmarks_, _tags_ and _note_ collections.
 See below [screenshots](#screenshots) for an impression.
 There is no 1.0 release yet - everything is still very much in flux.

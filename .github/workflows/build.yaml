@@ -43,3 +43,19 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-pnpm
       - run: pnpm run sheriff
+
+  fallow-badge:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate health badge
+        run: fallow health --format badge > badge.svg
+
+      - name: Publish badge
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: badges
+          keep_files: true
+          include_files: badge.svg
