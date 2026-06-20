@@ -1,13 +1,13 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
-export const hlmLead = 'text-xl text-muted-foreground';
+export const hlmLead = 'text-xl text-muted-foreground'
 
 @Directive({
-	selector: '[hlmLead]',
+  selector: '[hlmLead]',
 })
 export class HlmLead {
-	constructor() {
-		classes(() => hlmLead);
-	}
+  constructor() {
+    classes(() => hlmLead)
+  }
 }

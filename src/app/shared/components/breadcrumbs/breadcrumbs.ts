@@ -1,9 +1,9 @@
 import { Component } from '@angular/core'
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb'
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb'
 
 @Component({
   selector: 'app-breadcrumbs',
-  imports: [HlmBreadCrumbImports],
+  imports: [HlmBreadcrumbImports],
   templateUrl: './breadcrumbs.html',
 })
 export class Breadcrumbs {}

@@ -2,21 +2,31 @@
   "mcpServers": {
     "angular-cli": {
       "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp"]
+      "args": [
+        "-y",
+        "@angular/cli",
+        "mcp"
+      ]
     },
     "vitest": {
-      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@djankies/vitest-mcp"],
-      "env": {}
+      "args": [
+        "-y",
+        "@djankies/vitest-mcp"
+      ],
+      "type": "stdio"
     },
     "spartan-ng-mcp-server": {
-      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "spartan-ng-mcp-server"]
+      "args": [
+        "-y",
+        "spartan-ng-mcp-server"
+      ],
+      "type": "stdio"
     },
     "fallow": {
-      "command": "fallow-mcp"
+      "command": "fallow-mcp",
+      "args": []
     }
   }
 }

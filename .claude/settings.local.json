@@ -19,7 +19,8 @@
       "mcp__backlog__milestone_list",
       "mcp__backlog__task_list",
       "mcp__backlog__get_backlog_instructions",
-      "mcp__backlog__task_create"
+      "mcp__backlog__task_create",
+      "Bash(npm test *)"
     ]
   },
   "enableAllProjectMcpServers": true,

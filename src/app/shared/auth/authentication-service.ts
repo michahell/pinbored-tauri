@@ -1,5 +1,4 @@
 import { inject, Service, signal } from '@angular/core'
-import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
 import { PinboardService, PinboardFacade } from '@data-providers/pinboard'
 import { SignalStore } from '@services/signal-store'
 
@@ -8,7 +7,6 @@ export class AuthenticationService {
   readonly #facade = inject(PinboardFacade)
   readonly #pinboard = inject(PinboardService)
   readonly #signalStore = inject(SignalStore)
-  readonly #localStore = inject(TauriStoreService)
 
   readonly authStatus = signal<'checking' | 'unauthenticated' | 'authenticated'>('checking')
 

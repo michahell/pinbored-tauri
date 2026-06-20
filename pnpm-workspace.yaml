@@ -19,3 +19,5 @@ minimumReleaseAgeExclude:
   - '@angular/forms@22.0.0'
   - '@angular/platform-browser@22.0.0'
   - '@angular/router@22.0.0'
+  - '@spartan-ng/brain@0.0.1-alpha.718'
+  - '@spartan-ng/cli@0.0.1-alpha.718'
