@@ -3,7 +3,7 @@
 
 entry = ["src/index.{ts,js}", "src/main.{ts,js}"]
 
-ignorePatterns = ["**/*.d.ts"]
+ignorePatterns = ["**/*.d.ts", "libs/**"]
 ignoreDependencies = ["@types/node"]
 
 [duplicates]
@@ -12,7 +12,6 @@ ignoreDependencies = ["@types/node"]
 minOccurrences = 3
 # Common additions (uncomment to enable):
  ignore = [
-   "libs/**",                                   # spartan-ng components (not ours)
    "sheriff.config.ts", "sheriff.config.js",    # sheriff config file
    "vitest-base.config.ts"                      # vitest config file
  ]

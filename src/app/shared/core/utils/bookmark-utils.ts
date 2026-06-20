@@ -1,5 +1,5 @@
 import { BookmarkVM } from '@data-providers/abstract'
-import { StaleStatus } from '@services/stale-checker'
+import { StaleStatus } from '@services/stale-checker/stale-checker.model'
 import { Immutable } from 'signalstory'
 import { PinboardTypes } from '@data-providers/pinboard'
 
