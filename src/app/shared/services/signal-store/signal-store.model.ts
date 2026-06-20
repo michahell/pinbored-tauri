@@ -1,4 +1,4 @@
-import { Theme } from '../../core/models/settings-model'
+import { Theme } from '@core/models/settings-model'
 
 export interface Settings {
   theme: Theme
