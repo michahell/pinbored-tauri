@@ -1,13 +1,9 @@
 import { inject, Injector, Service } from '@angular/core'
-import {
-  AbstractDataProviderFacade,
-  IDataProviderFacade,
-  BookmarkVM,
-  TagsVM,
-  SuggestTagsResultVM,
-} from '@data-providers/abstract'
-import { PinboardFacade } from '@data-providers/pinboard'
-import { SqliteFacade } from '@data-providers/sqlite'
+import { BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract/models/abstract-view.model'
+import { AbstractDataProviderFacade } from '@data-providers/abstract/facade/abstract-data-provider-facade'
+import { IDataProviderFacade } from '@data-providers/abstract/facade/data-provider-facade.interface'
+import { PinboardFacade } from '@data-providers/pinboard/facade/pinboard-facade'
+import { SqliteFacade } from '@data-providers/sqlite/facade/sqlite-facade'
 
 @Service()
 export class DataProviderFacade implements IDataProviderFacade {

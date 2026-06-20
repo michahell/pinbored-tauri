@@ -1,6 +1,6 @@
 import { computed, Service, Signal } from '@angular/core'
 import { mediaQuery } from '@signality/core'
-import { Theme } from '@services/signal-store'
+import { Theme } from './settings-model'
 
 @Service()
 export class SettingsService {

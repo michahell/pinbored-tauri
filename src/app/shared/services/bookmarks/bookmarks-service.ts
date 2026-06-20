@@ -3,10 +3,10 @@ import { interval, IntervalRef } from '@signality/core'
 import PQueue from 'p-queue'
 import { StaleCheckerService } from '@services/stale-checker/stale-checker-service'
 import { StaleStatus } from '@services/stale-checker/stale-checker.model'
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
 import { getChangeHash } from '@core/utils/bookmark-utils'
-import { SignalStore } from '@services/signal-store'
+import { SignalStore } from '@services/signal-store/signal-store'
 import { Immutable } from 'signalstory'
 
 @Service()

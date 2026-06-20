@@ -1,4 +1,4 @@
-import { Bookmark, Note, Tag, Tags } from '@data-providers/abstract'
+import { Bookmark, Note, Tag, Tags } from '@data-providers/abstract/models/abstract.model'
 import { StaleStatus } from '@services/stale-checker/stale-checker.model'
 
 export interface BookmarkVM extends Bookmark {

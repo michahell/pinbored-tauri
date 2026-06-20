@@ -3,9 +3,9 @@ import { computed, signal, WritableSignal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { BookmarksService } from './bookmarks-service'
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
-import { BookmarkVM } from '@data-providers/abstract'
-import { StaleCheckerService } from '@services/stale-checker'
-import { SignalStore } from '@services/signal-store'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
+import { StaleCheckerService } from '@services/stale-checker/stale-checker-service'
+import { SignalStore } from '@services/signal-store/signal-store'
 
 vi.mock('@signality/core', () => ({
   interval: vi.fn(() => null),
@@ -59,7 +59,9 @@ describe('BookmarksService', () => {
       },
       setBookmarks: vi.fn().mockImplementation((bookmarks: BookmarkVM[]) => bookmarksSignal.set(bookmarks)),
       mutateBookmark: vi.fn().mockImplementation((updatedBookmark: BookmarkVM) => {
-        bookmarksSignal.update((bs) => bs.map((b) => (b.hash === updatedBookmark.hash ? { ...b, ...updatedBookmark } : b)))
+        bookmarksSignal.update((bs) =>
+          bs.map((b) => (b.hash === updatedBookmark.hash ? { ...b, ...updatedBookmark } : b))
+        )
       }),
     }
 

@@ -1,4 +1,4 @@
-import { BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract'
+import { BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract/models/abstract-view.model'
 
 export interface IDataProviderFacade {
   getAllBookmarks(via: 'cache' | 'server'): Promise<BookmarkVM[]>

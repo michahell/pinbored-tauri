@@ -3,27 +3,26 @@
 
 entry = ["src/index.{ts,js}", "src/main.{ts,js}"]
 
-ignorePatterns = ["**/*.d.ts", "libs/**"]
-ignoreDependencies = ["@types/node"]
+ignorePatterns = ["**/*.d.ts", "libs/**", "sheriff.config.ts", "sheriff.config.js", "vitest-base.config.ts"]
+ignoreDependencies = ["@types/node", "class-variance-authority", "tailwind-merge", "@spartan-ng/cli"]
+#ignoreExports = [
+#  { file = "src/app/shared/data-providers/sqlite/index.ts", exports = ["*"] }
+#]
 
 [duplicates]
 # Hide pair-only clones; focus on widespread copy-paste worth refactoring.
 # Lower to 2 to report every duplicate pair.
 minOccurrences = 3
-# Common additions (uncomment to enable):
- ignore = [
-   "sheriff.config.ts", "sheriff.config.js",    # sheriff config file
-   "vitest-base.config.ts"                      # vitest config file
- ]
-
+ignore = ["src/app/shared/services/stale-checker/stale-checker-service.spec.ts"]
 
 # Per-issue-type severity: "error" (fail CI), "warn" (report only), "off" (ignore)
 [rules]
-unused-dependencies = "warn"
 unresolved-imports = "error"
-unlisted-dependencies = "error"
 unused-exports = "error"
-
+circular-dependencies = "error"
+unused-dependencies = "warn"
+unlisted-dependencies = "warn"
+unused-class-members = "warn"
 # copied from docs: @see: https://fallow.tools/docs/configuration/rules/
 
 #unused-files = "error"
@@ -34,7 +33,6 @@ unused-exports = "error"
 #unused-enum-members = "warn"
 #unused-class-members = "off"
 #duplicate-exports = "warn"
-#circular-dependencies = "error"
 #re-export-cycle = "warn"
 #boundary-violation = "error"
 #type-only-dependencies = "error"

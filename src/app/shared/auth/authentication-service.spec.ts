@@ -2,13 +2,17 @@ import { TestBed } from '@angular/core/testing'
 import { signal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { AuthenticationService } from './authentication-service'
-import { PinboardService } from '@data-providers/pinboard'
-import { SignalStore } from '@services/signal-store'
+import { PinboardService } from '@data-providers/pinboard/service/pinboard-service'
+import { SignalStore } from '@services/signal-store/signal-store'
 
 describe('AuthenticationService', () => {
   let service: AuthenticationService
   let authSignal: ReturnType<typeof signal<{ storedUsername: string; storedToken: string }>>
-  let mockSignalStore: { auth: typeof authSignal; setAuth: ReturnType<typeof vi.fn>; deleteAuth: ReturnType<typeof vi.fn> }
+  let mockSignalStore: {
+    auth: typeof authSignal
+    setAuth: ReturnType<typeof vi.fn>
+    deleteAuth: ReturnType<typeof vi.fn>
+  }
   let mockPinboard: {
     getUserApiToken: ReturnType<typeof vi.fn>
     storedUsername: string

@@ -1,5 +1,5 @@
 import { inject, Service } from '@angular/core'
-import { TagsVM } from '@data-providers/abstract'
+import { TagsVM } from '@data-providers/abstract/models/abstract-view.model'
 import { SqliteInterface } from '@core/sqlite-interface/sqlite-interface'
 
 @Service()

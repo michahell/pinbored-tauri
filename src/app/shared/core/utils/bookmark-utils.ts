@@ -1,7 +1,7 @@
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 import { StaleStatus } from '@services/stale-checker/stale-checker.model'
+import { PinboardItem } from '@data-providers/pinboard/models/pinboard.model'
 import { Immutable } from 'signalstory'
-import { PinboardTypes } from '@data-providers/pinboard'
 
 const matchBookmarkVisibility = (visibility: string, bookmark: Immutable<BookmarkVM>): boolean => {
   if (visibility === 'all') {
@@ -47,7 +47,7 @@ const bookmarksAreEqual = (bookmarkA: Immutable<BookmarkVM>, bookmarkB: Immutabl
   return bookmarkA.href == bookmarkB.href
 }
 
-const pinboardBookmarkToBookmarkVM = (bookmark: PinboardTypes.PinboardItem) => ({
+const pinboardBookmarkToBookmarkVM = (bookmark: PinboardItem) => ({
   ...bookmark,
   tagsList: bookmark.tags.split(' '),
   status: 'unchecked' as StaleStatus,

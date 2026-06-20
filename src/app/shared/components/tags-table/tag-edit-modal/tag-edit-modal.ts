@@ -5,8 +5,9 @@ import { HlmDialogImports } from '@spartan-ng/helm/dialog'
 import { HlmButtonImports } from '@spartan-ng/helm/button'
 import { HlmInputImports } from '@spartan-ng/helm/input'
 import { TagsService } from '@services/tags/tags-service'
+import { TagModalService } from '@services/tags/tag-modal-service'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { TagVM } from '@data-providers/abstract'
+import { TagVM } from '@data-providers/abstract/models/abstract-view.model'
 
 @Component({
   selector: 'app-tag-edit-modal',
@@ -15,6 +16,7 @@ import { TagVM } from '@data-providers/abstract'
 })
 export class TagEditModal {
   readonly #tagsService = inject(TagsService)
+  readonly #tagModalService = inject(TagModalService)
   readonly #bookmarksService = inject(BookmarksService)
   readonly #dialogContext = injectBrnDialogContext<{ selectedTag: TagVM }>()
 
@@ -36,13 +38,13 @@ export class TagEditModal {
   }
 
   close(): void {
-    this.#tagsService.closeTagEditModal()
+    this.#tagModalService.closeTagEditModal()
   }
 
   async save(): Promise<void> {
     const tag = this.tag
     if (!tag || !this.newName().trim()) return
     await this.#tagsService.renameTag(tag.name, this.newName().trim())
-    this.#tagsService.closeTagEditModal()
+    this.#tagModalService.closeTagEditModal()
   }
 }

@@ -1,9 +1,9 @@
 import { computed, Service, Signal } from '@angular/core'
 import { produce } from 'immer'
 import { Immutable, ImmutableStore, useDevtools, useLogger, useStorePersistence } from 'signalstory'
-import { BookmarkVM, NoteVM, TagVM } from '@data-providers/abstract'
-import { Auth, Settings } from '@services/signal-store'
+import { BookmarkVM, NoteVM, TagVM } from '@data-providers/abstract/models/abstract-view.model'
 import { bookmarksAreEqual } from '@core/utils/bookmark-utils'
+import { Auth, Settings } from '@services/signal-store/signal-store.model'
 
 interface State {
   bookmarks: BookmarkVM[]

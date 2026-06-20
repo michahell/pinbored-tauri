@@ -1,5 +1,6 @@
 import { Service } from '@angular/core'
-import { IDataProviderFacade, BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract'
+import { IDataProviderFacade } from '@data-providers/abstract/facade/data-provider-facade.interface'
+import { BookmarkVM, TagsVM, SuggestTagsResultVM } from '@data-providers/abstract/models/abstract-view.model'
 
 @Service()
 export abstract class AbstractDataProviderFacade implements IDataProviderFacade {

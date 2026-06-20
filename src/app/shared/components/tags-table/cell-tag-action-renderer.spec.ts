@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { CellTagActionRenderer } from './cell-tag-action-renderer'
 import { TagsService } from '@services/tags/tags-service'
+import { TagModalService } from '@services/tags/tag-modal-service'
 import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 const mockContext = vi.hoisted(() => ({
@@ -17,17 +18,20 @@ vi.mock('@tanstack/angular-table', () => ({
 describe('CellTagActionRenderer', () => {
   let component: CellTagActionRenderer
   let fixture: ComponentFixture<CellTagActionRenderer>
-  let mockTagsService: { openTagEditModal: ReturnType<typeof vi.fn>; deleteTag: ReturnType<typeof vi.fn> }
+  let mockTagsService: { deleteTag: ReturnType<typeof vi.fn> }
+  let mockTagModalService: { openTagEditModal: ReturnType<typeof vi.fn> }
 
   beforeEach(async () => {
-    mockTagsService = {
-      openTagEditModal: vi.fn(),
-      deleteTag: vi.fn().mockResolvedValue(undefined),
-    }
+    mockTagsService = { deleteTag: vi.fn().mockResolvedValue(undefined) }
+    mockTagModalService = { openTagEditModal: vi.fn() }
 
     await TestBed.configureTestingModule({
       imports: [CellTagActionRenderer],
-      providers: [provideAllIcons, { provide: TagsService, useValue: mockTagsService }],
+      providers: [
+        provideAllIcons,
+        { provide: TagsService, useValue: mockTagsService },
+        { provide: TagModalService, useValue: mockTagModalService },
+      ],
     }).compileComponents()
 
     fixture = TestBed.createComponent(CellTagActionRenderer)
@@ -43,9 +47,9 @@ describe('CellTagActionRenderer', () => {
     expect(component.tag).toEqual({ name: 'javascript', count: 42 })
   })
 
-  it('openEditModal() delegates to tagsService.openTagEditModal', () => {
+  it('openEditModal() delegates to tagModalService.openTagEditModal', () => {
     component.openEditModal()
-    expect(mockTagsService.openTagEditModal).toHaveBeenCalledWith({ name: 'javascript', count: 42 })
+    expect(mockTagModalService.openTagEditModal).toHaveBeenCalledWith({ name: 'javascript', count: 42 })
   })
 
   it('deleteTag() calls tagsService.deleteTag with the tag name', async () => {

@@ -3,7 +3,7 @@ import { fetch } from '@tauri-apps/plugin-http'
 import PQueue from 'p-queue'
 import { pMapIterable } from 'p-map'
 import { Immutable } from 'signalstory'
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 import { STALE_CHECKER_DEFAULT_CONCURRENCY } from '@core/constants/app-constants'
 import { ProgressBarService } from '@services/progress-bar/progress-bar-service'
 

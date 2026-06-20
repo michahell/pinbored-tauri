@@ -3,7 +3,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { PinboardFacade } from './pinboard-facade'
 import { PinboardService } from '../service/pinboard-service'
 import { TauriStoreService } from '@core/tauri-store/tauri-store.service'
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 import { PinboardItem } from '../models/pinboard.model'
 
 function makeRawBookmark(overrides: Partial<PinboardItem> = {}): PinboardItem {

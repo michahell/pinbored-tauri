@@ -3,9 +3,8 @@ import { computed, signal, WritableSignal } from '@angular/core'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagsService } from './tags-service'
 import { DataProviderFacade } from '@services/data-provider/data-provider-facade'
-import { HlmDialogService } from '@spartan-ng/helm/dialog'
-import { SignalStore } from '@services/signal-store'
-import { TagVM } from '@data-providers/abstract'
+import { SignalStore } from '@services/signal-store/signal-store'
+import { TagVM } from '@data-providers/abstract/models/abstract-view.model'
 
 describe('TagsService', () => {
   let service: TagsService
@@ -18,8 +17,6 @@ describe('TagsService', () => {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mockSignalStore: any
-  let mockDialogRef: { close: ReturnType<typeof vi.fn>; state: ReturnType<typeof vi.fn> }
-  let mockDialogService: { open: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
     tagsSignal = signal<TagVM[]>([])
@@ -41,21 +38,18 @@ describe('TagsService', () => {
       }),
     }
 
-    mockDialogRef = { close: vi.fn(), state: vi.fn().mockReturnValue('closed') }
     mockFacade = {
       getAllTags: vi.fn().mockResolvedValue({}),
       renameTag: vi.fn().mockResolvedValue(undefined),
       deleteTag: vi.fn().mockResolvedValue(undefined),
       suggestTagsForUrl: vi.fn().mockResolvedValue(undefined),
     }
-    mockDialogService = { open: vi.fn().mockReturnValue(mockDialogRef) }
 
     TestBed.configureTestingModule({
       providers: [
         TagsService,
         { provide: DataProviderFacade, useValue: mockFacade },
         { provide: SignalStore, useValue: mockSignalStore },
-        { provide: HlmDialogService, useValue: mockDialogService },
       ],
     })
     service = TestBed.inject(TagsService)
@@ -132,28 +126,6 @@ describe('TagsService', () => {
       ])
       await service.deleteTag('obsolete')
       expect(service.tags().map((t) => t.name)).toEqual(['keep'])
-    })
-  })
-
-  describe('openTagEditModal()', () => {
-    it('opens the dialog via dialogService', () => {
-      service.openTagEditModal({ name: 'javascript', count: 5 })
-      expect(mockDialogService.open).toHaveBeenCalledOnce()
-    })
-
-    it('does not open a second dialog when one is already open', () => {
-      mockDialogRef.state.mockReturnValue('open')
-      service.openTagEditModal({ name: 'javascript', count: 5 })
-      service.openTagEditModal({ name: 'javascript', count: 5 })
-      expect(mockDialogService.open).toHaveBeenCalledOnce()
-    })
-  })
-
-  describe('closeTagEditModal()', () => {
-    it('closes the dialog ref when one is open', () => {
-      service.openTagEditModal({ name: 'javascript', count: 5 })
-      service.closeTagEditModal()
-      expect(mockDialogRef.close).toHaveBeenCalled()
     })
   })
 })

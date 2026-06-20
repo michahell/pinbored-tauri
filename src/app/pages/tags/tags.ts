@@ -5,7 +5,7 @@ import { MainLayout } from '@components/layouts/main-layout/main-layout'
 import { TagsTable } from '@components/tags-table/tags-table'
 import { TagsService } from '@services/tags/tags-service'
 import { HlmButtonGroup, HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
-import { TagVM } from '@data-providers/abstract'
+import { TagVM } from '@data-providers/abstract/models/abstract-view.model'
 import { Immutable } from 'signalstory'
 
 @Component({

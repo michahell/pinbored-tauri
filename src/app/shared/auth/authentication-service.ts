@@ -1,6 +1,7 @@
 import { inject, Service, signal } from '@angular/core'
-import { PinboardService, PinboardFacade } from '@data-providers/pinboard'
-import { SignalStore } from '@services/signal-store'
+import { PinboardService } from '@data-providers/pinboard/service/pinboard-service'
+import { PinboardFacade } from '@data-providers/pinboard/facade/pinboard-facade'
+import { SignalStore } from '@services/signal-store/signal-store'
 
 @Service()
 export class AuthenticationService {

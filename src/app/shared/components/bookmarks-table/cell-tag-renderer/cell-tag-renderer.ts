@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core'
 import { type CellContext, injectFlexRenderContext } from '@tanstack/angular-table'
 import { HlmBadge } from '@spartan-ng/helm/badge'
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 import { getStaleBadgeColor } from '@core/utils/stale-utils'
 
 @Component({

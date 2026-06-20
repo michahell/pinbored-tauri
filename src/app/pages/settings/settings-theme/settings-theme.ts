@@ -3,7 +3,7 @@ import { HlmCardImports } from '@spartan-ng/helm/card'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmButtonGroup } from '@spartan-ng/helm/button-group'
 import { SettingsService } from '../settings-service'
-import { type Theme } from '@services/signal-store'
+import { Theme } from '../settings-model'
 
 @Component({
   selector: 'app-settings-theme',

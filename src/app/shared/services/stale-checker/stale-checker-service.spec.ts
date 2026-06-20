@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { StaleCheckerService } from './stale-checker-service'
 import { ProgressBarService } from '../progress-bar/progress-bar-service'
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 
 const mockFetch = vi.hoisted(() => vi.fn())
 

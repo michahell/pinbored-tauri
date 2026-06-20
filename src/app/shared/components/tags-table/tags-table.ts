@@ -19,8 +19,8 @@ import { TableHeadSortButton } from '../table/sort-header-button'
 import { CellTagActionRenderer } from './cell-tag-action-renderer'
 import { HlmIcon } from '@spartan-ng/helm/icon'
 import { NgIcon } from '@ng-icons/core'
-import { TagsService } from '@services/tags/tags-service'
-import { TagVM } from '@data-providers/abstract'
+import { TagModalService } from '@services/tags/tag-modal-service'
+import { TagVM } from '@data-providers/abstract/models/abstract-view.model'
 
 @Component({
   selector: 'app-tags-table',
@@ -36,7 +36,7 @@ import { TagVM } from '@data-providers/abstract'
   templateUrl: './tags-table.html',
 })
 export class TagsTable {
-  readonly #tagsService = inject(TagsService)
+  readonly #tagModalService = inject(TagModalService)
 
   readonly tags = input<TagVM[]>([])
   readonly #sorting = signal<SortingState>([])
@@ -91,7 +91,7 @@ export class TagsTable {
   }))
 
   openEditModal(tag: TagVM): void {
-    this.#tagsService.openTagEditModal(tag)
+    this.#tagModalService.openTagEditModal(tag)
   }
 
   filterTextChanged(event: Event) {

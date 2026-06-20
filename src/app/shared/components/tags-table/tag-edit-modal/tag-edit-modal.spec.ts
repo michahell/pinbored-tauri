@@ -5,8 +5,9 @@ import { BrnDialogRef } from '@spartan-ng/brain/dialog'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagEditModal } from './tag-edit-modal'
 import { TagsService } from '@services/tags/tags-service'
+import { TagModalService } from '@services/tags/tag-modal-service'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 
 function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
   return {
@@ -29,17 +30,13 @@ function makeBookmark(overrides: Partial<BookmarkVM> = {}): BookmarkVM {
 describe('TagEditModal', () => {
   let component: TagEditModal
   let fixture: ComponentFixture<TagEditModal>
-  let mockTagsService: {
-    renameTag: ReturnType<typeof vi.fn>
-    closeTagEditModal: ReturnType<typeof vi.fn>
-  }
+  let mockTagsService: { renameTag: ReturnType<typeof vi.fn> }
+  let mockTagModalService: { closeTagEditModal: ReturnType<typeof vi.fn> }
   let bookmarksSignal: ReturnType<typeof signal<BookmarkVM[]>>
 
   beforeEach(async () => {
-    mockTagsService = {
-      renameTag: vi.fn().mockResolvedValue(undefined),
-      closeTagEditModal: vi.fn(),
-    }
+    mockTagsService = { renameTag: vi.fn().mockResolvedValue(undefined) }
+    mockTagModalService = { closeTagEditModal: vi.fn() }
     bookmarksSignal = signal([makeBookmark()])
 
     await TestBed.configureTestingModule({
@@ -57,6 +54,7 @@ describe('TagEditModal', () => {
           },
         },
         { provide: TagsService, useValue: mockTagsService },
+        { provide: TagModalService, useValue: mockTagModalService },
         { provide: BookmarksService, useValue: { bookmarks: bookmarksSignal } },
       ],
     }).compileComponents()
@@ -83,9 +81,9 @@ describe('TagEditModal', () => {
     expect(component['taggedBookmarks']().length).toBe(0)
   })
 
-  it('close() calls tagsService.closeTagEditModal', () => {
+  it('close() calls tagModalService.closeTagEditModal', () => {
     component.close()
-    expect(mockTagsService.closeTagEditModal).toHaveBeenCalled()
+    expect(mockTagModalService.closeTagEditModal).toHaveBeenCalled()
   })
 
   it('save() calls tagsService.renameTag with old and new names', async () => {
@@ -96,7 +94,7 @@ describe('TagEditModal', () => {
 
   it('save() closes the modal after renaming', async () => {
     await component.save()
-    expect(mockTagsService.closeTagEditModal).toHaveBeenCalled()
+    expect(mockTagModalService.closeTagEditModal).toHaveBeenCalled()
   })
 
   it('save() does nothing when newName is blank', async () => {

@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import Bookmarks from './bookmarks'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 import { provideAllIcons } from '@core/utils/provide-all-icons'
 
 describe('Bookmarks', () => {

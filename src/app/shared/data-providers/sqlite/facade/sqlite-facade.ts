@@ -1,5 +1,6 @@
 import { Service } from '@angular/core'
-import { AbstractDataProviderFacade, BookmarkVM, SuggestTagsResultVM, TagsVM } from '@data-providers/abstract'
+import { AbstractDataProviderFacade } from '@data-providers/abstract/facade/abstract-data-provider-facade'
+import { BookmarkVM, SuggestTagsResultVM, TagsVM } from '@data-providers/abstract/models/abstract-view.model'
 
 @Service()
 export class SqliteFacade extends AbstractDataProviderFacade {

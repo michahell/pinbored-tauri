@@ -11,7 +11,7 @@ import { BookmarksTable } from '@components/bookmarks-table/bookmarks-table'
 import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 import { NgIcon } from '@ng-icons/core'
 import { matchBookmarkReadStatus, matchBookmarkTaggedStatus, matchBookmarkVisibility } from '@core/utils/bookmark-utils'
-import { BookmarkVM } from '@data-providers/abstract'
+import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
 import { Immutable } from 'signalstory'
 
 interface BookmarkFilters {

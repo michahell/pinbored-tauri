@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { TagsTable } from './tags-table'
-import { TagsService } from '@services/tags/tags-service'
+import { TagModalService } from '@services/tags/tag-modal-service'
 import { provideAllIcons } from '@core/utils/provide-all-icons'
-import { TagVM } from '@data-providers/abstract'
+import { TagVM } from '@data-providers/abstract/models/abstract-view.model'
 
 function makeTag(overrides: Partial<TagVM> = {}): TagVM {
   return { name: 'javascript', count: 42, ...overrides }
@@ -12,14 +12,14 @@ function makeTag(overrides: Partial<TagVM> = {}): TagVM {
 describe('TagsTable', () => {
   let component: TagsTable
   let fixture: ComponentFixture<TagsTable>
-  let mockTagsService: { openTagEditModal: ReturnType<typeof vi.fn> }
+  let mockTagModalService: { openTagEditModal: ReturnType<typeof vi.fn> }
 
   beforeEach(async () => {
-    mockTagsService = { openTagEditModal: vi.fn() }
+    mockTagModalService = { openTagEditModal: vi.fn() }
 
     await TestBed.configureTestingModule({
       imports: [TagsTable],
-      providers: [provideAllIcons, { provide: TagsService, useValue: mockTagsService }],
+      providers: [provideAllIcons, { provide: TagModalService, useValue: mockTagModalService }],
     }).compileComponents()
 
     fixture = TestBed.createComponent(TagsTable)
@@ -44,9 +44,9 @@ describe('TagsTable', () => {
     expect(component).toBeTruthy()
   })
 
-  it('openEditModal() delegates to tagsService.openTagEditModal', () => {
+  it('openEditModal() delegates to tagModalService.openTagEditModal', () => {
     const tag = makeTag()
     component.openEditModal(tag)
-    expect(mockTagsService.openTagEditModal).toHaveBeenCalledWith(tag)
+    expect(mockTagModalService.openTagEditModal).toHaveBeenCalledWith(tag)
   })
 })
