@@ -11,7 +11,6 @@
     "lint": "oxlint src/ && ng lint",
     "sheriff": "sheriff verify",
     "fallow-health": "fallow health --production",
-    "slop-check": "slop lint",
     "spartan-health": "ng g @spartan-ng/cli:healthcheck",
     "spartan-update": "pnpm add @spartan-ng/brain@latest @spartan-ng/cli@latest",
     "list-skills": "pnpm dlx skills list && pnpm dlx skills list -g"
