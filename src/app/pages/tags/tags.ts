@@ -6,7 +6,7 @@ import { TagsTable } from '@components/tags-table/tags-table'
 import { TagsService } from '@services/tags/tags-service'
 import { HlmButtonGroup, HlmButtonGroupImports } from '@spartan-ng/helm/button-group'
 import { TagVM } from '@data-providers/abstract/models/abstract-view.model'
-import { Immutable } from 'signalstory'
+import { asDeepMutable } from '@core/utils/mutability-utils'
 
 @Component({
   selector: 'app-tags',
@@ -15,13 +15,8 @@ import { Immutable } from 'signalstory'
 })
 export default class Tags implements OnInit {
   readonly #tagsService = inject(TagsService)
-  // for the ugly transformations done here:
   // @see: https://github.com/zuriscript/signalstory/discussions/114
-  readonly tags: Signal<TagVM[]> = computed(() => {
-    const immutableTags: Immutable<TagVM[]> = this.#tagsService.tags()
-    const mutableTagList: TagVM[] = [...immutableTags]
-    return mutableTagList
-  })
+  readonly tags: Signal<TagVM[]> = computed(() => asDeepMutable<TagVM>(this.#tagsService.tags()))
   readonly tagsFetching = computed(() => this.#tagsService.tagsFetching())
   readonly hasTags = computed(() => this.#tagsService.hasTags())
 

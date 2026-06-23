@@ -12,7 +12,7 @@ import { BookmarksService } from '@services/bookmarks/bookmarks-service'
 import { NgIcon } from '@ng-icons/core'
 import { matchBookmarkReadStatus, matchBookmarkTaggedStatus, matchBookmarkVisibility } from '@core/utils/bookmark-utils'
 import { BookmarkVM } from '@data-providers/abstract/models/abstract-view.model'
-import { Immutable } from 'signalstory'
+import { asDeepMutable } from '@core/utils/mutability-utils'
 
 interface BookmarkFilters {
   visibility: string
@@ -49,19 +49,11 @@ export default class Bookmarks implements OnInit {
   }
   readonly quickFilters = Object.entries(this.#quickFilters)
 
-  // fetch-all type (cache/server)
   readonly fetchAllType = signal<'cache' | 'server'>('cache')
   // data signals
-  // for the ugly transformations done here:
-  // @see: https://github.com/zuriscript/signalstory/discussions/114
   readonly bookmarks: Signal<BookmarkVM[]> = computed(() => {
-    // transform Immutable<BookmarkVM[]> into BookmarkVM[]...
-    const immutableBookmarks: Immutable<BookmarkVM[]> = this.#bookmarksService.bookmarks()
-    const mutableListOfImmutableBookmarks: Immutable<BookmarkVM>[] = [...immutableBookmarks]
-    const mutableBookmarks: BookmarkVM[] = mutableListOfImmutableBookmarks.map((bm) => {
-      const mutableBm: BookmarkVM = { ...bm, tagsList: [...bm.tagsList] }
-      return mutableBm
-    })
+    // @see: https://github.com/zuriscript/signalstory/discussions/114
+    const mutableBookmarks: BookmarkVM[] = asDeepMutable<BookmarkVM>(this.#bookmarksService.bookmarks())
     // filter bookmarks based on selected quick filters
     const filters = this.currentFilters()
     return mutableBookmarks.filter(
