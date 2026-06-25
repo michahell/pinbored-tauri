@@ -5,11 +5,11 @@ labels: []
 definition_of_done: []
 date_format: yyyy-mm-dd
 max_column_width: 20
-default_editor: "subl"
+default_editor: "zed"
 auto_open_browser: true
 default_port: 6420
 remote_operations: true
-auto_commit: true
+auto_commit: false
 filesystem_only: false
 zero_padded_ids: 3
 bypass_git_hooks: false
