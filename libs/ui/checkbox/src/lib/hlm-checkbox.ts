@@ -17,7 +17,6 @@ import { lucideCheck } from '@ng-icons/lucide'
 import { BrnCheckbox } from '@spartan-ng/brain/checkbox'
 import { BrnFieldControlDescribedBy } from '@spartan-ng/brain/field'
 import type { ChangeFn, TouchFn } from '@spartan-ng/brain/forms'
-import { HlmIcon } from '@spartan-ng/helm/icon'
 import { hlm } from '@spartan-ng/helm/utils'
 import type { ClassValue } from 'clsx'
 
@@ -29,7 +28,7 @@ export const HLM_CHECKBOX_VALUE_ACCESSOR = {
 
 @Component({
   selector: 'hlm-checkbox',
-  imports: [BrnCheckbox, NgIcon, HlmIcon],
+  imports: [BrnCheckbox, NgIcon],
   providers: [HLM_CHECKBOX_VALUE_ACCESSOR],
   viewProviders: [provideIcons({ lucideCheck })],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,8 +57,10 @@ export const HLM_CHECKBOX_VALUE_ACCESSOR = {
       (touched)="_onTouched?.()"
     >
       @if (checked() || indeterminate()) {
-        <span class="flex items-center justify-center text-current transition-none">
-          <ng-icon hlm size="14px" name="lucideCheck" />
+        <span
+          class="[&>ng-icon]:text-[length:--spacing(3.5)] flex items-center justify-center text-current transition-none"
+        >
+          <ng-icon name="lucideCheck" />
         </span>
       }
     </brn-checkbox>
